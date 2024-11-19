@@ -55,7 +55,7 @@ const goToDetail = (id) => {
 <template>
   <NavbarItem />
   <div>
-    <h1 class="font-bold text-2xl">홈페이지</h1>
+    <h1 class="font-bold text-2xl text-red-500">홈페이지</h1>
     <div>
       <h2>상품 검색</h2>
       <form @submit.prevent="submit()">
