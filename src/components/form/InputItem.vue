@@ -1,5 +1,5 @@
 <script setup>
-defineProps(["type", "placeholder", "modelValue"]);
+defineProps(["type", "placeholder", "modelValue", "readonly"]);
 </script>
 
 <template>
@@ -10,5 +10,6 @@ defineProps(["type", "placeholder", "modelValue"]);
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     required
+    :readonly="readonly"
   />
 </template>

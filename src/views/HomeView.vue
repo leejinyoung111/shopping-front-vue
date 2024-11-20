@@ -51,7 +51,7 @@ const goToDetail = (isbn) => {
 
 <template>
   <div
-    class="bg-gray-200/50 overflow-y-hidden max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+    class="bg-gray-200/50 overflow-y-hidden max-w-screen-xl flex flex-wrap items-center justify-between m-auto p-4"
   >
     <!-- 검색 바 -->
     <div class="flex gap-5 justify-center items-center w-full">
