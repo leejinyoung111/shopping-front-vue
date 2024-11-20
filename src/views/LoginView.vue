@@ -55,7 +55,9 @@ const submit = async () => {
 };
 </script>
 <template>
-  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div
+    class="bg-gray-200/50 max-w-screen-xl m-auto flex flex-col justify-center px-6 py-12 lg:px-8"
+  >
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2
         class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
