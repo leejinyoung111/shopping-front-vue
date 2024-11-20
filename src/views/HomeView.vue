@@ -2,7 +2,6 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import NavbarItem from "@/components/ui/NavbarItem.vue";
 import InputItem from "@/components/form/InputItem.vue";
 import BlueButton from "@/components/button/BlueButton.vue";
 import { kakaoKey } from "@/constants/envName";
@@ -16,7 +15,7 @@ const router = useRouter();
 const getBookList = async (search) => {
   try {
     const result = await axios.get(
-      `https://dapi.kakao.com/v3/search/book?sort=accuracy&query=${search}&page=1&size=10`,
+      `https://dapi.kakao.com/v3/search/book?target=title&query=${search}`,
       {
         headers: {
           Authorization: `KakaoAK ${kakaoKey}`,
@@ -26,7 +25,6 @@ const getBookList = async (search) => {
 
     if (result.status == 200) {
       bookList.value = result.data.documents;
-      console.log(result.data.documents);
     } else {
       console.log("api 호출 에러 : " + result);
     }
@@ -46,14 +44,13 @@ const submit = () => {
 };
 
 // 디테일 페이지 이동
-const goToDetail = (id) => {
-  const params = id.replace(" ", "-");
-  router.push({ path: `/detail/${params}` });
+const goToDetail = (isbn) => {
+  const paramId = isbn.split(" ");
+  router.push(`/book/detail/${paramId[0]}`);
 };
 </script>
 
 <template>
-  <NavbarItem />
   <div>
     <h1 class="font-bold text-2xl text-red-500">홈페이지</h1>
     <div>
@@ -76,7 +73,7 @@ const goToDetail = (id) => {
           </button>
           <div>제목 : {{ item.title }}</div>
           <div>내용 : {{ item.contents }}</div>
-          <div>작가 : {{ item.authors }}</div>
+          <div>저자 : {{ item.authors.join(", ") }}</div>
           <div>가격 : {{ item.price }}</div>
           <div>판매상태 : {{ item.status }}</div>
           <img
