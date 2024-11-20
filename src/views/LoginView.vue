@@ -26,11 +26,7 @@ const submit = async () => {
 
     alert("로그인 성공!");
 
-    router.push("/");
-
-    // let getUser = JSON.parse(localStorage.getItem("userInfo"));
-
-    // console.log(getUser);
+    router.replace("/");
 
     // const result = await LoginApi(value);
 

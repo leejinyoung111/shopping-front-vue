@@ -1,4 +1,18 @@
-<script></script>
+<script setup>
+import { onMounted, ref } from "vue";
+
+// 변수
+const getUser = ref();
+
+const logout = () => {
+  localStorage.clear();
+  window.location.reload();
+};
+
+onMounted(() => {
+  getUser.value = JSON.parse(localStorage.getItem("userInfo"));
+});
+</script>
 <template>
   <nav class="bg-white border-gray-200 dark:bg-gray-900">
     <div
@@ -36,6 +50,7 @@
       </button>
       <div class="hidden w-full md:block md:w-auto" id="navbar-default">
         <ul
+          v-if="getUser == null"
           class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
         >
           <li>
@@ -46,13 +61,42 @@
               >로그인</a
             >
           </li>
-          <!-- <li>
+        </ul>
+
+        <ul
+          v-else
+          class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+        >
+          <li>
             <a
-              href="/register"
-              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >회원가입</a
+              href="/cart"
+              class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+              aria-current="page"
+              >장바구니</a
             >
-          </li> -->
+          </li>
+          <li>
+            <a
+              href="/profile"
+              class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+              aria-current="page"
+              >프로필</a
+            >
+          </li>
+          <li>
+            <button
+              @click="logout"
+              class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+            >
+              로그아웃
+            </button>
+            <!-- <a
+              href="/login"
+              class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+              aria-current="page"
+              >로그아웃</a
+            > -->
+          </li>
         </ul>
       </div>
     </div>
