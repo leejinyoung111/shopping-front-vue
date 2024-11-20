@@ -1,5 +1,6 @@
 <script setup>
 import { kakaoKey } from "@/constants/envName";
+import { priceChange } from "@/utils/PriceConversion";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
@@ -28,11 +29,6 @@ const getBookInfo = async (param) => {
   } catch (e) {
     console.log(e);
   }
-};
-
-// 가격 변환
-const priceChange = (num) => {
-  return num.toLocaleString("ko-KR");
 };
 
 onMounted(() => {
