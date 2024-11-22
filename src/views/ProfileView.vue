@@ -31,16 +31,20 @@ const saveAddress = () => {
 </script>
 
 <template>
-  <div class="max-w-screen-xl mx-auto bg-gray-200/50 rounded-lg shadow-md p-5">
-    <img
-      class="w-32 h-32 rounded-full mx-auto"
-      src="https://picsum.photos/200"
-      alt="Profile picture"
-    />
-    <h2 class="text-center text-2xl font-semibold mt-3">test@test.com</h2>
-    <p class="text-center text-gray-600 mt-1">테스트</p>
+  <div class="flex flex-col gap-5 justify-center items-center">
+    <!-- 유저 정보 -->
+    <div class="pt-5">
+      <img
+        class="w-32 h-32 rounded-full mx-auto"
+        src="https://picsum.photos/200"
+        alt="Profile picture"
+      />
+      <h2 class="text-center text-2xl font-semibold mt-3">test@test.com</h2>
+      <p class="text-center text-gray-600 mt-1">테스트</p>
+    </div>
 
-    <div class="mt-5">
+    <!-- 주소 입력 -->
+    <div class="mt-5 w-full">
       <form
         @submit.prevent="saveAddress()"
         class="mt-5 bg-white rounded-lg shadow w-4/5 md:w-3/5 lg:w-2/4 m-auto"

@@ -50,9 +50,8 @@ const submit = async () => {
 };
 </script>
 <template>
-  <div
-    class="bg-gray-200/50 max-w-screen-xl m-auto flex min-h-full flex-col justify-center px-6 py-12 lg:px-8"
-  >
+  <div class="flex flex-col gap-5 justify-center items-center">
+    <!-- 타이틀 -->
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2
         class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
@@ -60,8 +59,8 @@ const submit = async () => {
         회원가입
       </h2>
     </div>
-
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <!-- 회원가입 폼 -->
+    <div class="mt-5 w-full md:w-2/3 lg:w-1/3">
       <form class="space-y-6" @submit.prevent="submit()">
         <div>
           <label for="email" class="block text-sm/6 font-medium text-gray-900"

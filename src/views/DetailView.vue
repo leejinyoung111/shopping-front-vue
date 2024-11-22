@@ -36,14 +36,13 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="bg-gray-200/50 body-font overflow-hidden">
-    <div
-      v-if="bookDetailInfo != undefined"
-      class="container px-5 py-24 mx-auto"
-    >
-      <div class="lg:w-4/5 mx-auto flex flex-wrap">
+  <div class="flex flex-col gap-5 justify-center items-center">
+    <div v-if="bookDetailInfo != undefined" class="container p-5 mx-auto">
+      <div
+        class="lg:w-4/5 h-full flex flex-col lg:flex-row justify-center items-center"
+      >
         <img
-          class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+          class="w-2/3 md:w-1/2 lg:w-2/5 object-cover object-center rounded"
           :src="`${bookDetailInfo.thumbnail}`"
           :alt="bookDetailInfo.title"
         />
