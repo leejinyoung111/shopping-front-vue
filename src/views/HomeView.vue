@@ -63,7 +63,7 @@ const getData = async () => {
 };
 
 onMounted(() => {
-  getData();
+  // getData();
 });
 </script>
 
