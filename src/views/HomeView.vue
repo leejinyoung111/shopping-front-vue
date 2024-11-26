@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { kakaoKey } from "@/constants/envName";
 
@@ -47,6 +47,24 @@ const goToDetail = (isbn) => {
   const paramId = isbn.split(" ");
   router.push(`/book/detail/${paramId[0]}`);
 };
+
+const getData = async () => {
+  try {
+    const result = await axios.get(`http://localhost:8080/egov_test/test`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log(result);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+onMounted(() => {
+  getData();
+});
 </script>
 
 <template>
