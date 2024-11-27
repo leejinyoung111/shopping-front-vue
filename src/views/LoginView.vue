@@ -5,6 +5,7 @@ import InputItem from "@/components/form/InputItem.vue";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import { LoginApi } from "@/api/user";
 
 // storage
 const authStore = useAuthStore();
@@ -25,36 +26,13 @@ const submit = async () => {
       password: password.value,
     };
 
-    console.log(value);
+    const result = await LoginApi(value);
 
-    // 유저정보 저장
-    // authStore.setUserInfo(value);
-
-    // alert("로그인 성공!");
-
-    // router.replace("/");
-
-    // const result = await LoginApi(value);
-
-    // if (result.status == 201) {
-    //   // 유저 정보 가져오기
-    //   const getUserInfo = await GetUserApi(result.data.result);
-
-    //   // 유저정보 저장
-    //   authStore.setUserInfo(getUserInfo);
-
-    //   let getUser = JSON.parse(localStorage.getItem("userInfo"));
-
-    //   // 경로 이동
-    //   if (getUser.role == "admin") {
-    //     router.replace("/dashboard");
-    //   } else {
-    //     router.go(0);
-    //   }
-    // } else if (result.status == 422) {
-    //   // 에러 처리
-    //   errorMessageHandling(result.response.data);
-    // }
+    if (result.status == 200) {
+      authStore.setUserInfo(value);
+      alert("로그인 성공!");
+      window.location.replace("/");
+    }
   } catch (e) {
     console.log(e);
   }

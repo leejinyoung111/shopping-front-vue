@@ -2,7 +2,7 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { kakaoKey } from "@/constants/envName";
+import { apiUrl, kakaoKey } from "@/constants/envName";
 
 // 변수
 const searchBookName = ref("");
@@ -50,21 +50,17 @@ const goToDetail = (isbn) => {
 
 const getData = async () => {
   try {
-    const result = await axios.get(`http://localhost:8080/egov_test/test`, {
+    const result = await axios.get(`${apiUrl}/test`, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    console.log(result);
+    console.log(JSON.parse(result.data));
   } catch (e) {
     console.log(e);
   }
 };
-
-onMounted(() => {
-  // getData();
-});
 </script>
 
 <template>

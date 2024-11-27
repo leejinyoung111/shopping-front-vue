@@ -4,12 +4,13 @@ import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import InputItem from "@/components/form/InputItem.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { RegisterApi } from "@/api/user";
 
 // 변수
 const email = ref("");
 const name = ref("");
 const password = ref("");
-const postcode = ref("");
+const postCode = ref("");
 const address = ref("");
 const detailAddress = ref("");
 
@@ -24,7 +25,7 @@ const searchAddress = () => {
   new daum.Postcode({
     oncomplete: function (data) {
       address.value = data.address;
-      postcode.value = data.zonecode;
+      postCode.value = data.zonecode;
     },
   }).open();
 };
@@ -35,39 +36,18 @@ const submit = async () => {
     let value = {
       email: email.value,
       name: name.value,
-      postcode: postcode.value,
+      password: password.value,
+      postCode: postCode.value,
       address: address.value,
       detailAddress: detailAddress.value,
-      password: password.value,
     };
 
-    console.log(value);
+    const result = await RegisterApi(value);
 
-    // alert("회원가입 성공!");
-
-    // router.push("/login");
-
-    // const result = await LoginApi(value);
-
-    // if (result.status == 201) {
-    //   // 유저 정보 가져오기
-    //   const getUserInfo = await GetUserApi(result.data.result);
-
-    //   // 유저정보 저장
-    //   authStore.setUserInfo(getUserInfo);
-
-    //   let getUser = JSON.parse(localStorage.getItem("userInfo"));
-
-    //   // 경로 이동
-    //   if (getUser.role == "admin") {
-    //     router.replace("/dashboard");
-    //   } else {
-    //     router.go(0);
-    //   }
-    // } else if (result.status == 422) {
-    //   // 에러 처리
-    //   errorMessageHandling(result.response.data);
-    // }
+    if (result.status == 200) {
+      alert("회원가입 성공!");
+      router.push("/login");
+    }
   } catch (e) {
     console.log(e);
   }
@@ -141,7 +121,7 @@ const submit = async () => {
         <!-- 우편번호 -->
         <div>
           <label
-            for="postcode"
+            for="postCode"
             class="block text-sm/6 font-medium text-gray-900"
           >
             우편번호</label
@@ -150,7 +130,7 @@ const submit = async () => {
             <InputItem
               type="text"
               placeholder="우편번호"
-              v-model="postcode"
+              v-model="postCode"
               readonly="true"
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
