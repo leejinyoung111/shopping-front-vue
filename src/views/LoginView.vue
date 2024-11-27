@@ -5,6 +5,7 @@ import InputItem from "@/components/form/InputItem.vue";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { LoginApi } from "@/api/user";
+import { emailValidate, passwordValidate } from "@/utils/Validation";
 
 // storage
 const authStore = useAuthStore();
@@ -12,25 +13,44 @@ const authStore = useAuthStore();
 // 변수
 const email = ref("");
 const password = ref("");
-const emailMessage = ref("존재하지 않는 이메일입니다.");
-const passwordMessage = ref("비밀번호가 일치하지 않습니다.");
+const emailMessage = ref("");
+const passwordMessage = ref("");
+
+// 유효성 체크
+const validateCheck = (check, message) => {
+  if (check != true) {
+    message.value = check;
+  } else {
+    message.value = "";
+    return true;
+  }
+};
 
 // 로그인
 const submit = async () => {
   try {
-    let value = {
-      email: email.value,
-      password: password.value,
-    };
+    // 유효성 체크
+    const emailCheck = validateCheck(emailValidate(email.value), emailMessage);
+    const passwordCheck = validateCheck(
+      passwordValidate(password.value),
+      passwordMessage
+    );
 
-    const result = await LoginApi(value);
+    if (emailCheck && passwordCheck) {
+      let value = {
+        email: email.value,
+        password: password.value,
+      };
 
-    if (result.status == 200) {
-      delete result.data.user.password;
+      const result = await LoginApi(value);
 
-      authStore.setUserInfo(result.data.user);
-      alert("로그인 성공!");
-      window.location.replace("/");
+      if (result.status == 200) {
+        delete result.data.user.password;
+
+        authStore.setUserInfo(result.data.user);
+        alert("로그인 성공!");
+        window.location.replace("/");
+      }
     }
   } catch (e) {
     console.log(e);
@@ -58,7 +78,7 @@ const submit = async () => {
           >
           <div class="mt-2">
             <InputItem
-              type="email"
+              type="text"
               placeholder="이메일"
               v-model="email"
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"

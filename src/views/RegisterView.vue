@@ -18,11 +18,9 @@ const password = ref("");
 const postCode = ref("");
 const address = ref("");
 const detailAddress = ref("");
-
 const emailMessage = ref("");
 const nameMessage = ref("");
 const passwordMessage = ref("");
-
 const router = useRouter();
 
 // 주소 검색
@@ -35,46 +33,45 @@ const searchAddress = () => {
   }).open();
 };
 
+// 유효성 체크
+const validateCheck = (check, message) => {
+  if (check != true) {
+    message.value = check;
+  } else {
+    message.value = "";
+    return true;
+  }
+};
+
 // 회원가입
 const submit = async () => {
   try {
-    const emailCheck = emailValidate(email.value);
-    const nameCheck = nameValidate(name.value);
-    const passwordCheck = passwordValidate(password.value);
+    // 유효성 체크
+    const emailCheck = validateCheck(emailValidate(email.value), emailMessage);
+    const nameCheck = validateCheck(nameValidate(name.value), nameMessage);
+    const passwordCheck = validateCheck(
+      passwordValidate(password.value),
+      passwordMessage
+    );
 
-    if (emailCheck != true) {
-      emailMessage.value = emailCheck;
-    } else {
-      emailMessage.value = "";
+    // 모두 일치할 경우
+    if (emailCheck && nameCheck && passwordCheck) {
+      let value = {
+        email: email.value,
+        name: name.value,
+        password: password.value,
+        postCode: postCode.value,
+        address: address.value,
+        detailAddress: detailAddress.value,
+      };
+
+      const result = await RegisterApi(value);
+
+      if (result.status == 200) {
+        alert("회원가입 성공!");
+        router.push("/login");
+      }
     }
-
-    if (nameCheck != true) {
-      nameMessage.value = nameCheck;
-    } else {
-      nameMessage.value = "";
-    }
-
-    if (passwordCheck != true) {
-      passwordMessage.value = passwordCheck;
-    } else {
-      passwordMessage.value = "";
-    }
-
-    // let value = {
-    //   email: email.value,
-    //   name: name.value,
-    //   password: password.value,
-    //   postCode: postCode.value,
-    //   address: address.value,
-    //   detailAddress: detailAddress.value,
-    // };
-
-    // const result = await RegisterApi(value);
-
-    // if (result.status == 200) {
-    //   alert("회원가입 성공!");
-    //   router.push("/login");
-    // }
   } catch (e) {
     console.log(e);
   }
@@ -146,7 +143,7 @@ const submit = async () => {
         </div>
 
         <!-- 우편번호 -->
-        <!-- <div>
+        <div>
           <label
             for="postCode"
             class="block text-sm/6 font-medium text-gray-900"
@@ -168,10 +165,10 @@ const submit = async () => {
               @click="searchAddress"
             />
           </div>
-        </div> -->
+        </div>
 
         <!-- 주소 -->
-        <!-- <div>
+        <div>
           <label for="address" class="block text-sm/6 font-medium text-gray-900"
             >주소</label
           >
@@ -183,10 +180,10 @@ const submit = async () => {
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
           </div>
-        </div> -->
+        </div>
 
         <!-- 상세 주소 -->
-        <!-- <div>
+        <div>
           <label
             for="detailAddress"
             class="block text-sm/6 font-medium text-gray-900"
@@ -200,7 +197,7 @@ const submit = async () => {
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
           </div>
-        </div> -->
+        </div>
         <!-- 버튼 -->
         <div class="mt-6">
           <BlueButton value="submit" text="회원가입" />
