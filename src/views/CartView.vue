@@ -1,5 +1,5 @@
 <script setup>
-import { GetCartListApi } from "@/api/cart";
+import { DeleteCartApi, GetCartListApi } from "@/api/cart";
 import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
 
@@ -18,6 +18,19 @@ const getCartList = async () => {
       data.filter((item, key) => {
         totalPrice.value += item.price;
       });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+// 장바구니 삭제
+const deleteCart = async (id) => {
+  try {
+    const result = await DeleteCartApi(id);
+
+    if (result.status == 200) {
+      getCartList();
     }
   } catch (e) {
     console.log(e);
@@ -61,6 +74,7 @@ onMounted(() => {
             <div class="flex items-center space-x-4">
               <p class="text-sm">{{ priceChange(item.price) }}</p>
               <svg
+                @click="deleteCart(item.id)"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
