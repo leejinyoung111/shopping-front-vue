@@ -5,6 +5,11 @@ import InputItem from "@/components/form/InputItem.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { RegisterApi } from "@/api/user";
+import {
+  emailValidate,
+  nameValidate,
+  passwordValidate,
+} from "@/utils/Validation";
 
 // 변수
 const email = ref("");
@@ -14,9 +19,9 @@ const postCode = ref("");
 const address = ref("");
 const detailAddress = ref("");
 
-const emailMessage = ref("존재하는 이메일입니다.");
-const nameMessage = ref("한글 또는 영어만 가능합니다.");
-const passwordMessage = ref("8자 이상 16자 이하 가능합니다.");
+const emailMessage = ref("");
+const nameMessage = ref("");
+const passwordMessage = ref("");
 
 const router = useRouter();
 
@@ -33,21 +38,43 @@ const searchAddress = () => {
 // 회원가입
 const submit = async () => {
   try {
-    let value = {
-      email: email.value,
-      name: name.value,
-      password: password.value,
-      postCode: postCode.value,
-      address: address.value,
-      detailAddress: detailAddress.value,
-    };
+    const emailCheck = emailValidate(email.value);
+    const nameCheck = nameValidate(name.value);
+    const passwordCheck = passwordValidate(password.value);
 
-    const result = await RegisterApi(value);
-
-    if (result.status == 200) {
-      alert("회원가입 성공!");
-      router.push("/login");
+    if (emailCheck != true) {
+      emailMessage.value = emailCheck;
+    } else {
+      emailMessage.value = "";
     }
+
+    if (nameCheck != true) {
+      nameMessage.value = nameCheck;
+    } else {
+      nameMessage.value = "";
+    }
+
+    if (passwordCheck != true) {
+      passwordMessage.value = passwordCheck;
+    } else {
+      passwordMessage.value = "";
+    }
+
+    // let value = {
+    //   email: email.value,
+    //   name: name.value,
+    //   password: password.value,
+    //   postCode: postCode.value,
+    //   address: address.value,
+    //   detailAddress: detailAddress.value,
+    // };
+
+    // const result = await RegisterApi(value);
+
+    // if (result.status == 200) {
+    //   alert("회원가입 성공!");
+    //   router.push("/login");
+    // }
   } catch (e) {
     console.log(e);
   }
@@ -73,7 +100,7 @@ const submit = async () => {
           >
           <div class="mt-2">
             <InputItem
-              type="email"
+              type="text"
               placeholder="이메일"
               v-model="email"
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
@@ -119,7 +146,7 @@ const submit = async () => {
         </div>
 
         <!-- 우편번호 -->
-        <div>
+        <!-- <div>
           <label
             for="postCode"
             class="block text-sm/6 font-medium text-gray-900"
@@ -141,10 +168,10 @@ const submit = async () => {
               @click="searchAddress"
             />
           </div>
-        </div>
+        </div> -->
 
         <!-- 주소 -->
-        <div>
+        <!-- <div>
           <label for="address" class="block text-sm/6 font-medium text-gray-900"
             >주소</label
           >
@@ -156,10 +183,10 @@ const submit = async () => {
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
           </div>
-        </div>
+        </div> -->
 
         <!-- 상세 주소 -->
-        <div>
+        <!-- <div>
           <label
             for="detailAddress"
             class="block text-sm/6 font-medium text-gray-900"
@@ -173,7 +200,7 @@ const submit = async () => {
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
           </div>
-        </div>
+        </div> -->
         <!-- 버튼 -->
         <div class="mt-6">
           <BlueButton value="submit" text="회원가입" />
