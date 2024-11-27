@@ -1,24 +1,32 @@
 <script setup>
+import { GetCartListApi } from "@/api/cart";
 import { priceChange } from "@/utils/PriceConversion";
+import { onMounted, ref } from "vue";
 
-// 장바구니 리스트
-const cartList = [
-  {
-    title: "서울 부동산 절대원칙",
-    count: 1,
-    price: 25000,
-  },
-  {
-    title: "2023 해커스 공기업",
-    count: 1,
-    price: 23900,
-  },
-  {
-    title: "나의 문화 유산답사기",
-    count: 1,
-    price: 22000,
-  },
-];
+// 변수
+const cartList = ref();
+const totalPrice = ref(0);
+
+// 장바구니 목록 조회
+const getCartList = async () => {
+  try {
+    const result = await GetCartListApi(22);
+
+    if (result.status == 200) {
+      let data = result.data.getCartList;
+      cartList.value = data;
+      data.filter((item, key) => {
+        totalPrice.value += item.price;
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+onMounted(() => {
+  getCartList();
+});
 </script>
 
 <template>
@@ -38,7 +46,7 @@ const cartList = [
         class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
       >
         <img
-          src="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+          :src="item.thumbnail"
           alt="product-image"
           class="w-full rounded-lg sm:w-40"
         />
@@ -49,9 +57,7 @@ const cartList = [
           <div
             class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
           >
-            <div class="flex items-center border-gray-100">
-              수량 : {{ item.count }}
-            </div>
+            <div class="flex items-center border-gray-100">수량 : 1</div>
             <div class="flex items-center space-x-4">
               <p class="text-sm">{{ priceChange(item.price) }}</p>
               <svg
@@ -80,8 +86,7 @@ const cartList = [
       <div class="flex justify-between">
         <p class="text-lg font-bold">총 금액</p>
         <div class="">
-          <p class="mb-1 text-lg font-bold">{{ priceChange(50000) }}원</p>
-          <p class="text-sm text-gray-700">부가세 포함</p>
+          <p class="mb-1 text-lg font-bold">{{ priceChange(totalPrice) }}원</p>
         </div>
       </div>
       <button

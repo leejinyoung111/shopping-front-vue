@@ -1,4 +1,5 @@
 <script setup>
+import { AddCartApi } from "@/api/cart";
 import { kakaoKey } from "@/constants/envName";
 import { priceChange } from "@/utils/PriceConversion";
 import axios from "axios";
@@ -29,6 +30,29 @@ const getBookInfo = async (param) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+// 장바구니 추가
+const addCart = async (bookDetailInfo) => {
+  let getUser = JSON.parse(localStorage.getItem("userInfo"));
+  const { title, price, thumbnail, publisher } = bookDetailInfo;
+
+  const value = {
+    userId: 22,
+    title,
+    price,
+    thumbnail,
+    publisher,
+    isbn: param,
+  };
+
+  const result = await AddCartApi(value);
+
+  if (result.status == 200) {
+    alert("장바구니 추가하였습니다.");
+  }
+
+  // console.log(bookDetailInfo);
 };
 
 onMounted(() => {
@@ -76,6 +100,7 @@ onMounted(() => {
             <div class="flex justify-start items-center gap-5">
               <button
                 class="text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded"
+                @click="addCart(bookDetailInfo)"
               >
                 장바구니
               </button>
