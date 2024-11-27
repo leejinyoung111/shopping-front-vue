@@ -8,16 +8,18 @@ const cartList = ref();
 const totalPrice = ref(0);
 
 // 장바구니 목록 조회
-const getCartList = async () => {
+const getCartList = async (status) => {
   try {
     const result = await GetCartListApi(22);
 
     if (result.status == 200) {
       let data = result.data.getCartList;
       cartList.value = data;
-      data.filter((item, key) => {
-        totalPrice.value += item.price;
-      });
+      if (status == "all") {
+        data.map((item, key) => {
+          totalPrice.value += item.price;
+        });
+      }
     }
   } catch (e) {
     console.log(e);
@@ -25,12 +27,13 @@ const getCartList = async () => {
 };
 
 // 장바구니 삭제
-const deleteCart = async (id) => {
+const deleteCart = async (item) => {
   try {
-    const result = await DeleteCartApi(id);
+    const result = await DeleteCartApi(item.id);
 
     if (result.status == 200) {
       getCartList();
+      totalPrice.value -= item.price;
     }
   } catch (e) {
     console.log(e);
@@ -38,7 +41,7 @@ const deleteCart = async (id) => {
 };
 
 onMounted(() => {
-  getCartList();
+  getCartList("all");
 });
 </script>
 
@@ -74,7 +77,7 @@ onMounted(() => {
             <div class="flex items-center space-x-4">
               <p class="text-sm">{{ priceChange(item.price) }}</p>
               <svg
-                @click="deleteCart(item.id)"
+                @click="deleteCart(item)"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
