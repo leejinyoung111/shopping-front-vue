@@ -3,7 +3,7 @@ import { LogoutApi } from "@/api/user";
 import { onMounted, ref } from "vue";
 
 // 변수
-const isLogin = ref(false);
+const getUser = ref();
 
 // 메뉴리스트
 const loginBefore = [
@@ -25,23 +25,20 @@ const loginAfter = [
 ];
 
 // 유저 정보 가져오기
-const getUser = async () => {
-  let getUser = JSON.parse(localStorage.getItem("userInfo"));
-  if (getUser == null) {
-    isLogin.value = false;
-  } else {
-    isLogin.value = true;
-  }
+const getUserInfo = async () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  getUser.value = userInfo;
 };
 
 // 로그아웃
 const logout = async () => {
   await LogoutApi();
   window.location.reload();
+  window.location.replace("/");
 };
 
 onMounted(() => {
-  getUser();
+  getUserInfo();
 });
 </script>
 <template>
@@ -51,7 +48,7 @@ onMounted(() => {
     <div
       class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow"
     >
-      <ul v-if="!isLogin" class="flex flex-col py-4 space-y-1">
+      <ul v-if="getUser == null" class="flex flex-col py-4 space-y-1">
         <li v-for="(item, key) in loginBefore" :key="key">
           <router-link
             :to="item.url"
@@ -79,7 +76,7 @@ onMounted(() => {
           </router-link>
         </li>
       </ul>
-      <ul v-if="isLogin" class="flex flex-col py-4 space-y-1">
+      <ul v-if="getUser != null" class="flex flex-col py-4 space-y-1">
         <li v-for="(item, key) in loginAfter" :key="key">
           <router-link
             :to="item.url"

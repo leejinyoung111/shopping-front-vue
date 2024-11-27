@@ -47,20 +47,6 @@ const goToDetail = (isbn) => {
   const paramId = isbn.split(" ");
   router.push(`/book/detail/${paramId[0]}`);
 };
-
-const getData = async () => {
-  try {
-    const result = await axios.get(`${apiUrl}/test`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log(JSON.parse(result.data));
-  } catch (e) {
-    console.log(e);
-  }
-};
 </script>
 
 <template>

@@ -9,6 +9,13 @@ import { onMounted, ref } from "vue";
 const url = window.location.pathname;
 const param = url.slice(13, url.length);
 const bookDetailInfo = ref();
+const getUser = ref();
+
+// 유저 정보 가져오기
+const getUserInfo = async () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  getUser.value = userInfo;
+};
 
 // 도서 디테일 정보 가져오기
 const getBookInfo = async (param) => {
@@ -34,28 +41,23 @@ const getBookInfo = async (param) => {
 
 // 장바구니 추가
 const addCart = async (bookDetailInfo) => {
-  let getUser = JSON.parse(localStorage.getItem("userInfo"));
   const { title, price, thumbnail, publisher } = bookDetailInfo;
-
   const value = {
-    userId: 22,
+    userId: getUser.value.id,
     title,
     price,
     thumbnail,
     publisher,
     isbn: param,
   };
-
   const result = await AddCartApi(value);
-
   if (result.status == 200) {
     alert("장바구니 추가하였습니다.");
   }
-
-  // console.log(bookDetailInfo);
 };
 
 onMounted(() => {
+  getUserInfo();
   getBookInfo(param);
 });
 </script>

@@ -4,7 +4,6 @@ import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import InputItem from "@/components/form/InputItem.vue";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "vue-router";
 import { LoginApi } from "@/api/user";
 
 // storage
@@ -15,8 +14,6 @@ const email = ref("");
 const password = ref("");
 const emailMessage = ref("존재하지 않는 이메일입니다.");
 const passwordMessage = ref("비밀번호가 일치하지 않습니다.");
-
-const router = useRouter();
 
 // 로그인
 const submit = async () => {
@@ -29,7 +26,9 @@ const submit = async () => {
     const result = await LoginApi(value);
 
     if (result.status == 200) {
-      authStore.setUserInfo(value);
+      delete result.data.user.password;
+
+      authStore.setUserInfo(result.data.user);
       alert("로그인 성공!");
       window.location.replace("/");
     }
