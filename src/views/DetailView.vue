@@ -50,6 +50,7 @@ const addCart = async (bookDetailInfo) => {
     publisher,
     isbn: param,
   };
+
   const result = await AddCartApi(value);
   if (result.status == 200) {
     alert("장바구니 추가하였습니다.");

@@ -4,13 +4,20 @@ import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
 
 // 변수
+const getUser = ref();
 const cartList = ref();
 const totalPrice = ref(0);
+
+// 유저 정보 가져오기
+const getUserInfo = async () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  getUser.value = userInfo;
+};
 
 // 장바구니 목록 조회
 const getCartList = async (status) => {
   try {
-    const result = await GetCartListApi(22);
+    const result = await GetCartListApi(getUser.value.id);
 
     if (result.status == 200) {
       let data = result.data.getCartList;
@@ -41,6 +48,7 @@ const deleteCart = async (item) => {
 };
 
 onMounted(() => {
+  getUserInfo();
   getCartList("all");
 });
 </script>
