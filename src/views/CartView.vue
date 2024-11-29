@@ -2,23 +2,31 @@
 import { DeleteCartApi, GetCartListApi } from "@/api/cart";
 import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
+// storage
+const authStore = useAuthStore();
 
 // 변수
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 const cartList = ref();
 const totalPrice = ref(0);
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  getUser.value = userInfo;
+  if (getToken.value != null) {
+    // 토큰으로 유저 정보 가져오기
+    const user = await authStore.getUserInfo(getToken.value);
+    getUser.value = user;
+    getCartList("all");
+  }
 };
 
 // 장바구니 목록 조회
 const getCartList = async (status) => {
   try {
     const result = await GetCartListApi(getUser.value.id);
-
     if (result.status == 200) {
       let data = result.data.getCartList;
       cartList.value = data;
@@ -49,7 +57,6 @@ const deleteCart = async (item) => {
 
 onMounted(() => {
   getUserInfo();
-  getCartList("all");
 });
 </script>
 

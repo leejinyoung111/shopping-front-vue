@@ -1,8 +1,13 @@
 <script setup>
 import { LogoutApi } from "@/api/user";
 import { onMounted, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
+// storage
+const authStore = useAuthStore();
 
 // 변수
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 
 // 메뉴리스트
@@ -26,8 +31,12 @@ const loginAfter = [
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  getUser.value = userInfo;
+  if (getToken.value != null) {
+    // 토큰으로 유저 정보 가져오기
+    const user = await authStore.getUserInfo(getToken.value);
+
+    getUser.value = user;
+  }
 };
 
 // 로그아웃

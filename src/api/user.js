@@ -48,7 +48,7 @@ export const LoginApi = async (value) => {
 // 로그아웃
 export const LogoutApi = async () => {
   try {
-    localStorage.removeItem("userInfo");
+    localStorage.removeItem("accessToken");
   } catch (e) {
     console.log(e);
     return e;

@@ -1,8 +1,8 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { apiUrl, kakaoKey } from "@/constants/envName";
+import { kakaoKey } from "@/constants/envName";
 
 // 변수
 const searchBookName = ref("");

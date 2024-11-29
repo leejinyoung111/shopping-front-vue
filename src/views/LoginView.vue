@@ -42,15 +42,14 @@ const submit = async () => {
         password: password.value,
       };
 
+      // 로그인 기능
       const result = await LoginApi(value);
 
-      if (result.status == 200) {
-        delete result.data.user.password;
+      // 토큰 저장
+      authStore.setToken(result.data.accessToken);
 
-        authStore.setUserInfo(result.data.user);
-        alert("로그인 성공!");
-        window.location.replace("/");
-      }
+      alert("로그인 성공!");
+      window.location.replace("/");
     }
   } catch (e) {
     console.log(e);

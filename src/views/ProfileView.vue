@@ -1,18 +1,21 @@
 <script setup>
-import BlueButton from "@/components/button/BlueButton.vue";
-import InputItem from "@/components/form/InputItem.vue";
 import { onMounted, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
+// storage
+const authStore = useAuthStore();
 
 // 변수
-const postcode = ref("");
-const address = ref("");
-const detailAddress = ref("");
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  getUser.value = userInfo;
+  if (getToken.value != null) {
+    // 토큰으로 유저 정보 가져오기
+    const user = await authStore.getUserInfo(getToken.value);
+    getUser.value = user;
+  }
 };
 
 onMounted(() => {
