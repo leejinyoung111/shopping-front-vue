@@ -34,7 +34,7 @@ const getCartList = async (status) => {
       cartList.value = data;
       if (status == "all") {
         data.map((item, key) => {
-          totalPrice.value += item.price;
+          totalPrice.value += item.price * item.count;
         });
       }
     }
@@ -50,7 +50,7 @@ const deleteCart = async (item) => {
 
     if (result.status == 200) {
       getCartList();
-      totalPrice.value -= item.price;
+      totalPrice.value -= item.price * item.count;
     }
   } catch (e) {
     console.log(e);
@@ -97,7 +97,7 @@ onMounted(() => {
               수량 : {{ item.count }}
             </div>
             <div class="flex items-center space-x-4">
-              <p class="text-sm">{{ priceChange(item.price) }}</p>
+              <p class="text-sm">{{ priceChange(item.price * item.count) }}</p>
               <svg
                 @click="deleteCart(item)"
                 xmlns="http://www.w3.org/2000/svg"
