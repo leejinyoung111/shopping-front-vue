@@ -2,10 +2,11 @@
 import BlueButton from "@/components/button/BlueButton.vue";
 import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import InputItem from "@/components/form/InputItem.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { LoginApi } from "@/api/user";
 import { emailValidate, passwordValidate } from "@/utils/Validation";
+import { useRouter } from "vue-router";
 
 // storage
 const authStore = useAuthStore();
@@ -15,6 +16,8 @@ const email = ref("");
 const password = ref("");
 const emailMessage = ref("");
 const passwordMessage = ref("");
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
+const router = useRouter();
 
 // 유효성 체크
 const validateCheck = (check, message) => {
@@ -55,6 +58,12 @@ const submit = async () => {
     console.log(e);
   }
 };
+
+onMounted(() => {
+  if (getToken.value != null) {
+    router.replace("/");
+  }
+});
 </script>
 <template>
   <div class="flex flex-col gap-5 justify-center items-center">

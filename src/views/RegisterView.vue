@@ -3,7 +3,7 @@ import BlueButton from "@/components/button/BlueButton.vue";
 import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import InputItem from "@/components/form/InputItem.vue";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { RegisterApi } from "@/api/user";
 import {
   emailValidate,
@@ -21,6 +21,7 @@ const detailAddress = ref("");
 const emailMessage = ref("");
 const nameMessage = ref("");
 const passwordMessage = ref("");
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const router = useRouter();
 
 // 주소 검색
@@ -76,6 +77,12 @@ const submit = async () => {
     console.log(e);
   }
 };
+
+onMounted(() => {
+  if (getToken.value != null) {
+    router.replace("/");
+  }
+});
 </script>
 <template>
   <div class="flex flex-col gap-5 justify-center items-center">

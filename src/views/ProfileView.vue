@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
 // storage
 const authStore = useAuthStore();
@@ -8,6 +9,7 @@ const authStore = useAuthStore();
 // 변수
 const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
+const router = useRouter();
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -19,6 +21,9 @@ const getUserInfo = async () => {
 };
 
 onMounted(() => {
+  if (getToken.value == null) {
+    router.replace("/");
+  }
   getUserInfo();
 });
 </script>

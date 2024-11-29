@@ -5,6 +5,7 @@ import { priceChange } from "@/utils/PriceConversion";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
 // storage
 const authStore = useAuthStore();
@@ -15,6 +16,7 @@ const param = url.slice(13, url.length);
 const bookDetailInfo = ref();
 const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
+const router = useRouter();
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -49,26 +51,35 @@ const getBookInfo = async (param) => {
 
 // 장바구니 추가
 const addCart = async (bookDetailInfo) => {
-  const { title, price, thumbnail, publisher } = bookDetailInfo;
-  const value = {
-    userId: getUser.value.id,
-    bookId: param,
-    title,
-    price,
-    thumbnail,
-    publisher,
-    count: 1,
-  };
-
-  const result = await AddCartApi(value);
-  if (result.status == 200) {
-    const message = result.data.message;
-
-    if (message == "장바구니 추가 성공.") {
-      alert("장바구니 추가하였습니다.");
+  try {
+    if (getToken.value == null) {
+      alert("로그인 후 이용 가능합니다.");
+      router.push("/login");
     } else {
-      alert("이미 추가한 상품입니다.");
+      const { title, price, thumbnail, publisher } = bookDetailInfo;
+      const value = {
+        userId: getUser.value.id,
+        bookId: param,
+        title,
+        price,
+        thumbnail,
+        publisher,
+        count: 1,
+      };
+
+      const result = await AddCartApi(value);
+      if (result.status == 200) {
+        const message = result.data.message;
+
+        if (message == "장바구니 추가 성공.") {
+          alert("장바구니 추가하였습니다.");
+        } else {
+          alert("이미 추가한 상품입니다.");
+        }
+      }
     }
+  } catch (e) {
+    console.log(e);
   }
 };
 

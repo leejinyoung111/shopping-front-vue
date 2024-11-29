@@ -3,6 +3,7 @@ import { DeleteCartApi, GetCartListApi } from "@/api/cart";
 import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
 // storage
 const authStore = useAuthStore();
@@ -12,6 +13,7 @@ const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 const cartList = ref();
 const totalPrice = ref(0);
+const router = useRouter();
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -56,6 +58,9 @@ const deleteCart = async (item) => {
 };
 
 onMounted(() => {
+  if (getToken.value == null) {
+    router.replace("/");
+  }
   getUserInfo();
 });
 </script>
