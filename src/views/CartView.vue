@@ -88,7 +88,9 @@ onMounted(() => {
           <div
             class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
           >
-            <div class="flex items-center border-gray-100">수량 : 1</div>
+            <div class="flex items-center border-gray-100">
+              수량 : {{ item.count }}
+            </div>
             <div class="flex items-center space-x-4">
               <p class="text-sm">{{ priceChange(item.price) }}</p>
               <svg

@@ -24,14 +24,15 @@ export const GetCartListApi = async (id) => {
 // 장바구니 추가
 export const AddCartApi = async (value) => {
   try {
-    const { userId, title, price, thumbnail, publisher, isbn } = value;
+    const { userId, bookId, title, price, thumbnail, publisher, count } = value;
     const result = await axios.post(apiUrl + "/addCart", {
       userId,
+      bookId,
       title,
       price,
       thumbnail,
       publisher,
-      isbn,
+      count,
     });
 
     if (result.status == 200) {

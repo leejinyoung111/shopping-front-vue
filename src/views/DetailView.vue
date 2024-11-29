@@ -52,16 +52,23 @@ const addCart = async (bookDetailInfo) => {
   const { title, price, thumbnail, publisher } = bookDetailInfo;
   const value = {
     userId: getUser.value.id,
+    bookId: param,
     title,
     price,
     thumbnail,
     publisher,
-    isbn: param,
+    count: 1,
   };
 
   const result = await AddCartApi(value);
   if (result.status == 200) {
-    alert("장바구니 추가하였습니다.");
+    const message = result.data.message;
+
+    if (message == "장바구니 추가 성공.") {
+      alert("장바구니 추가하였습니다.");
+    } else {
+      alert("이미 추가한 상품입니다.");
+    }
   }
 };
 
