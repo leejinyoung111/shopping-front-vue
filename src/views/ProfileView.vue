@@ -2,6 +2,9 @@
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import InputItem from "@/components/form/InputItem.vue";
+import BlueButton from "@/components/button/BlueButton.vue";
+import ErrorMessage from "@/components/text/ErrorMessage.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -10,6 +13,13 @@ const authStore = useAuthStore();
 const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 const router = useRouter();
+const changeName = ref("");
+const changePassword = ref("");
+const changePostCode = ref("");
+const changeAddress = ref("");
+const changeDetailAddress = ref("");
+const nameMessage = ref("");
+const passwordMessage = ref("");
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -18,6 +28,29 @@ const getUserInfo = async () => {
     const user = await authStore.getUserInfo(getToken.value);
     getUser.value = user;
   }
+};
+
+// 주소 검색
+const searchAddress = () => {
+  new daum.Postcode({
+    oncomplete: function (data) {
+      changeAddress.value = data.address;
+      changePostCode.value = data.zonecode;
+    },
+  }).open();
+};
+
+// 개인정보 변경
+const submit = async () => {
+  let value = {
+    name: changeName.value,
+    password: changePassword.value,
+    postCode: changePostCode.value,
+    address: changeAddress.value,
+    detailAddress: changeDetailAddress.value,
+  };
+
+  console.log(value);
 };
 
 onMounted(() => {
@@ -29,9 +62,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 justify-center items-center">
+  <div
+    v-if="getUser != null"
+    class="flex flex-col gap-5 justify-center items-center"
+  >
     <!-- 유저 정보 -->
-    <div v-if="getUser != null" class="pt-5">
+    <div class="pt-5">
       <img
         class="w-32 h-32 rounded-full mx-auto"
         src="https://picsum.photos/200"
@@ -40,7 +76,127 @@ onMounted(() => {
       <h2 class="text-center text-2xl font-semibold mt-3">
         {{ getUser.email }}
       </h2>
-      <p class="text-center text-gray-600 mt-1">{{ getUser.name }}</p>
+    </div>
+
+    <!-- 정보 변경 폼 -->
+    <div
+      class="border-2 border-gray-500/30 rounded-lg mt-5 p-3 w-full md:w-2/3 lg:w-2/4"
+    >
+      <form class="space-y-6" @submit.prevent="submit()">
+        <!-- 이메일 -->
+        <div>
+          <label for="email" class="block text-sm/6 font-medium text-gray-900"
+            >이메일</label
+          >
+          <div class="mt-2">
+            <InputItem
+              type="text"
+              placeholder="이메일"
+              v-model="getUser.email"
+              class="py-2 px-3 font-bold border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+              readonly="true"
+            />
+          </div>
+        </div>
+
+        <!-- 이름 -->
+        <div>
+          <label for="name" class="block text-sm/6 font-medium text-gray-900"
+            >이름</label
+          >
+          <div class="mt-2">
+            <InputItem
+              type="text"
+              :placeholder="getUser.name"
+              v-model="changeName"
+              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+            />
+          </div>
+          <ErrorMessage :text="nameMessage" />
+        </div>
+
+        <!-- 비밀번호 -->
+        <div>
+          <div class="flex items-center justify-between">
+            <label
+              for="password"
+              class="block text-sm/6 font-medium text-gray-900"
+              >비밀번호</label
+            >
+          </div>
+          <div class="mt-2">
+            <InputItem
+              type="password"
+              placeholder="비밀번호"
+              v-model="changePassword"
+              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+            />
+          </div>
+          <ErrorMessage :text="passwordMessage" />
+        </div>
+
+        <!-- 우편번호 -->
+        <div>
+          <label
+            for="postCode"
+            class="block text-sm/6 font-medium text-gray-900"
+          >
+            우편번호</label
+          >
+          <div class="grid grid-cols-2 gap-2 items-center justify-center">
+            <InputItem
+              type="text"
+              :placeholder="getUser.postCode"
+              v-model="changePostCode"
+              readonly="true"
+              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+            />
+            <input
+              type="button"
+              class="cursor-pointer py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+              value="주소 검색"
+              @click="searchAddress"
+            />
+          </div>
+        </div>
+
+        <!-- 주소 -->
+        <div>
+          <label for="address" class="block text-sm/6 font-medium text-gray-900"
+            >주소</label
+          >
+          <div class="mt-2">
+            <InputItem
+              type="text"
+              :placeholder="getUser.address"
+              v-model="changeAddress"
+              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+            />
+          </div>
+        </div>
+
+        <!-- 상세 주소 -->
+        <div>
+          <label
+            for="detailAddress"
+            class="block text-sm/6 font-medium text-gray-900"
+            >상세 주소</label
+          >
+          <div class="mt-2">
+            <InputItem
+              type="text"
+              :placeholder="getUser.detailAddress"
+              v-model="changeDetailAddress"
+              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+            />
+          </div>
+        </div>
+
+        <!-- 버튼 -->
+        <div class="mt-6">
+          <BlueButton value="submit" text="개인정보 변경" />
+        </div>
+      </form>
     </div>
   </div>
 </template>

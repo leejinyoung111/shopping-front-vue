@@ -120,7 +120,7 @@ onMounted(() => {
     </div>
     <!-- 총 금액 -->
     <div
-      class="h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3"
+      class="h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 w-2/3 md:w-2/4 lg:w-1/3"
     >
       <div class="flex justify-between">
         <p class="text-lg font-bold">총 금액</p>
