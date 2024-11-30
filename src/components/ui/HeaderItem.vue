@@ -1,5 +1,33 @@
 <script setup>
+import { onMounted, ref } from "vue";
 import LogoIcon from "../icon/LogoIcon.vue";
+import { useAuthStore } from "@/stores/auth";
+
+// storage
+const authStore = useAuthStore();
+
+// 변수
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
+const getUser = ref();
+
+// 유저 정보 가져오기
+const getUserInfo = async () => {
+  if (getToken.value != null) {
+    // 토큰으로 유저 정보 가져오기
+    const user = await authStore.getUserInfo(getToken.value);
+
+    getUser.value = user;
+  }
+};
+
+// 세션 스토리지 리셋
+const sessionReset = () => {
+  sessionStorage.clear();
+};
+
+onMounted(() => {
+  getUserInfo();
+});
 </script>
 <template>
   <div
@@ -7,28 +35,18 @@ import LogoIcon from "../icon/LogoIcon.vue";
   >
     <router-link
       to="/"
-      class="flex items-center justify-start gap-2 md:justify-center pl-3 w-14 md:w-64 h-14 bg-gray-500 dark:bg-gray-800 border-none"
+      class="border border-red-500 flex items-center justify-start gap-2 md:justify-center pl-3 w-14 md:w-64 h-14 bg-gray-500 dark:bg-gray-800 border-none"
+      @click="sessionReset"
     >
       <LogoIcon class="w-[30px] h-[30px]" />
       <span class="hidden md:block font-semibold">북 스토어</span>
     </router-link>
-
     <div
-      class="flex justify-center items-center h-14 bg-gray-500 dark:bg-gray-800 header-right"
+      class="flex justify-end items-center pr-5 h-14 bg-gray-500 dark:bg-gray-800 header-right"
     >
-      <!-- <ul class="flex items-center">
-          <li>
-            <a
-              href="/login"
-              class="flex items-center mr-4 hover:text-blue-100 text-black"
-            >
-              <span class="inline-flex mr-1">
-                <Login class="w-[30px] h-[30px]" />
-              </span>
-              로그인
-            </a>
-          </li>
-        </ul> -->
+      <span v-if="getUser != undefined">
+        {{ getUser.email }}
+      </span>
     </div>
   </div>
 </template>

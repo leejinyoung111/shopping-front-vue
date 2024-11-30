@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { kakaoKey } from "@/constants/envName";
 
@@ -8,6 +8,7 @@ import { kakaoKey } from "@/constants/envName";
 const searchBookName = ref("");
 const bookList = ref([]);
 const router = useRouter();
+const sessionSearch = ref(sessionStorage.getItem("search"));
 
 // 도서 데이터 가져오기
 const getBookList = async (search) => {
@@ -23,7 +24,6 @@ const getBookList = async (search) => {
 
     if (result.status == 200) {
       bookList.value = result.data.documents;
-      searchBookName.value = "";
     } else {
       console.log("api 호출 에러 : " + result);
     }
@@ -36,6 +36,7 @@ const getBookList = async (search) => {
 const submit = () => {
   if (searchBookName.value !== "") {
     const textEncode = encodeURI(searchBookName.value);
+    sessionStorage.setItem("search", decodeURI(textEncode));
     getBookList(textEncode);
   } else {
     console.log("도서명을 입력하세요.");
@@ -47,6 +48,13 @@ const goToDetail = (isbn) => {
   const paramId = isbn.split(" ");
   router.push(`/book/detail/${paramId[0]}`);
 };
+
+onMounted(() => {
+  if (sessionSearch.value != null) {
+    searchBookName.value = sessionSearch.value;
+    getBookList(encodeURI(sessionSearch.value));
+  }
+});
 </script>
 
 <template>
