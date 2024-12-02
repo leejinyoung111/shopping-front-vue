@@ -45,6 +45,33 @@ export const LoginApi = async (value) => {
   }
 };
 
+// 유저정보 수정
+export const UpdateUserApi = async (value) => {
+  try {
+    const { id, email, name, password, postCode, address, detailAddress } =
+      value;
+
+    const result = await axios.patch(apiUrl + "/updateUser", {
+      id,
+      email,
+      name,
+      password,
+      postCode,
+      address,
+      detailAddress,
+    });
+
+    if (result.status == 200) {
+      return result;
+    } else {
+      console.log("api 호출 에러 : " + result);
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
 // 로그아웃
 export const LogoutApi = async () => {
   try {

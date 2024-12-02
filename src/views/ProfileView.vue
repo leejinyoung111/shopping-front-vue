@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import InputItem from "@/components/form/InputItem.vue";
 import BlueButton from "@/components/button/BlueButton.vue";
 import ErrorMessage from "@/components/text/ErrorMessage.vue";
+import { UpdateUserApi } from "@/api/user";
 
 // storage
 const authStore = useAuthStore();
@@ -26,6 +27,7 @@ const getUserInfo = async () => {
   if (getToken.value != null) {
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
+
     getUser.value = user;
   }
 };
@@ -42,15 +44,33 @@ const searchAddress = () => {
 
 // 개인정보 변경
 const submit = async () => {
-  let value = {
-    name: changeName.value,
-    password: changePassword.value,
-    postCode: changePostCode.value,
-    address: changeAddress.value,
-    detailAddress: changeDetailAddress.value,
-  };
+  try {
+    let value = {
+      id: getUser.value.id,
+      email: getUser.value.email,
+      name: changeName.value,
+      password: changePassword.value,
+      postCode: changePostCode.value,
+      address: changeAddress.value,
+      detailAddress: changeDetailAddress.value,
+    };
 
-  console.log(value);
+    const result = await UpdateUserApi(value);
+
+    if (result.status == 200) {
+      // 기존 토큰 삭제
+      localStorage.removeItem("accessToken");
+
+      // 토큰 저장
+      authStore.setToken(result.data.accessToken);
+      getUserInfo();
+
+      alert("수정 성공!");
+      window.location.replace("/profile");
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 onMounted(() => {
