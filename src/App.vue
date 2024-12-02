@@ -2,6 +2,7 @@
 import SidebarItem from "@/components/ui/SidebarItem.vue";
 import MainLayout from "./components/layout/MainLayout.vue";
 import HeaderItem from "./components/ui/HeaderItem.vue";
+import { ModalsContainer } from "vue-final-modal";
 </script>
 
 <template>
@@ -17,6 +18,7 @@ import HeaderItem from "./components/ui/HeaderItem.vue";
     <!-- 메인 -->
     <MainLayout>
       <router-view />
+      <ModalsContainer />
     </MainLayout>
   </div>
 </template>

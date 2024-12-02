@@ -46,6 +46,26 @@ export const AddCartApi = async (value) => {
   }
 };
 
+// 특정 상품 수량 변경
+export const UpdateProductCountApi = async (value) => {
+  try {
+    const { id, count } = value;
+    const result = await axios.patch(apiUrl + `/updateProductCount`, {
+      id,
+      count,
+    });
+
+    if (result.status == 200) {
+      return result;
+    } else {
+      console.log("api 호출 에러 : " + result);
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
 // 장바구니 삭제
 export const DeleteCartApi = async (id) => {
   try {

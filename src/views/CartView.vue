@@ -4,16 +4,20 @@ import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import BlueButton from "@/components/button/BlueButton.vue";
+import CartCountModal from "@/components/modal/CartCountModal.vue";
+import { useModal } from "vue-final-modal";
 
 // storage
 const authStore = useAuthStore();
 
 // 변수
+const router = useRouter();
 const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 const cartList = ref();
+const priceArr = ref([]);
 const totalPrice = ref(0);
-const router = useRouter();
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -21,22 +25,33 @@ const getUserInfo = async () => {
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
     getUser.value = user;
-    getCartList("all");
+    getCartList();
+  }
+};
+
+// 가격 변경
+const changePrice = (data) => {
+  data.map((item, key) => {
+    priceArr.value.push(item.price * item.count);
+  });
+
+  totalPrice.value = priceArr.value.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+  }, 0);
+
+  while (priceArr.value.length > 0) {
+    priceArr.value.pop();
   }
 };
 
 // 장바구니 목록 조회
-const getCartList = async (status) => {
+const getCartList = async () => {
   try {
     const result = await GetCartListApi(getUser.value.id);
     if (result.status == 200) {
       let data = result.data.getCartList;
       cartList.value = data;
-      if (status == "all") {
-        data.map((item, key) => {
-          totalPrice.value += item.price * item.count;
-        });
-      }
+      changePrice(data);
     }
   } catch (e) {
     console.log(e);
@@ -50,11 +65,27 @@ const deleteCart = async (item) => {
 
     if (result.status == 200) {
       getCartList();
-      totalPrice.value -= item.price * item.count;
     }
   } catch (e) {
     console.log(e);
   }
+};
+
+// 수량 변경 모달창
+const changeCountModal = (item) => {
+  const { open, close } = useModal({
+    component: CartCountModal,
+    attrs: {
+      title: item.title,
+      id: item.id,
+      count: item.count,
+      onConfirm() {
+        close();
+        getCartList();
+      },
+    },
+  });
+  open();
 };
 
 onMounted(() => {
@@ -90,14 +121,24 @@ onMounted(() => {
           <div class="mt-5 sm:mt-0">
             <h2 class="text-lg font-bold text-gray-900">{{ item.title }}</h2>
           </div>
-          <div
-            class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
-          >
-            <div class="flex items-center border-gray-100">
-              수량 : {{ item.count }}
+
+          <div class="mt-4 flex flex-col justify-between gap-y-4">
+            <!-- 수량  -->
+            <div class="flex flex-row sm:gap-x-10 items-center justify-between">
+              <span>수량 : {{ item.count }}</span>
+              <BlueButton
+                value="button"
+                text="변경"
+                @click="changeCountModal(item)"
+                class="w-[100px]"
+              />
             </div>
-            <div class="flex items-center space-x-4">
-              <p class="text-sm">{{ priceChange(item.price * item.count) }}</p>
+
+            <!-- 금액 -->
+            <div class="flex items-center justify-between space-x-4">
+              <p class="text-lg">
+                {{ priceChange(item.price * item.count) }}원
+              </p>
               <svg
                 @click="deleteCart(item)"
                 xmlns="http://www.w3.org/2000/svg"
@@ -118,6 +159,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
     <!-- 총 금액 -->
     <div
       class="h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 w-2/3 md:w-2/4 lg:w-1/3"
