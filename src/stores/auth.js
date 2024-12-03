@@ -21,23 +21,24 @@ export const useAuthStore = defineStore("auth", {
         const result = await axios.post(apiUrl + "/getUser", {
           token,
         });
-        if (result.status == 200) {
-          const userInfo = result.data.userInfo;
 
+        const getData = result.data.result;
+        const status = result.data.status;
+
+        if (status.status == "success") {
           const user = {
-            id: userInfo.user.id,
-            email: userInfo.user.email,
-            name: userInfo.user.name,
-            postCode: userInfo.user.postCode,
-            address: userInfo.user.address,
-            detailAddress: userInfo.user.detailAddress,
-            exp: userInfo.exp,
-            iat: userInfo.iat,
+            id: getData.userInfo.user.id,
+            email: getData.userInfo.user.email,
+            name: getData.userInfo.user.name,
+            postCode: getData.userInfo.user.postCode,
+            address: getData.userInfo.user.address,
+            detailAddress: getData.userInfo.user.detailAddress,
+            exp: getData.userInfo.exp,
+            iat: getData.userInfo.iat,
           };
-
           return user;
         } else {
-          console.log("api 호출 에러 : " + result);
+          console.log("api 호출 에러" + status.message);
         }
       } catch (e) {
         console.log(e);
