@@ -48,11 +48,18 @@ const submit = async () => {
       // 로그인 기능
       const result = await LoginApi(value);
 
-      // 토큰 저장
-      authStore.setToken(result.data.accessToken);
+      const getData = result.data.result;
+      const status = result.data.status;
 
-      alert("로그인 성공!");
-      window.location.replace("/");
+      if (status.status == "success") {
+        // 토큰 저장
+        authStore.setToken(getData.accessToken);
+
+        alert("로그인 성공!");
+        window.location.replace("/");
+      } else {
+        alert(status.message + " 다시 확인하세요.");
+      }
     }
   } catch (e) {
     console.log(e);

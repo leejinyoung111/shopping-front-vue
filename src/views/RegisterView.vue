@@ -68,9 +68,14 @@ const submit = async () => {
 
       const result = await RegisterApi(value);
 
-      if (result.status == 200) {
-        alert("회원가입 성공!");
+      const getData = result.data.result;
+      const status = result.data.status;
+
+      if (status.status == "success") {
+        alert(getData.data);
         router.push("/login");
+      } else {
+        alert(status.message + " 다시 확인하세요.");
       }
     }
   } catch (e) {
