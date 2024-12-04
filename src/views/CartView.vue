@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import BlueButton from "@/components/button/BlueButton.vue";
 import CartCountModal from "@/components/modal/CartCountModal.vue";
 import { useModal } from "vue-final-modal";
+import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -87,6 +88,21 @@ const changeCountModal = (item) => {
       onConfirm() {
         close();
         getCartList();
+      },
+    },
+  });
+  open();
+};
+
+// 구매 모달창
+const buyModal = () => {
+  const { open, close } = useModal({
+    component: ConfirmModal,
+    attrs: {
+      title: "도서 구매하기",
+      content: "정말로 구매하실건가요?",
+      onConfirm() {
+        close();
       },
     },
   });
@@ -190,11 +206,12 @@ onMounted(() => {
           <p class="mb-1 text-lg font-bold">{{ priceChange(totalPrice) }}원</p>
         </div>
       </div>
-      <button
-        class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600"
-      >
-        구매하기
-      </button>
+      <BlueButton
+        value="button"
+        text="구매하기"
+        add-class="w-full mt-6"
+        @click="buyModal"
+      />
     </div>
   </div>
 </template>
