@@ -1,9 +1,11 @@
 // 이메일 유효성 검사
 export const emailValidate = (email) => {
-  const pattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
+  const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
 
-  if (pattern.test(email) === false) {
-    return "잘못된 이메일 형식입니다.";
+  if (!emailCheck.test(email)) {
+    return "올바른 이메일 형식이 아닙니다.";
+  } else if (email.search(/\s/) != -1) {
+    return "공백없이 입력해주세요.";
   } else {
     return true;
   }
@@ -11,10 +13,12 @@ export const emailValidate = (email) => {
 
 // 이름 유효성 검사
 export const nameValidate = (name) => {
-  const pattern = /^[ㄱ-ㅎ가-힣a-zA-Z]+$/;
+  const krCheck = /^[가-힣]{2,10}$/;
 
-  if (pattern.test(name) === false) {
-    return "한글이나 영어만 가능합니다.";
+  if (!krCheck.test(name)) {
+    return "2자 ~ 10자 이내, 한글만 입력하세요.";
+  } else if (name.search(/\s/) != -1) {
+    return "공백없이 입력해주세요.";
   } else {
     return true;
   }
@@ -22,10 +26,16 @@ export const nameValidate = (name) => {
 
 // 비밀번호 유효성 검사
 export const passwordValidate = (password) => {
-  const pattern = /^[a-zA-Z](?=.*[a-zA-Z])(?=.*[0-9]).{7,16}$/g;
+  const numCheck = password.search(/[0-9]/g);
+  const enCheck = password.search(/[a-z]/gi);
+  const speCheck = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-  if (pattern.test(password) === false) {
-    return "8자 이상 16자 이하, 영문과 숫자 조합만 가능합니다.";
+  if (password.length < 8 || password.length > 16) {
+    return "8자 ~ 16자 이내로 입력해주세요.";
+  } else if (password.search(/\s/) != -1) {
+    return "공백없이 입력해주세요.";
+  } else if (numCheck < 0 || enCheck < 0 || speCheck < 0) {
+    return "영문, 숫자, 특수문자를 혼합하여 입력해주세요.";
   } else {
     return true;
   }
