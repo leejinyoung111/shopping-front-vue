@@ -6,6 +6,7 @@ import InputItem from "@/components/form/InputItem.vue";
 import BlueButton from "@/components/button/BlueButton.vue";
 import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import { UpdateUserApi } from "@/api/user";
+import { nameValidate, passwordValidate } from "@/utils/Validation";
 
 // storage
 const authStore = useAuthStore();
@@ -42,31 +43,57 @@ const searchAddress = () => {
   }).open();
 };
 
+// 유효성 체크
+const validateCheck = (check, message) => {
+  if (check != true) {
+    message.value = check;
+  } else {
+    message.value = "";
+    return true;
+  }
+};
+
 // 개인정보 변경
 const submit = async () => {
   try {
-    let value = {
-      id: getUser.value.id,
-      email: getUser.value.email,
-      name: changeName.value,
-      password: changePassword.value,
-      postCode: changePostCode.value,
-      address: changeAddress.value,
-      detailAddress: changeDetailAddress.value,
-    };
+    // 유효성 체크
+    const nameCheck = validateCheck(
+      nameValidate(changeName.value),
+      nameMessage
+    );
+    const passwordCheck = validateCheck(
+      passwordValidate(changePassword.value),
+      passwordMessage
+    );
 
-    const result = await UpdateUserApi(value);
+    // 모두 일치할 경우
+    if (nameCheck && passwordCheck) {
+      let value = {
+        id: getUser.value.id,
+        email: getUser.value.email,
+        name: changeName.value,
+        password: changePassword.value,
+        postCode: changePostCode.value,
+        address: changeAddress.value,
+        detailAddress: changeDetailAddress.value,
+      };
 
-    if (result.status == 200) {
-      // 기존 토큰 삭제
-      localStorage.removeItem("accessToken");
+      const result = await UpdateUserApi(value);
 
-      // 토큰 저장
-      authStore.setToken(result.data.accessToken);
-      getUserInfo();
+      const getData = result.data.result;
+      const status = result.data.status;
 
-      alert("수정 성공!");
-      window.location.replace("/profile");
+      if (status.status == "success") {
+        // 기존 토큰 삭제
+        localStorage.removeItem("accessToken");
+
+        // 토큰 저장
+        authStore.setToken(getData.accessToken);
+        getUserInfo();
+
+        alert("수정 성공!");
+        window.location.replace("/profile");
+      }
     }
   } catch (e) {
     console.log(e);

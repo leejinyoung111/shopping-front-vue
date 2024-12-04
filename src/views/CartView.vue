@@ -54,8 +54,6 @@ const getCartList = async () => {
 
     if (status.status == "success") {
       cartList.value = getData.getCartList;
-      console.log(cartList.value.length);
-
       changePrice(cartList.value);
     }
   } catch (e) {
