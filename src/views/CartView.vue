@@ -54,6 +54,8 @@ const getCartList = async () => {
 
     if (status.status == "success") {
       cartList.value = getData.getCartList;
+      console.log(cartList.value.length);
+
       changePrice(cartList.value);
     }
   } catch (e) {
@@ -111,19 +113,31 @@ onMounted(() => {
         장바구니 목록
       </h2>
     </div>
+
+    <!-- empty -->
+    <div
+      v-if="cartList && cartList.length == 0"
+      class="rounded-lg md:w-2/3 flex justify-center items-center h-52"
+    >
+      <span class="text-gray-500 font-medium text-2xl">
+        장바구니가 비어있습니다...</span
+      >
+    </div>
+
+    <!-- 장바구니 리스트 -->
     <div class="rounded-lg md:w-2/3">
       <div
         v-for="(item, key) in cartList"
         :key="key"
-        class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
+        class="flex flex-col justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex-col sm:justify-start md:flex-row"
       >
         <img
           :src="item.thumbnail"
           alt="product-image"
-          class="w-full rounded-lg sm:w-40"
+          class="w-full rounded-lg md:w-40"
         />
-        <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-          <div class="mt-5 sm:mt-0">
+        <div class="md:ml-4 md:flex md:w-full md:justify-between">
+          <div class="mt-5 md:mt-0">
             <h2 class="text-lg font-bold text-gray-900">{{ item.title }}</h2>
           </div>
 
@@ -135,7 +149,7 @@ onMounted(() => {
                 value="button"
                 text="변경"
                 @click="changeCountModal(item)"
-                class="w-[100px]"
+                class="w-auto"
               />
             </div>
 
@@ -167,6 +181,7 @@ onMounted(() => {
 
     <!-- 총 금액 -->
     <div
+      v-if="cartList && cartList.length > 0"
       class="h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 w-2/3 md:w-2/4 lg:w-1/3"
     >
       <div class="flex justify-between">
