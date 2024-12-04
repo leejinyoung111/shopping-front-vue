@@ -36,7 +36,10 @@ const updateProductCount = async () => {
       count: bookCount.value,
     };
     const result = await UpdateProductCountApi(value);
-    if (result.status == 200) {
+
+    const status = result.data.status;
+
+    if (status.status == "success") {
       alert("수정 성공!");
       emit("confirm");
     }

@@ -48,10 +48,13 @@ const changePrice = (data) => {
 const getCartList = async () => {
   try {
     const result = await GetCartListApi(getUser.value.id);
-    if (result.status == 200) {
-      let data = result.data.getCartList;
-      cartList.value = data;
-      changePrice(data);
+
+    const getData = result.data.result;
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      cartList.value = getData.getCartList;
+      changePrice(cartList.value);
     }
   } catch (e) {
     console.log(e);
@@ -63,7 +66,9 @@ const deleteCart = async (item) => {
   try {
     const result = await DeleteCartApi(item.id);
 
-    if (result.status == 200) {
+    const status = result.data.status;
+
+    if (status.status == "success") {
       getCartList();
     }
   } catch (e) {
