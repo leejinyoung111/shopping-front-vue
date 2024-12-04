@@ -139,15 +139,17 @@ onMounted(() => {
             <h2 class="text-lg font-bold text-gray-900">{{ item.title }}</h2>
           </div>
 
-          <div class="mt-4 flex flex-col justify-between gap-y-4">
+          <div
+            class="mt-4 flex flex-col justify-between gap-y-4 md:w-full lg:w-1/3"
+          >
             <!-- 수량  -->
             <div class="flex flex-row sm:gap-x-10 items-center justify-between">
-              <span>수량 : {{ item.count }}</span>
+              <span class="w-1/2">수량 : {{ item.count }}</span>
               <BlueButton
                 value="button"
                 text="변경"
                 @click="changeCountModal(item)"
-                class="w-auto"
+                class="w-1/3"
               />
             </div>
 

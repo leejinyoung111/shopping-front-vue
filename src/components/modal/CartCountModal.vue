@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { UpdateProductCountApi } from "@/api/cart";
 import { ref } from "vue";
-import { VueFinalModal } from "vue-final-modal";
 import BlueButton from "../button/BlueButton.vue";
+import ModalLayout from "../layout/ModalLayout.vue";
+import ModalHeader from "./ModalHeader.vue";
+import ModalFooter from "./ModalFooter.vue";
+import ModalContent from "./ModalContent.vue";
 
 // props
 const props = defineProps(["title", "id", "count"]);
@@ -50,16 +53,14 @@ const updateProductCount = async () => {
 </script>
 
 <template>
-  <VueFinalModal
-    class="flex justify-center items-center"
-    content-class="flex flex-col w-2/3 sm:w-2/4 lg:w-1/3  p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
-  >
-    <div class="py-3 flex justify-center items-center font-semibold text-lg">
+  <ModalLayout>
+    <!-- header  -->
+    <ModalHeader>
       {{ title }}
-    </div>
-    <div
-      class="py-3 flex justify-center gap-5 items-center title-font font-medium text-base text-gray-900"
-    >
+    </ModalHeader>
+
+    <!-- content  -->
+    <ModalContent>
       <div class="relative flex items-center max-w-[8rem]">
         <button
           type="button"
@@ -113,15 +114,16 @@ const updateProductCount = async () => {
           </svg>
         </button>
       </div>
-    </div>
+    </ModalContent>
 
-    <div class="py-3 flex gap-5 justify-center items-center">
+    <!-- footer  -->
+    <ModalFooter>
       <BlueButton
         value="button"
         text="수량 변경"
         @click="updateProductCount()"
       />
       <BlueButton value="button" text="취소" @click="emit('confirm')" />
-    </div>
-  </VueFinalModal>
+    </ModalFooter>
+  </ModalLayout>
 </template>
