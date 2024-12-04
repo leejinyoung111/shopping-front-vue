@@ -149,7 +149,7 @@ onMounted(() => {
                 value="button"
                 text="변경"
                 @click="changeCountModal(item)"
-                class="w-1/3"
+                add-class="w-1/4 md:w-1/3"
               />
             </div>
 
