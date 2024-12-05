@@ -33,6 +33,7 @@ export const useAuthStore = defineStore("auth", {
             postCode: getData.userInfo.user.postCode,
             address: getData.userInfo.user.address,
             detailAddress: getData.userInfo.user.detailAddress,
+            role: getData.userInfo.user.role,
             exp: getData.userInfo.exp,
             iat: getData.userInfo.iat,
           };

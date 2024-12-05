@@ -4,7 +4,8 @@ import axios from "axios";
 // 회원가입
 export const RegisterApi = async (value) => {
   try {
-    const { email, name, password, postCode, address, detailAddress } = value;
+    const { email, name, password, postCode, address, detailAddress, role } =
+      value;
 
     const result = await axios.post(apiUrl + "/register", {
       email,
@@ -13,6 +14,7 @@ export const RegisterApi = async (value) => {
       postCode,
       address,
       detailAddress,
+      role,
     });
     if (result.status == 200) {
       return result;

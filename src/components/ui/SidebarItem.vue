@@ -25,11 +25,19 @@ const loginAfter = [
     title: "프로필",
     url: "/profile",
     icon: "profile",
+    role: "user",
   },
   {
     title: "장바구니",
     url: "/cart",
     icon: "cart",
+    role: "user",
+  },
+  {
+    title: "상품관리",
+    url: "/product",
+    icon: "product",
+    role: "admin",
   },
 ];
 
@@ -61,6 +69,7 @@ onMounted(() => {
     <div
       class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow"
     >
+      <!-- 로그인 전 -->
       <ul v-if="getUser == null" class="flex flex-col py-4 space-y-1">
         <li v-for="(item, key) in loginBefore" :key="key">
           <router-link
@@ -76,9 +85,12 @@ onMounted(() => {
           </router-link>
         </li>
       </ul>
+
+      <!-- 로그인 후 -->
       <ul v-if="getUser != null" class="flex flex-col py-4 space-y-1">
         <li v-for="(item, key) in loginAfter" :key="key">
           <router-link
+            v-if="getUser.role == item.role"
             :to="item.url"
             class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6"
           >

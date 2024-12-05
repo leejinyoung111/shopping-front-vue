@@ -64,6 +64,7 @@ const submit = async () => {
         postCode: postCode.value,
         address: address.value,
         detailAddress: detailAddress.value,
+        role: "user",
       };
 
       const result = await RegisterApi(value);
