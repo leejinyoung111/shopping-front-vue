@@ -7,6 +7,7 @@ import BlueButton from "@/components/button/BlueButton.vue";
 import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import { UpdateUserApi } from "@/api/user";
 import { nameValidate, passwordValidate } from "@/utils/Validation";
+import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -26,10 +27,20 @@ const passwordMessage = ref("");
 // 유저 정보 가져오기
 const getUserInfo = async () => {
   if (getToken.value != null) {
+    // 로그인 한 경우
+
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
 
     getUser.value = user;
+
+    // 관리자 여부
+    if (getUser.value.role == "admin") {
+      router.replace("/");
+    }
+  } else {
+    // 로그인 하지 않은 경우
+    router.replace("/");
   }
 };
 
@@ -101,18 +112,12 @@ const submit = async () => {
 };
 
 onMounted(() => {
-  if (getToken.value == null) {
-    router.replace("/");
-  }
   getUserInfo();
 });
 </script>
 
 <template>
-  <div
-    v-if="getUser != null"
-    class="flex flex-col gap-5 justify-center items-center"
-  >
+  <ContainerLayout v-if="getUser != null">
     <!-- 유저 정보 -->
     <div class="pt-5">
       <img
@@ -245,5 +250,5 @@ onMounted(() => {
         </div>
       </form>
     </div>
-  </div>
+  </ContainerLayout>
 </template>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { kakaoKey } from "@/constants/envName";
+import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 
 // 변수
 const searchBookName = ref("");
@@ -58,7 +59,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 justify-center items-center">
+  <ContainerLayout>
     <!-- 검색 바 -->
     <form
       class="bg-white rounded flex items-center w-full max-w-xl mr-4 p-2 shadow-sm border border-gray-200"
@@ -115,5 +116,5 @@ onMounted(() => {
         </div>
       </div>
     </div>
-  </div>
+  </ContainerLayout>
 </template>

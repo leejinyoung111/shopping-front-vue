@@ -10,6 +10,7 @@ import {
   nameValidate,
   passwordValidate,
 } from "@/utils/Validation";
+import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 
 // 변수
 const email = ref("");
@@ -91,7 +92,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex flex-col gap-5 justify-center items-center">
+  <ContainerLayout>
     <!-- 타이틀 -->
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2
@@ -227,5 +228,5 @@ onMounted(() => {
         </router-link>
       </p>
     </div>
-  </div>
+  </ContainerLayout>
 </template>

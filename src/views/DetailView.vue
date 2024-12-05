@@ -6,6 +6,7 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -98,7 +99,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex flex-col gap-5 justify-center items-center">
+  <ContainerLayout>
     <div v-if="bookDetailInfo != undefined" class="container p-5 mx-auto">
       <div
         class="lg:w-4/5 h-full flex flex-col lg:flex-row justify-center items-center"
@@ -216,5 +217,5 @@ onMounted(() => {
         </div>
       </div>
     </div>
-  </div>
+  </ContainerLayout>
 </template>

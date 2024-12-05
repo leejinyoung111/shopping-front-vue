@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -36,5 +37,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>상품 페이지</div>
+  <ContainerLayout>
+    <div>상품 페이지</div>
+  </ContainerLayout>
 </template>

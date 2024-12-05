@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/auth";
 import { LoginApi } from "@/api/user";
 import { emailValidate, passwordValidate } from "@/utils/Validation";
 import { useRouter } from "vue-router";
+import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -73,7 +74,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex flex-col gap-5 justify-center items-center">
+  <ContainerLayout>
     <!-- 타이틀 -->
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2
@@ -139,5 +140,5 @@ onMounted(() => {
         </router-link>
       </p>
     </div>
-  </div>
+  </ContainerLayout>
 </template>
