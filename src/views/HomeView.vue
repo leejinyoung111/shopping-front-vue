@@ -1,9 +1,8 @@
 <script setup>
-import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { kakaoKey } from "@/constants/envName";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
+import { GetBookListApi } from "@/api/kakao";
 
 // 변수
 const searchBookName = ref("");
@@ -14,14 +13,7 @@ const sessionSearch = ref(sessionStorage.getItem("search"));
 // 도서 데이터 가져오기
 const getBookList = async (search) => {
   try {
-    const result = await axios.get(
-      `https://dapi.kakao.com/v3/search/book?target=title&query=${search}`,
-      {
-        headers: {
-          Authorization: `KakaoAK ${kakaoKey}`,
-        },
-      }
-    );
+    const result = await GetBookListApi(search);
 
     if (result.status == 200) {
       bookList.value = result.data.documents;
