@@ -5,7 +5,7 @@ import BlueButton from "../button/BlueButton.vue";
 import ModalLayout from "../layout/ModalLayout.vue";
 import ModalHeader from "./ModalHeader.vue";
 import ModalFooter from "./ModalFooter.vue";
-import ModalContent from "./ModalContent.vue";
+import ModalBody from "./ModalBody.vue";
 
 // props
 const props = defineProps(["title", "id", "count"]);
@@ -59,8 +59,9 @@ const updateProductCount = async () => {
       {{ title }}
     </ModalHeader>
 
-    <!-- content  -->
-    <ModalContent>
+    <!-- body -->
+    <ModalBody>
+      <!-- content -->
       <div class="relative flex items-center max-w-[8rem]">
         <button
           type="button"
@@ -114,16 +115,16 @@ const updateProductCount = async () => {
           </svg>
         </button>
       </div>
-    </ModalContent>
 
-    <!-- footer  -->
-    <ModalFooter>
-      <BlueButton
-        value="button"
-        text="수량 변경"
-        @click="updateProductCount()"
-      />
-      <BlueButton value="button" text="취소" @click="emit('confirm')" />
-    </ModalFooter>
+      <!-- footer  -->
+      <ModalFooter>
+        <BlueButton
+          type="button"
+          text="수량 변경"
+          @click="updateProductCount()"
+        />
+        <BlueButton type="button" text="취소" @click="emit('confirm')" />
+      </ModalFooter>
+    </ModalBody>
   </ModalLayout>
 </template>

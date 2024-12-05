@@ -214,7 +214,7 @@ onMounted(() => {
         </div>
         <!-- 버튼 -->
         <div class="mt-6">
-          <BlueButton value="submit" text="회원가입" add-class="w-full" />
+          <BlueButton type="submit" text="회원가입" add-class="w-full" />
         </div>
       </form>
 

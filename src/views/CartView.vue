@@ -171,7 +171,7 @@ onMounted(() => {
             <div class="flex flex-row sm:gap-x-10 items-center justify-between">
               <span class="w-1/2">수량 : {{ item.count }}</span>
               <BlueButton
-                value="button"
+                type="button"
                 text="변경"
                 @click="changeCountModal(item)"
                 add-class="w-1/4 md:w-1/3"
@@ -216,7 +216,7 @@ onMounted(() => {
         </div>
       </div>
       <BlueButton
-        value="button"
+        type="button"
         text="구매하기"
         add-class="w-full mt-6"
         @click="buyModal"
