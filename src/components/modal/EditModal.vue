@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import BlueButton from "../button/BlueButton.vue";
 import ModalLayout from "../layout/ModalLayout.vue";
+import ModalBody from "./ModalBody.vue";
 import ModalFooter from "./ModalFooter.vue";
 import ModalHeader from "./ModalHeader.vue";
 import InputItem from "../form/InputItem.vue";
-import ModalBody from "./ModalBody.vue";
-import { AddProductApi } from "@/api/product";
+import { UpdateProductApi } from "@/api/product";
 
 // props
 const props = defineProps(["title", "content", "buttonOk"]);
@@ -18,43 +18,42 @@ const emit = defineEmits<{
 }>();
 
 // 변수
-const bookId = ref("");
-const bookTitle = ref("");
-const content = ref("");
-const thumbnail = ref("");
-const price = ref("");
-const publisher = ref("");
-const authors = ref("");
-const currentStatus = ref("");
+const bookId = ref(props.content.bookId);
+const changeBookTitle = ref(props.content.title);
+const changeContent = ref(props.content.content);
+const changeThumbnail = ref(props.content.thumbnail);
+const changePrice = ref(props.content.price);
+const changePublisher = ref(props.content.publisher);
+const changeAuthors = ref(props.content.authors);
+const changeCurrentStatus = ref(props.content.status);
 
 // 도서 추가하기
 const submit = async () => {
   try {
     let value = {
+      id: props.content.id,
       bookId: bookId.value,
-      title: bookTitle.value,
-      content: content.value,
-      thumbnail: thumbnail.value,
-      price: price.value,
-      publisher: publisher.value,
-      authors: authors.value,
-      status: currentStatus.value,
+      title: changeBookTitle.value,
+      content: changeContent.value,
+      thumbnail: changeThumbnail.value,
+      price: changePrice.value,
+      publisher: changePublisher.value,
+      authors: changeAuthors.value,
+      status: changeCurrentStatus.value,
     };
 
-    const result = await AddProductApi(value);
-
+    const result = await UpdateProductApi(value);
     const status = result.data.status;
 
     if (status.status == "success") {
       emit("ok");
-    } else {
-      alert(status.message);
     }
   } catch (e) {
     console.log(e);
   }
 };
 </script>
+
 <template>
   <ModalLayout>
     <!-- header  -->
@@ -80,6 +79,7 @@ const submit = async () => {
                   type="text"
                   placeholder="고유번호"
                   v-model="bookId"
+                  :readonly="true"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
               </div>
@@ -96,7 +96,7 @@ const submit = async () => {
                 <InputItem
                   type="text"
                   placeholder="썸네일 주소"
-                  v-model="thumbnail"
+                  v-model="changeThumbnail"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
               </div>
@@ -114,7 +114,7 @@ const submit = async () => {
               <InputItem
                 type="text"
                 placeholder="제목"
-                v-model="bookTitle"
+                v-model="changeBookTitle"
                 class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
             </div>
@@ -131,7 +131,7 @@ const submit = async () => {
               <InputItem
                 type="text"
                 placeholder="내용"
-                v-model="content"
+                v-model="changeContent"
                 class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
             </div>
@@ -149,7 +149,7 @@ const submit = async () => {
                 <InputItem
                   type="text"
                   placeholder="출판사"
-                  v-model="publisher"
+                  v-model="changePublisher"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
               </div>
@@ -166,7 +166,7 @@ const submit = async () => {
                 <InputItem
                   type="text"
                   placeholder="작가"
-                  v-model="authors"
+                  v-model="changeAuthors"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
               </div>
@@ -185,7 +185,7 @@ const submit = async () => {
                 <InputItem
                   type="number"
                   placeholder="가격"
-                  v-model="price"
+                  v-model="changePrice"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
               </div>
@@ -202,7 +202,7 @@ const submit = async () => {
                 <InputItem
                   type="text"
                   placeholder="판매상태"
-                  v-model="currentStatus"
+                  v-model="changeCurrentStatus"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
               </div>
@@ -210,7 +210,7 @@ const submit = async () => {
           </div>
         </div>
 
-        <!-- footer -->
+        <!-- footer  -->
         <ModalFooter>
           <BlueButton type="submit" :text="props.buttonOk" />
           <BlueButton type="button" text="취소" @click="emit('close')" />

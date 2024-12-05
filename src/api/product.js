@@ -75,3 +75,41 @@ export const DeleteProductApi = async (id) => {
     return e;
   }
 };
+
+// 도서 정보 수정
+export const UpdateProductApi = async (value) => {
+  try {
+    const {
+      id,
+      bookId,
+      title,
+      content,
+      thumbnail,
+      price,
+      publisher,
+      authors,
+      status,
+    } = value;
+
+    const result = await axios.patch(apiUrl + "/updateProduct", {
+      id,
+      bookId,
+      title,
+      content,
+      thumbnail,
+      price,
+      publisher,
+      authors,
+      status,
+    });
+
+    if (result.status == 200) {
+      return result;
+    } else {
+      console.log("api 호출 에러 : " + result);
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};

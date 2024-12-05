@@ -3,11 +3,16 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
-import { DeleteProductApi, GetProductListApi } from "@/api/product";
+import {
+  DeleteProductApi,
+  GetProductListApi,
+  UpdateProductApi,
+} from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
 import AddModal from "@/components/modal/AddModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
+import EditModal from "@/components/modal/EditModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -62,9 +67,50 @@ const addProductModal = () => {
     component: AddModal,
     attrs: {
       title: "도서 추가",
+      buttonOk: "추가",
       onOk() {
         close();
         getProductList();
+      },
+      onClose() {
+        close();
+      },
+    },
+  });
+  open();
+};
+
+// 도서 변경 모달창
+const editProductModal = (item) => {
+  const { open, close } = useModal({
+    component: EditModal,
+    attrs: {
+      title: "도서 수정",
+      content: item,
+      buttonOk: "수정",
+      onOk() {
+        close();
+        getProductList();
+      },
+      onClose() {
+        close();
+      },
+    },
+  });
+  open();
+};
+
+// 도서 삭제 확인 모달창
+const deleteConfirmModal = (item) => {
+  const { open, close } = useModal({
+    component: ConfirmModal,
+    attrs: {
+      title: "도서 삭제",
+      content: "정말로 삭제하실건가요?",
+      buttonOk: "삭제",
+      onOk() {
+        deleteProduct(item);
+        close();
       },
       onClose() {
         close();
@@ -87,26 +133,6 @@ const deleteProduct = async (item) => {
   } catch (e) {
     console.log(e);
   }
-};
-
-// 도서 삭제 확인 모달창
-const deleteConfirmModal = (item) => {
-  const { open, close } = useModal({
-    component: ConfirmModal,
-    attrs: {
-      title: "삭제하기",
-      content: "정말로 삭제하실건가요?",
-      buttonOk: "삭제",
-      onOk() {
-        deleteProduct(item);
-        close();
-      },
-      onClose() {
-        close();
-      },
-    },
-  });
-  open();
 };
 
 onMounted(() => {
@@ -154,7 +180,11 @@ onMounted(() => {
             </div>
           </div>
           <div class="flex justify-around items-center py-2">
-            <BlueButton type="button" text="변경" />
+            <BlueButton
+              type="button"
+              text="수정"
+              @click="editProductModal(item)"
+            />
             <BlueButton
               type="button"
               text="삭제"
