@@ -106,14 +106,18 @@ const changeCountModal = (item) => {
   open();
 };
 
-// 구매 모달창
-const buyModal = () => {
+// 구매 확인 모달창
+const buyConfirmModal = () => {
   const { open, close } = useModal({
     component: ConfirmModal,
     attrs: {
-      title: "도서 구매하기",
+      title: "구매하기",
       content: "정말로 구매하실건가요?",
-      onConfirm() {
+      buttonOk: "구매",
+      onOk() {
+        close();
+      },
+      onClose() {
         close();
       },
     },
@@ -219,7 +223,7 @@ onMounted(() => {
         type="button"
         text="구매하기"
         add-class="w-full mt-6"
-        @click="buyModal"
+        @click="buyConfirmModal"
       />
     </div>
   </ContainerLayout>

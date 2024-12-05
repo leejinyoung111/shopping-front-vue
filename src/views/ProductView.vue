@@ -3,10 +3,11 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
-import { GetProductListApi } from "@/api/product";
+import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
 import AddModal from "@/components/modal/AddModal.vue";
 import { useModal } from "vue-final-modal";
+import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -56,7 +57,7 @@ const getProductList = async () => {
 };
 
 // 도서 추가 모달창
-const productAddModal = () => {
+const addProductModal = () => {
   const { open, close } = useModal({
     component: AddModal,
     attrs: {
@@ -64,6 +65,41 @@ const productAddModal = () => {
       onOk() {
         close();
         getProductList();
+      },
+      onClose() {
+        close();
+      },
+    },
+  });
+  open();
+};
+
+// 도서 삭제
+const deleteProduct = async (item) => {
+  try {
+    const result = await DeleteProductApi(item.id);
+
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      getProductList();
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+// 도서 삭제 확인 모달창
+const deleteConfirmModal = (item) => {
+  const { open, close } = useModal({
+    component: ConfirmModal,
+    attrs: {
+      title: "삭제하기",
+      content: "정말로 삭제하실건가요?",
+      buttonOk: "삭제",
+      onOk() {
+        deleteProduct(item);
+        close();
       },
       onClose() {
         close();
@@ -89,7 +125,7 @@ onMounted(() => {
     </div>
 
     <!-- 도서 추가 -->
-    <BlueButton type="button" text="도서 추가" @click="productAddModal" />
+    <BlueButton type="button" text="도서 추가" @click="addProductModal" />
 
     <!-- 리스트 -->
     <div class="py-2 w-full h-full">
@@ -99,7 +135,7 @@ onMounted(() => {
         <div
           v-for="(item, key) in productList"
           :key="key"
-          class="shadow-md rounded-xl hover:shadow-lg hover:-translate-y-2 transition-all duration-300 cursor-pointer"
+          class="shadow-md rounded-xl"
         >
           <img
             class="w-full h-64 rounded-t-lg"
@@ -116,6 +152,14 @@ onMounted(() => {
             <div class="flex justify-center items-center">
               <p class="text-sm text-gray-600">{{ item.price }}원</p>
             </div>
+          </div>
+          <div class="flex justify-around items-center py-2">
+            <BlueButton type="button" text="변경" />
+            <BlueButton
+              type="button"
+              text="삭제"
+              @click="deleteConfirmModal(item)"
+            />
           </div>
         </div>
       </div>

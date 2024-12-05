@@ -6,16 +6,13 @@ import ModalFooter from "./ModalFooter.vue";
 import ModalHeader from "./ModalHeader.vue";
 
 // props
-const props = defineProps(["title", "content"]);
+const props = defineProps(["title", "content", "buttonOk"]);
 
 // emit
 const emit = defineEmits<{
-  (e: "confirm"): void;
+  (e: "ok"): void;
+  (e: "close"): void;
 }>();
-
-const buyBooks = () => {
-  console.log("구입하기");
-};
 </script>
 
 <template>
@@ -34,8 +31,8 @@ const buyBooks = () => {
 
       <!-- footer  -->
       <ModalFooter>
-        <BlueButton type="button" text="구매" @click="buyBooks" />
-        <BlueButton type="button" text="취소" @click="emit('confirm')" />
+        <BlueButton type="button" :text="props.buttonOk" @click="emit('ok')" />
+        <BlueButton type="button" text="취소" @click="emit('close')" />
       </ModalFooter>
     </ModalBody>
   </ModalLayout>
