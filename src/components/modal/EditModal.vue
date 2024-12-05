@@ -7,6 +7,7 @@ import ModalFooter from "./ModalFooter.vue";
 import ModalHeader from "./ModalHeader.vue";
 import InputItem from "../form/InputItem.vue";
 import { UpdateProductApi } from "@/api/product";
+import LabelItem from "../text/LabelItem.vue";
 
 // props
 const props = defineProps(["title", "content", "buttonOk"]);
@@ -69,11 +70,7 @@ const submit = async () => {
           <div class="grid px-2 grid-cols-2 gap-x-3">
             <!-- 고유번호 -->
             <div>
-              <label
-                for="bookId"
-                class="block text-sm/6 font-medium text-gray-900"
-                >고유번호</label
-              >
+              <LabelItem type="bookId" text="고유번호" />
               <div class="mt-2">
                 <InputItem
                   type="text"
@@ -87,11 +84,7 @@ const submit = async () => {
 
             <!-- 썸네일 -->
             <div>
-              <label
-                for="thumbnail"
-                class="block text-sm/6 font-medium text-gray-900"
-                >썸네일</label
-              >
+              <LabelItem type="thumbnail" text="썸네일" />
               <div class="mt-2">
                 <InputItem
                   type="text"
@@ -105,11 +98,7 @@ const submit = async () => {
 
           <!-- 제목 -->
           <div class="px-2">
-            <label
-              for="bookTitle"
-              class="block text-sm/6 font-medium text-gray-900"
-              >제목</label
-            >
+            <LabelItem type="bookTitle" text="제목" />
             <div class="mt-2">
               <InputItem
                 type="text"
@@ -122,11 +111,7 @@ const submit = async () => {
 
           <!-- 내용 -->
           <div class="px-2">
-            <label
-              for="content"
-              class="block text-sm/6 font-medium text-gray-900"
-              >내용</label
-            >
+            <LabelItem type="content" text="내용" />
             <div class="mt-2">
               <InputItem
                 type="text"
@@ -140,11 +125,7 @@ const submit = async () => {
           <div class="grid px-2 grid-cols-2 gap-x-3">
             <!-- 출판사 -->
             <div>
-              <label
-                for="publisher"
-                class="block text-sm/6 font-medium text-gray-900"
-                >출판사</label
-              >
+              <LabelItem type="publisher" text="출판사" />
               <div class="mt-2">
                 <InputItem
                   type="text"
@@ -157,11 +138,7 @@ const submit = async () => {
 
             <!-- 작가 -->
             <div>
-              <label
-                for="authors"
-                class="block text-sm/6 font-medium text-gray-900"
-                >작가</label
-              >
+              <LabelItem type="authors" text="작가" />
               <div class="mt-2">
                 <InputItem
                   type="text"
@@ -176,11 +153,7 @@ const submit = async () => {
           <div class="grid px-2 grid-cols-2 gap-x-3">
             <!-- 가격 -->
             <div>
-              <label
-                for="price"
-                class="block text-sm/6 font-medium text-gray-900"
-                >가격</label
-              >
+              <LabelItem type="price" text="가격" />
               <div class="mt-2">
                 <InputItem
                   type="number"
@@ -193,11 +166,7 @@ const submit = async () => {
 
             <!-- 판매상태 -->
             <div>
-              <label
-                for="currentStatus"
-                class="block text-sm/6 font-medium text-gray-900"
-                >판매상태</label
-              >
+              <LabelItem type="currentStatus" text="판매상태" />
               <div class="mt-2">
                 <InputItem
                   type="text"

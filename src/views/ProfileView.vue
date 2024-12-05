@@ -8,6 +8,7 @@ import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import { UpdateUserApi } from "@/api/user";
 import { nameValidate, passwordValidate } from "@/utils/Validation";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
+import LabelItem from "@/components/text/LabelItem.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -137,9 +138,7 @@ onMounted(() => {
       <form class="space-y-6" @submit.prevent="submit()">
         <!-- 이메일 -->
         <div>
-          <label for="email" class="block text-sm/6 font-medium text-gray-900"
-            >이메일</label
-          >
+          <LabelItem type="email" text="이메일" />
           <div class="mt-2">
             <InputItem
               type="text"
@@ -153,9 +152,7 @@ onMounted(() => {
 
         <!-- 이름 -->
         <div>
-          <label for="name" class="block text-sm/6 font-medium text-gray-900"
-            >이름</label
-          >
+          <LabelItem type="name" text="이름" />
           <div class="mt-2">
             <InputItem
               type="text"
@@ -170,11 +167,7 @@ onMounted(() => {
         <!-- 비밀번호 -->
         <div>
           <div class="flex items-center justify-between">
-            <label
-              for="password"
-              class="block text-sm/6 font-medium text-gray-900"
-              >비밀번호</label
-            >
+            <LabelItem type="password" text="비밀번호" />
           </div>
           <div class="mt-2">
             <InputItem
@@ -189,12 +182,7 @@ onMounted(() => {
 
         <!-- 우편번호 -->
         <div>
-          <label
-            for="postCode"
-            class="block text-sm/6 font-medium text-gray-900"
-          >
-            우편번호</label
-          >
+          <LabelItem type="postCode" text="우편번호" />
           <div class="grid grid-cols-2 gap-2 items-center justify-center">
             <InputItem
               type="text"
@@ -214,9 +202,7 @@ onMounted(() => {
 
         <!-- 주소 -->
         <div>
-          <label for="address" class="block text-sm/6 font-medium text-gray-900"
-            >주소</label
-          >
+          <LabelItem type="address" text="주소" />
           <div class="mt-2">
             <InputItem
               type="text"
@@ -229,11 +215,7 @@ onMounted(() => {
 
         <!-- 상세 주소 -->
         <div>
-          <label
-            for="detailAddress"
-            class="block text-sm/6 font-medium text-gray-900"
-            >상세 주소</label
-          >
+          <LabelItem type="detailAddress" text="상세 주소" />
           <div class="mt-2">
             <InputItem
               type="text"

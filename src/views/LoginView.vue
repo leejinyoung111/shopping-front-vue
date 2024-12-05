@@ -8,6 +8,7 @@ import { LoginApi } from "@/api/user";
 import { emailValidate, passwordValidate } from "@/utils/Validation";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
+import LabelItem from "@/components/text/LabelItem.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -89,9 +90,7 @@ onMounted(() => {
       <form class="space-y-6" @submit.prevent="submit()">
         <!-- 이메일 -->
         <div>
-          <label for="email" class="block text-sm/6 font-medium text-gray-900"
-            >이메일</label
-          >
+          <LabelItem type="email" text="이메일" />
           <div class="mt-2">
             <InputItem
               type="text"
@@ -106,11 +105,7 @@ onMounted(() => {
         <!-- 비밀번호 -->
         <div>
           <div class="flex items-center justify-between">
-            <label
-              for="password"
-              class="block text-sm/6 font-medium text-gray-900"
-              >비밀번호</label
-            >
+            <LabelItem type="password" text="비밀번호" />
           </div>
           <div class="mt-2">
             <InputItem

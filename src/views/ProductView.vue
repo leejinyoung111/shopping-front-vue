@@ -3,11 +3,7 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
-import {
-  DeleteProductApi,
-  GetProductListApi,
-  UpdateProductApi,
-} from "@/api/product";
+import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
 import AddModal from "@/components/modal/AddModal.vue";
 import { useModal } from "vue-final-modal";
