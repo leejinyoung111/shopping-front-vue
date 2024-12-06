@@ -25,6 +25,8 @@ export const useAuthStore = defineStore("auth", {
         const getData = result.data.result;
         const status = result.data.status;
 
+        delete getData.userInfo.user.password;
+
         if (status.status == "success") {
           const user = {
             id: getData.userInfo.user.id,
