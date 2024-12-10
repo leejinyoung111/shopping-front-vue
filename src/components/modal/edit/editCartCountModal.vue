@@ -118,11 +118,7 @@ const updateProductCount = async () => {
 
       <!-- footer  -->
       <ModalFooter>
-        <BlueButton
-          type="button"
-          text="수량 변경"
-          @click="updateProductCount()"
-        />
+        <BlueButton type="button" text="변경" @click="updateProductCount()" />
         <BlueButton type="button" text="취소" @click="emit('confirm')" />
       </ModalFooter>
     </ModalBody>

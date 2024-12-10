@@ -7,6 +7,7 @@ import CartView from "@/views/CartView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import ProductView from "@/views/admin/ProductView.vue";
 import RecommendView from "@/views/RecommendView.vue";
+import OrderView from "@/views/OrderView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: "/recommend",
       name: "recommend",
       component: RecommendView,
+    },
+    {
+      path: "/order/:id",
+      name: "order",
+      component: OrderView,
     },
     {
       path: "/admin/product",

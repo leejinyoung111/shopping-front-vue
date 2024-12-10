@@ -4,8 +4,8 @@ import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { useModal } from "vue-final-modal";
-import editProfileModal from "@/components/modal/edit/editProfileModal.vue";
 import BlueButton from "@/components/button/BlueButton.vue";
+import EditProfileModal from "@/components/modal/edit/editProfileModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -38,7 +38,7 @@ const getUserInfo = async () => {
 // 회원 정보 수정 모달창
 const changeProfileModal = () => {
   const { open, close } = useModal({
-    component: editProfileModal,
+    component: EditProfileModal,
     attrs: {
       title: "회원 정보 수정",
       item: getUser.value,
@@ -53,6 +53,10 @@ const changeProfileModal = () => {
     },
   });
   open();
+};
+
+const goToOrder = () => {
+  router.push(`/order/${getUser.value.id}`);
 };
 
 onMounted(() => {
@@ -82,5 +86,7 @@ onMounted(() => {
       text="회원 정보 수정"
       @click="changeProfileModal()"
     />
+
+    <BlueButton type="button" text="주문서" @click="goToOrder()" />
   </ContainerLayout>
 </template>

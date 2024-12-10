@@ -5,11 +5,11 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import BlueButton from "@/components/button/BlueButton.vue";
-import editCartCountModal from "@/components/modal/edit/editCartCountModal.vue";
 import { useModal } from "vue-final-modal";
-import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import EditCartCountModal from "@/components/modal/edit/editCartCountModal.vue";
+import BuyProductModal from "@/components/modal/create/buyProductModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -93,7 +93,7 @@ const deleteCart = async (item) => {
 // 수량 변경 모달창
 const changeCountModal = (item) => {
   const { open, close } = useModal({
-    component: editCartCountModal,
+    component: EditCartCountModal,
     attrs: {
       title: item.title,
       id: item.id,
@@ -107,14 +107,14 @@ const changeCountModal = (item) => {
   open();
 };
 
-// 구매 확인 모달창
-const buyConfirmModal = () => {
+// 구매 모달창
+const buyModal = () => {
   const { open, close } = useModal({
-    component: ConfirmModal,
+    component: BuyProductModal,
     attrs: {
-      title: "구매하기",
-      content: "정말로 구매하실건가요?",
-      buttonOk: "구매",
+      user: getUser.value,
+      title: "배송 정보",
+      buttonOk: "주문",
       onOk() {
         close();
       },
@@ -218,7 +218,7 @@ onMounted(() => {
         type="button"
         text="구매하기"
         add-class="w-full mt-6"
-        @click="buyConfirmModal"
+        @click="buyModal"
       />
     </div>
   </ContainerLayout>
