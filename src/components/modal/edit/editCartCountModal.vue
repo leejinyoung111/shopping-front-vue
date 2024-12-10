@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { UpdateProductCountApi } from "@/api/cart";
 import { ref } from "vue";
-import BlueButton from "../button/BlueButton.vue";
-import ModalLayout from "../layout/ModalLayout.vue";
-import ModalHeader from "./ModalHeader.vue";
-import ModalFooter from "./ModalFooter.vue";
-import ModalBody from "./ModalBody.vue";
+import BlueButton from "@/components/button/BlueButton.vue";
+import ModalLayout from "@/components/layout/ModalLayout.vue";
+import ModalHeader from "../layout/ModalHeader.vue";
+import ModalFooter from "../layout/ModalFooter.vue";
+import ModalBody from "../layout/ModalBody.vue";
 
 // props
 const props = defineProps(["title", "id", "count"]);

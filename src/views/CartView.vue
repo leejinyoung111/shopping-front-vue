@@ -5,7 +5,7 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import BlueButton from "@/components/button/BlueButton.vue";
-import CartCountModal from "@/components/modal/CartCountModal.vue";
+import editCartCountModal from "@/components/modal/edit/editCartCountModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
@@ -92,7 +92,7 @@ const deleteCart = async (item) => {
 // 수량 변경 모달창
 const changeCountModal = (item) => {
   const { open, close } = useModal({
-    component: CartCountModal,
+    component: editCartCountModal,
     attrs: {
       title: item.title,
       id: item.id,

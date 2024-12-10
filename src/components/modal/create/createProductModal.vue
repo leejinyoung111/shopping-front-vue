@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import BlueButton from "../button/BlueButton.vue";
-import ModalLayout from "../layout/ModalLayout.vue";
-import ModalFooter from "./ModalFooter.vue";
-import ModalHeader from "./ModalHeader.vue";
-import InputItem from "../form/InputItem.vue";
-import ModalBody from "./ModalBody.vue";
+import BlueButton from "@/components/button/BlueButton.vue";
+import ModalLayout from "@/components/layout/ModalLayout.vue";
+import ModalFooter from "../layout/ModalFooter.vue";
+import ModalHeader from "../layout/ModalHeader.vue";
+import InputItem from "@/components/form/InputItem.vue";
+import LabelItem from "@/components/text/LabelItem.vue";
+import ModalBody from "../layout/ModalBody.vue";
 import { AddProductApi } from "@/api/product";
-import LabelItem from "../text/LabelItem.vue";
 
 // props
 const props = defineProps(["title", "content", "buttonOk"]);

@@ -35,7 +35,7 @@ const loginAfter = [
   },
   {
     title: "상품관리",
-    url: "/productManagement",
+    url: "/admin/product",
     icon: "product",
     role: "admin",
   },
