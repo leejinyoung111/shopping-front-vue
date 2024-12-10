@@ -47,6 +47,9 @@ const changeProfileModal = () => {
         getUser.value = user;
         close();
       },
+      onClose() {
+        close();
+      },
     },
   });
   open();

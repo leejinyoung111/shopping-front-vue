@@ -41,7 +41,7 @@ const getUserInfo = async () => {
   }
 };
 
-// 장바구니 목록 조회
+// 도서 목록 조회
 const getProductList = async () => {
   try {
     const result = await GetProductListApi();

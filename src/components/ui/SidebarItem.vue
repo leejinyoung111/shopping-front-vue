@@ -22,9 +22,9 @@ const loginBefore = [
 
 const loginAfter = [
   {
-    title: "프로필",
-    url: "/profile",
-    icon: "profile",
+    title: "추천도서",
+    url: "/recommend",
+    icon: "book",
     role: "user",
   },
   {

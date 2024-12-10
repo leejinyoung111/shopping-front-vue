@@ -12,6 +12,13 @@ import { nameValidate, passwordValidate } from "@/utils/Validation";
 import { UpdateUserApi } from "@/api/user";
 import { useAuthStore } from "@/stores/auth";
 
+// 글로벌 타입 설정
+declare global {
+  interface Window {
+    daum: any;
+  }
+}
+
 // props
 const props = defineProps(["title", "item", "buttonOk"]);
 
@@ -33,11 +40,10 @@ const address = ref(props.item.address);
 const detailAddress = ref(props.item.detailAddress);
 const nameMessage = ref("");
 const passwordMessage = ref("");
-let daum;
 
 // 주소 검색
 const searchAddress = () => {
-  new daum.Postcode({
+  new window.daum.Postcode({
     oncomplete: function (data) {
       address.value = data.address;
       postCode.value = data.zonecode;

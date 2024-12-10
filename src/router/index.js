@@ -6,6 +6,7 @@ import RegisterView from "@/views/RegisterView.vue";
 import CartView from "@/views/CartView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import ProductView from "@/views/admin/ProductView.vue";
+import RecommendView from "@/views/RecommendView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +32,7 @@ const router = createRouter({
       component: RegisterView,
     },
     {
-      path: "/profile",
+      path: "/profile/:id",
       name: "profile",
       component: ProfileView,
     },
@@ -39,6 +40,11 @@ const router = createRouter({
       path: "/cart",
       name: "cart",
       component: CartView,
+    },
+    {
+      path: "/recommend",
+      name: "recommend",
+      component: RecommendView,
     },
     {
       path: "/admin/product",

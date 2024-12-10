@@ -9,6 +9,7 @@ import editCartCountModal from "@/components/modal/edit/editCartCountModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
+import MainTitle from "@/components/text/MainTitle.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -133,13 +134,7 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-      >
-        장바구니 목록
-      </h2>
-    </div>
+    <MainTitle>장바구니 목록</MainTitle>
 
     <!-- empty -->
     <div
