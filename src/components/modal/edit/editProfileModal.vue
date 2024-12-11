@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BlueButton from "@/components/button/BlueButton.vue";
+import WhiteButton from "@/components/button/WhiteButton.vue";
 import ModalLayout from "@/components/layout/ModalLayout.vue";
 import ModalBody from "../layout/ModalBody.vue";
 import ModalFooter from "../layout/ModalFooter.vue";
@@ -11,6 +12,7 @@ import ErrorMessage from "@/components/text/ErrorMessage.vue";
 import { nameValidate, passwordValidate } from "@/utils/Validation";
 import { UpdateUserApi } from "@/api/user";
 import { useAuthStore } from "@/stores/auth";
+import InputLayout from "@/components/layout/InputLayout.vue";
 
 // 글로벌 타입 설정
 declare global {
@@ -118,53 +120,57 @@ const submit = async () => {
 
     <!-- body -->
     <ModalBody>
-      <form class="space-y-6" @submit.prevent="submit()">
-        <!-- 이메일 -->
+      <form class="space-y-6 w-full" @submit.prevent="submit()">
         <div>
-          <LabelItem type="email" text="이메일" />
-          <div class="mt-2">
-            <InputItem
-              type="text"
-              placeholder="이메일"
-              v-model="email"
-              class="py-2 px-3 font-bold border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-              readonly="true"
-            />
-          </div>
-        </div>
+          <div class="grid px-2 grid-cols-2 gap-x-3">
+            <!-- 이메일 -->
+            <div>
+              <LabelItem type="email" text="이메일" />
+              <InputLayout>
+                <InputItem
+                  type="text"
+                  placeholder="이메일"
+                  v-model="email"
+                  class="py-2 px-3 font-bold border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+                  readonly="true"
+                />
+              </InputLayout>
+            </div>
 
-        <!-- 이름 -->
-        <div>
-          <LabelItem type="name" text="이름" />
-          <div class="mt-2">
-            <InputItem
-              type="text"
-              placeholder="이름"
-              v-model="name"
-              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-            />
+            <!-- 이름 -->
+            <div>
+              <LabelItem type="name" text="이름" />
+              <InputLayout>
+                <InputItem
+                  type="text"
+                  placeholder="이름"
+                  v-model="name"
+                  class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+                />
+              </InputLayout>
+              <ErrorMessage :text="nameMessage" />
+            </div>
           </div>
-          <ErrorMessage :text="nameMessage" />
         </div>
 
         <!-- 비밀번호 -->
-        <div>
+        <div class="px-2">
           <div class="flex items-center justify-between">
             <LabelItem type="password" text="비밀번호" />
           </div>
-          <div class="mt-2">
+          <InputLayout>
             <InputItem
               type="password"
               placeholder="비밀번호"
               v-model="password"
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
-          </div>
+          </InputLayout>
           <ErrorMessage :text="passwordMessage" />
         </div>
 
         <!-- 우편번호 -->
-        <div>
+        <div class="px-2">
           <LabelItem type="postCode" text="우편번호" />
           <div class="grid grid-cols-2 gap-2 items-center justify-center">
             <InputItem
@@ -184,34 +190,35 @@ const submit = async () => {
         </div>
 
         <!-- 주소 -->
-        <div>
+        <div class="px-2">
           <LabelItem type="address" text="주소" />
-          <div class="mt-2">
+          <InputLayout>
             <InputItem
               type="text"
               placeholder="주소"
               v-model="address"
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
-          </div>
+          </InputLayout>
         </div>
 
         <!-- 상세 주소 -->
-        <div>
+        <div class="px-2">
           <LabelItem type="detailAddress" text="상세 주소" />
-          <div class="mt-2">
+          <InputLayout>
             <InputItem
               type="text"
               placeholder="상세 주소"
               v-model="detailAddress"
               class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
             />
-          </div>
+          </InputLayout>
         </div>
+
         <!-- footer  -->
         <ModalFooter>
           <BlueButton type="submit" :text="props.buttonOk" />
-          <BlueButton type="button" text="취소" @click="emit('close')" />
+          <WhiteButton type="button" text="취소" @click="emit('close')" />
         </ModalFooter>
       </form>
     </ModalBody>

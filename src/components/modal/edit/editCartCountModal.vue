@@ -2,6 +2,7 @@
 import { UpdateProductCountApi } from "@/api/cart";
 import { ref } from "vue";
 import BlueButton from "@/components/button/BlueButton.vue";
+import WhiteButton from "@/components/button/WhiteButton.vue";
 import ModalLayout from "@/components/layout/ModalLayout.vue";
 import ModalHeader from "../layout/ModalHeader.vue";
 import ModalFooter from "../layout/ModalFooter.vue";
@@ -12,7 +13,8 @@ const props = defineProps(["title", "id", "count"]);
 
 // emit
 const emit = defineEmits<{
-  (e: "confirm"): void;
+  (e: "ok"): void;
+  (e: "close"): void;
 }>();
 
 // 변수
@@ -44,7 +46,7 @@ const updateProductCount = async () => {
 
     if (status.status == "success") {
       alert("수정 성공!");
-      emit("confirm");
+      emit("ok");
     }
   } catch (e) {
     console.log(e);
@@ -62,7 +64,7 @@ const updateProductCount = async () => {
     <!-- body -->
     <ModalBody>
       <!-- content -->
-      <div class="relative flex items-center max-w-[8rem]">
+      <div class="relative flex items-center w-1/3 lg:w-1/4">
         <button
           type="button"
           class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-8 flex justify-center items-center focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
@@ -119,7 +121,7 @@ const updateProductCount = async () => {
       <!-- footer  -->
       <ModalFooter>
         <BlueButton type="button" text="변경" @click="updateProductCount()" />
-        <BlueButton type="button" text="취소" @click="emit('confirm')" />
+        <WhiteButton type="button" text="취소" @click="emit('close')" />
       </ModalFooter>
     </ModalBody>
   </ModalLayout>

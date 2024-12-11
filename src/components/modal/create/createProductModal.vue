@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BlueButton from "@/components/button/BlueButton.vue";
+import WhiteButton from "@/components/button/WhiteButton.vue";
 import ModalLayout from "@/components/layout/ModalLayout.vue";
 import ModalFooter from "../layout/ModalFooter.vue";
 import ModalHeader from "../layout/ModalHeader.vue";
@@ -8,6 +9,7 @@ import InputItem from "@/components/form/InputItem.vue";
 import LabelItem from "@/components/text/LabelItem.vue";
 import ModalBody from "../layout/ModalBody.vue";
 import { AddProductApi } from "@/api/product";
+import InputLayout from "@/components/layout/InputLayout.vue";
 
 // props
 const props = defineProps(["title", "content", "buttonOk"]);
@@ -65,88 +67,88 @@ const submit = async () => {
 
     <!-- body -->
     <ModalBody>
-      <form class="space-y-6" @submit.prevent="submit()">
+      <form class="space-y-6 w-full" @submit.prevent="submit()">
         <!-- 입력 폼 -->
         <div>
           <div class="grid px-2 grid-cols-2 gap-x-3">
             <!-- 고유번호 -->
             <div>
               <LabelItem type="bookId" text="고유번호" />
-              <div class="mt-2">
+              <InputLayout>
                 <InputItem
                   type="text"
                   placeholder="고유번호"
                   v-model="bookId"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
-              </div>
+              </InputLayout>
             </div>
 
             <!-- 썸네일 -->
             <div>
               <LabelItem type="thumbnail" text="썸네일" />
-              <div class="mt-2">
+              <InputLayout>
                 <InputItem
                   type="text"
                   placeholder="썸네일 주소"
                   v-model="thumbnail"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
-              </div>
+              </InputLayout>
             </div>
           </div>
 
           <!-- 제목 -->
           <div class="px-2">
             <LabelItem type="bookTitle" text="제목" />
-            <div class="mt-2">
+            <InputLayout>
               <InputItem
                 type="text"
                 placeholder="제목"
                 v-model="bookTitle"
                 class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
-            </div>
+            </InputLayout>
           </div>
 
           <!-- 내용 -->
           <div class="px-2">
             <LabelItem type="content" text="내용" />
-            <div class="mt-2">
+            <InputLayout>
               <InputItem
                 type="text"
                 placeholder="내용"
                 v-model="content"
                 class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
-            </div>
+            </InputLayout>
           </div>
 
           <div class="grid px-2 grid-cols-2 gap-x-3">
             <!-- 출판사 -->
             <div>
               <LabelItem type="publisher" text="출판사" />
-              <div class="mt-2">
+              <InputLayout>
                 <InputItem
                   type="text"
                   placeholder="출판사"
                   v-model="publisher"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
-              </div>
+              </InputLayout>
             </div>
 
             <!-- 작가 -->
             <div>
               <LabelItem type="authors" text="작가" />
-              <div class="mt-2">
+              <InputLayout>
                 <InputItem
                   type="text"
                   placeholder="작가"
                   v-model="authors"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
-              </div>
+              </InputLayout>
             </div>
           </div>
 
@@ -154,27 +156,27 @@ const submit = async () => {
             <!-- 가격 -->
             <div>
               <LabelItem type="price" text="가격" />
-              <div class="mt-2">
+              <InputLayout>
                 <InputItem
                   type="number"
                   placeholder="가격"
                   v-model="price"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
-              </div>
+              </InputLayout>
             </div>
 
             <!-- 판매상태 -->
             <div>
               <LabelItem type="currentStatus" text="판매상태" />
-              <div class="mt-2">
+              <InputLayout>
                 <InputItem
                   type="text"
                   placeholder="판매상태"
                   v-model="currentStatus"
                   class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
                 />
-              </div>
+              </InputLayout>
             </div>
           </div>
         </div>
@@ -182,7 +184,7 @@ const submit = async () => {
         <!-- footer -->
         <ModalFooter>
           <BlueButton type="submit" :text="props.buttonOk" />
-          <BlueButton type="button" text="취소" @click="emit('close')" />
+          <WhiteButton type="button" text="취소" @click="emit('close')" />
         </ModalFooter>
       </form>
     </ModalBody>

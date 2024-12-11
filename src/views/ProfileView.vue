@@ -55,10 +55,6 @@ const changeProfileModal = () => {
   open();
 };
 
-const goToOrder = () => {
-  router.push(`/order/${getUser.value.id}`);
-};
-
 onMounted(() => {
   getUserInfo();
 });
@@ -67,26 +63,37 @@ onMounted(() => {
 <template>
   <ContainerLayout v-if="getUser != null">
     <!-- 유저 정보 -->
-    <div class="pt-5">
-      <img
-        class="w-32 h-32 rounded-full mx-auto"
-        src="https://picsum.photos/200"
-        alt="Profile picture"
-      />
-      <h2 class="text-center text-2xl font-semibold mt-3">
-        {{ getUser.email }}
-      </h2>
-      <h2 class="text-center text-xl font-semibold mt-3">
-        {{ getUser.name }}
-      </h2>
+    <div
+      class="relative flex w-96 flex-col rounded-xl bg-clip-border text-gray-700"
+    >
+      <div
+        class="relative mx-4 mt-4 h-80 overflow-hidden rounded-xl text-gray-700"
+      >
+        <img
+          src="https://picsum.photos/200"
+          alt="profile-picture"
+          class="w-full"
+        />
+      </div>
+      <div class="p-6 text-center">
+        <h4
+          class="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased"
+        >
+          {{ getUser.email }}
+        </h4>
+        <p
+          class="block bg-gradient-to-tr from-pink-600 to-pink-400 bg-clip-text font-sans text-base font-medium leading-relaxed text-transparent antialiased"
+        >
+          {{ getUser.name }}
+        </p>
+      </div>
+      <div class="flex justify-center items-center mb-5">
+        <BlueButton
+          type="button"
+          text="회원 정보 수정"
+          @click="changeProfileModal()"
+        />
+      </div>
     </div>
-
-    <BlueButton
-      type="button"
-      text="회원 정보 수정"
-      @click="changeProfileModal()"
-    />
-
-    <BlueButton type="button" text="주문서" @click="goToOrder()" />
   </ContainerLayout>
 </template>

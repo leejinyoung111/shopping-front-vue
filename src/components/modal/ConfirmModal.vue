@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BlueButton from "../button/BlueButton.vue";
+import WhiteButton from "../button/WhiteButton.vue";
 import ModalLayout from "../layout/ModalLayout.vue";
 import ModalBody from "./layout/ModalBody.vue";
 import ModalFooter from "./layout/ModalFooter.vue";
@@ -32,7 +33,7 @@ const emit = defineEmits<{
       <!-- footer  -->
       <ModalFooter>
         <BlueButton type="button" :text="props.buttonOk" @click="emit('ok')" />
-        <BlueButton type="button" text="취소" @click="emit('close')" />
+        <WhiteButton type="button" text="취소" @click="emit('close')" />
       </ModalFooter>
     </ModalBody>
   </ModalLayout>

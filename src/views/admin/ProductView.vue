@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
+import RedButton from "@/components/button/RedButton.vue";
 import createProductModal from "@/components/modal/create/createProductModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
@@ -181,7 +182,7 @@ onMounted(() => {
               text="수정"
               @click="editBookModal(item)"
             />
-            <BlueButton
+            <RedButton
               type="button"
               text="삭제"
               @click="deleteConfirmModal(item)"
