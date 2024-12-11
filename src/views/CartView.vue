@@ -28,7 +28,7 @@ const getUserInfo = async () => {
 
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
-    getUser.value = user;
+    getUser.value = user.userInfo.user;
 
     // 관리자 여부
     if (getUser.value.role == "admin") {
