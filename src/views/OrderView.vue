@@ -6,8 +6,14 @@ import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import DetailModal from "@/components/modal/DetailModal.vue";
 import OrderThItem from "@/components/table/order/OrderThItem.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import { useAuthStore } from "@/stores/auth";
 import { titleSlice } from "@/utils/TextSlice";
+import { onMounted, ref } from "vue";
 import { useModal } from "vue-final-modal";
+import { useRouter } from "vue-router";
+
+// storage
+const authStore = useAuthStore();
 
 // 변수
 const fakeData = [
@@ -30,6 +36,29 @@ const fakeData = [
     totalPrice: 30000,
   },
 ];
+
+const router = useRouter();
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
+const getUser = ref();
+
+// 유저 정보 가져오기
+const getUserInfo = async () => {
+  if (getToken.value != null) {
+    // 로그인 한 경우
+
+    // 토큰으로 유저 정보 가져오기
+    const user = await authStore.getUserInfo(getToken.value);
+    getUser.value = user.userInfo.user;
+
+    // 관리자 여부
+    if (getUser.value.role == "admin") {
+      router.replace("/");
+    }
+  } else {
+    // 로그인 하지 않은 경우
+    router.replace("/");
+  }
+};
 
 // 주문 디테일 모달창
 const orderDetailModal = () => {
@@ -67,6 +96,10 @@ const cancelConfirmModal = () => {
   });
   open();
 };
+
+onMounted(() => {
+  getUserInfo();
+});
 </script>
 <template>
   <ContainerLayout>
