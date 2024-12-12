@@ -6,10 +6,10 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
-import createProductModal from "@/components/modal/create/createProductModal.vue";
+import CreateProductModal from "@/components/modal/create/CreateProductModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
-import editProductModal from "@/components/modal/edit/editProductModal.vue";
+import EditProductModal from "@/components/modal/edit/EditProductModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -61,7 +61,7 @@ const getProductList = async () => {
 // 도서 추가 모달창
 const addProductModal = () => {
   const { open, close } = useModal({
-    component: createProductModal,
+    component: CreateProductModal,
     attrs: {
       title: "도서 추가",
       buttonOk: "추가",
@@ -80,7 +80,7 @@ const addProductModal = () => {
 // 도서 변경 모달창
 const editBookModal = (item) => {
   const { open, close } = useModal({
-    component: editProductModal,
+    component: EditProductModal,
     attrs: {
       title: "도서 수정",
       content: item,

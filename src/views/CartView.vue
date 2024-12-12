@@ -8,7 +8,7 @@ import BlueButton from "@/components/button/BlueButton.vue";
 import { useModal } from "vue-final-modal";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
-import EditCartCountModal from "@/components/modal/edit/editCartCountModal.vue";
+import EditCartCountModal from "@/components/modal/edit/EditCartCountModal.vue";
 
 // storage
 const authStore = useAuthStore();

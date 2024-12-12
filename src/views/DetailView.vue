@@ -138,6 +138,7 @@ onMounted(() => {
             >
 
             <span
+              v-if="getUser && getUser.role == 'user'"
               class="flex gap-5 py-1 items-center title-font font-medium text-xl text-gray-900"
               >수량 :
               <div class="relative flex items-center max-w-[8rem]">
@@ -200,7 +201,10 @@ onMounted(() => {
             </span>
 
             <!-- 장바구니 -->
-            <div class="flex justify-start items-center gap-5">
+            <div
+              v-if="getUser && getUser.role == 'user'"
+              class="flex justify-start items-center gap-5"
+            >
               <RedButton
                 v-if="bookDetailInfo.status == '정상판매'"
                 type="button"

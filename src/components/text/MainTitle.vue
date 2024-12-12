@@ -1,4 +1,3 @@
-<script setup></script>
 <template>
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2

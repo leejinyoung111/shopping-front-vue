@@ -5,7 +5,10 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { useModal } from "vue-final-modal";
 import BlueButton from "@/components/button/BlueButton.vue";
-import EditProfileModal from "@/components/modal/edit/editProfileModal.vue";
+import EditProfileModal from "@/components/modal/edit/EditProfileModal.vue";
+import ThItem from "@/components/table/profile/ThItem.vue";
+import TdItem from "@/components/table/profile/TdItem.vue";
+import RedButton from "@/components/button/RedButton.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -44,7 +47,7 @@ const changeProfileModal = () => {
       item: getUser.value,
       buttonOk: "수정",
       async onOk(user) {
-        getUser.value = user;
+        getUser.value = user.userInfo.user;
         close();
       },
       onClose() {
@@ -62,37 +65,77 @@ onMounted(() => {
 
 <template>
   <ContainerLayout v-if="getUser != null">
-    <!-- 유저 정보 -->
     <div
-      class="relative flex w-96 flex-col rounded-xl bg-clip-border text-gray-700"
+      class="mx-auto my-10 rounded-lg p-5 w-full md:w-2/3 lg:w-2/4 max-w-2/4"
     >
-      <div
-        class="relative mx-4 mt-4 h-80 overflow-hidden rounded-xl text-gray-700"
-      >
-        <img
-          src="https://picsum.photos/200"
-          alt="profile-picture"
-          class="w-full"
-        />
-      </div>
-      <div class="p-6 text-center">
-        <h4
-          class="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased"
+      <!-- 이미지 -->
+      <img
+        class="w-32 h-32 rounded-full mx-auto"
+        src="https://picsum.photos/200"
+        alt="Profile-picture"
+      />
+
+      <div class="w-full">
+        <!-- 회원 정보 -->
+        <div
+          class="relative overflow-x-auto my-5 border border-gray-400 rounded-md"
         >
-          {{ getUser.email }}
-        </h4>
-        <p
-          class="block bg-gradient-to-tr from-pink-600 to-pink-400 bg-clip-text font-sans text-base font-medium leading-relaxed text-transparent antialiased"
-        >
-          {{ getUser.name }}
-        </p>
-      </div>
-      <div class="flex justify-center items-center mb-5">
-        <BlueButton
-          type="button"
-          text="회원 정보 수정"
-          @click="changeProfileModal()"
-        />
+          <table
+            class="w-full text-left rtl:text-right text-gray-700 dark:text-gray-400"
+          >
+            <tbody>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ThItem>이메일</ThItem>
+                <TdItem>
+                  {{ getUser.email }}
+                </TdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ThItem>이름</ThItem>
+                <TdItem>
+                  {{ getUser.name }}
+                </TdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ThItem>우편번호</ThItem>
+                <TdItem>
+                  {{ getUser.postCode }}
+                </TdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ThItem>주소</ThItem>
+                <TdItem>
+                  {{ getUser.address }}
+                </TdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ThItem>상세주소</ThItem>
+                <TdItem>
+                  {{ getUser.detailAddress }}
+                </TdItem>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 회원 정보 수정 -->
+        <div class="flex flex-col gap-5 justify-center items-center">
+          <BlueButton
+            type="button"
+            text="정보 수정"
+            @click="changeProfileModal()"
+          />
+        </div>
       </div>
     </div>
   </ContainerLayout>
