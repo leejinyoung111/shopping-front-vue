@@ -117,7 +117,7 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <MainTitle>장바구니 목록</MainTitle>
+    <MainTitle>장바구니 리스트</MainTitle>
 
     <!-- empty -->
     <div

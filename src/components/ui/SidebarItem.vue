@@ -34,6 +34,12 @@ const loginAfter = [
     role: "user",
   },
   {
+    title: "주문리스트",
+    url: `/order`,
+    icon: "order",
+    role: "user",
+  },
+  {
     title: "상품관리",
     url: "/admin/product",
     icon: "product",

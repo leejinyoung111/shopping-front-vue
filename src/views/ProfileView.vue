@@ -6,9 +6,8 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { useModal } from "vue-final-modal";
 import BlueButton from "@/components/button/BlueButton.vue";
 import EditProfileModal from "@/components/modal/edit/EditProfileModal.vue";
-import ThItem from "@/components/table/profile/ThItem.vue";
-import TdItem from "@/components/table/profile/TdItem.vue";
-import RedButton from "@/components/button/RedButton.vue";
+import ProfileThItem from "@/components/table/profile/ProfileThItem.vue";
+import ProfileTdItem from "@/components/table/profile/ProfileTdItem.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -87,42 +86,42 @@ onMounted(() => {
               <tr
                 class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
-                <ThItem>이메일</ThItem>
-                <TdItem>
+                <ProfileThItem>이메일</ProfileThItem>
+                <ProfileTdItem>
                   {{ getUser.email }}
-                </TdItem>
+                </ProfileTdItem>
               </tr>
               <tr
                 class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
-                <ThItem>이름</ThItem>
-                <TdItem>
+                <ProfileThItem>이름</ProfileThItem>
+                <ProfileTdItem>
                   {{ getUser.name }}
-                </TdItem>
+                </ProfileTdItem>
               </tr>
               <tr
                 class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
-                <ThItem>우편번호</ThItem>
-                <TdItem>
+                <ProfileThItem>우편번호</ProfileThItem>
+                <ProfileTdItem>
                   {{ getUser.postCode }}
-                </TdItem>
+                </ProfileTdItem>
               </tr>
               <tr
                 class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
-                <ThItem>주소</ThItem>
-                <TdItem>
+                <ProfileThItem>주소</ProfileThItem>
+                <ProfileTdItem>
                   {{ getUser.address }}
-                </TdItem>
+                </ProfileTdItem>
               </tr>
               <tr
                 class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
-                <ThItem>상세주소</ThItem>
-                <TdItem>
+                <ProfileThItem>상세주소</ProfileThItem>
+                <ProfileTdItem>
                   {{ getUser.detailAddress }}
-                </TdItem>
+                </ProfileTdItem>
               </tr>
             </tbody>
           </table>
