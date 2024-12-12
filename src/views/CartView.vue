@@ -9,6 +9,7 @@ import { useModal } from "vue-final-modal";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
 import EditCartCountModal from "@/components/modal/edit/EditCartCountModal.vue";
+import EmptyItem from "@/components/ui/EmptyItem.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -120,14 +121,11 @@ onMounted(() => {
     <MainTitle>장바구니 리스트</MainTitle>
 
     <!-- empty -->
-    <div
+    <EmptyItem
       v-if="cartList && cartList.length == 0"
-      class="rounded-lg md:w-2/3 flex justify-center items-center h-52"
-    >
-      <span class="text-gray-500 font-medium text-2xl">
-        장바구니가 비어있습니다...</span
-      >
-    </div>
+      :title="'No List'"
+      :content="'현재 장바구니가 비어있습니다.'"
+    />
 
     <!-- 장바구니 리스트 -->
     <div class="rounded-lg md:w-2/3">

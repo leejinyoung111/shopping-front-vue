@@ -1,11 +1,13 @@
 <script setup>
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
+import IconBase from "@/components/icon/IconBase.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import DetailModal from "@/components/modal/DetailModal.vue";
 import OrderThItem from "@/components/table/order/OrderThItem.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import EmptyItem from "@/components/ui/EmptyItem.vue";
 import { useAuthStore } from "@/stores/auth";
 import { titleSlice } from "@/utils/TextSlice";
 import { onMounted, ref } from "vue";
@@ -106,6 +108,10 @@ onMounted(() => {
     <!-- 타이틀 -->
     <MainTitle>주문 리스트</MainTitle>
 
+    <!-- empty -->
+    <!-- <EmptyItem :title="'No List'" :content="'현재 주문 리스트가 없습니다.'" /> -->
+
+    <!-- 주문 리스트 -->
     <div class="rounded-lg w-full lg:w-3/4 max-w-3/4">
       <div class="overflow-auto max-h-[500px]">
         <table

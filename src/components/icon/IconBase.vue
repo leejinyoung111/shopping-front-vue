@@ -8,6 +8,7 @@ import ProfileIcon from "./ProfileIcon.vue";
 import ProductIcon from "./ProductIcon.vue";
 import BookIcon from "./BookIcon.vue";
 import OrderIcon from "./OrderIcon.vue";
+import EmptyIcon from "./EmptyIcon.vue";
 </script>
 <template>
   <LogoIcon v-if="title == 'logo'" :class="classChange" />
@@ -18,4 +19,5 @@ import OrderIcon from "./OrderIcon.vue";
   <ProductIcon v-if="title == 'product'" :class="classChange" />
   <BookIcon v-if="title == 'book'" :class="classChange" />
   <OrderIcon v-if="title == 'order'" :class="classChange" />
+  <EmptyIcon v-if="title == 'empty'" :class="classChange" />
 </template>

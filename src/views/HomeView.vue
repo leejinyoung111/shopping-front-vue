@@ -4,12 +4,14 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { GetBookListApi } from "@/api/kakao";
 import MainTitle from "@/components/text/MainTitle.vue";
+import EmptyItem from "@/components/ui/EmptyItem.vue";
 
 // 변수
 const searchBookName = ref("");
 const bookList = ref([]);
 const router = useRouter();
 const sessionSearch = ref(sessionStorage.getItem("search"));
+const isSearch = ref(false);
 
 // 도서 데이터 가져오기
 const getBookList = async (search) => {
@@ -17,6 +19,7 @@ const getBookList = async (search) => {
     const result = await GetBookListApi(search);
 
     if (result.status == 200) {
+      isSearch.value = true;
       bookList.value = result.data.documents;
     } else {
       console.log("api 호출 에러 : " + result);
@@ -31,9 +34,10 @@ const submit = () => {
   if (searchBookName.value !== "") {
     const textEncode = encodeURI(searchBookName.value);
     sessionStorage.setItem("search", decodeURI(textEncode));
+    isSearch.value = false;
     getBookList(textEncode);
   } else {
-    console.log("도서명을 입력하세요.");
+    alert("도서명을 입력하세요.");
   }
 };
 
@@ -81,6 +85,13 @@ onMounted(() => {
         class="w-full pl-3 text-sm text-black outline-none focus:outline-none bg-transparent"
       />
     </form>
+
+    <!-- empty -->
+    <EmptyItem
+      v-if="isSearch && bookList.length == 0"
+      :title="'No Books'"
+      :content="'검색 결과가 없습니다.'"
+    />
 
     <!-- 리스트 -->
     <div class="py-2 w-full h-full">

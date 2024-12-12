@@ -2,6 +2,7 @@
 import { GetProductListApi } from "@/api/product";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import EmptyItem from "@/components/ui/EmptyItem.vue";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -11,9 +12,9 @@ const bookList = ref([]);
 const router = useRouter();
 
 // 도서 목록 조회
-const getProductList = async () => {
+const getProductList = async (title) => {
   try {
-    const result = await GetProductListApi();
+    const result = await GetProductListApi(title);
 
     const getData = result.data.result;
     const status = result.data.status;
@@ -27,15 +28,8 @@ const getProductList = async () => {
 };
 
 // 도서 검색
-const submit = () => {
-  if (searchBookName.value !== "") {
-    const titleFilter = bookList.value.filter((el) =>
-      el.title.includes(searchBookName.value)
-    );
-    bookList.value = titleFilter;
-  } else {
-    getProductList();
-  }
+const submit = async () => {
+  getProductList(searchBookName.value);
 };
 
 // 디테일 페이지 이동
@@ -44,7 +38,7 @@ const goToDetail = (bookId) => {
 };
 
 onMounted(() => {
-  getProductList();
+  getProductList("");
 });
 </script>
 <template>
@@ -77,6 +71,13 @@ onMounted(() => {
         class="w-full pl-3 text-sm text-black outline-none focus:outline-none bg-transparent"
       />
     </form>
+
+    <!-- empty -->
+    <EmptyItem
+      v-if="bookList && bookList.length == 0"
+      :title="'No Books'"
+      :content="'검색 결과가 없습니다.'"
+    />
 
     <!-- 리스트 -->
     <div class="py-2 w-full h-full">
