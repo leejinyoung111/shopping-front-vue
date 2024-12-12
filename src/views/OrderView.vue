@@ -3,8 +3,10 @@ import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
+import DetailModal from "@/components/modal/DetailModal.vue";
 import OrderThItem from "@/components/table/order/OrderThItem.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import { titleSlice } from "@/utils/TextSlice";
 import { useModal } from "vue-final-modal";
 
 // 변수
@@ -29,18 +31,22 @@ const fakeData = [
   },
 ];
 
-// 상품정보 길이 자르기
-const titleSubstring = (title) => {
-  if (title.length >= 8) {
-    return title.slice(0, 8) + "...";
-  } else {
-    return title;
-  }
-};
-
 // 주문 디테일 모달창
 const orderDetailModal = () => {
-  console.log("detail");
+  const { open, close } = useModal({
+    component: DetailModal,
+    attrs: {
+      title: "주문한 상품 리스트",
+      content: "",
+      onOk() {
+        close();
+      },
+      onClose() {
+        close();
+      },
+    },
+  });
+  open();
 };
 
 // 주문 취소 모달창
@@ -90,7 +96,7 @@ const cancelConfirmModal = () => {
               class="bg-white text-xs border-b dark:bg-gray-800 dark:border-gray-700"
             >
               <OrderThItem>{{ item.orderNum }}</OrderThItem>
-              <OrderThItem>{{ titleSubstring(item.orderTitle) }}</OrderThItem>
+              <OrderThItem>{{ titleSlice(item.orderTitle, 8) }}</OrderThItem>
               <OrderThItem>{{ item.orderDate }}</OrderThItem>
               <OrderThItem>{{ item.totalPrice }}</OrderThItem>
               <OrderThItem class="flex justify-center items-center gap-5">
