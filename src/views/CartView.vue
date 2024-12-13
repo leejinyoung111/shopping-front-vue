@@ -12,6 +12,7 @@ import EditCartCountModal from "@/components/modal/edit/EditCartCountModal.vue";
 import EmptyItem from "@/components/ui/EmptyItem.vue";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import { randomString } from "@/utils/RandomString";
+import { InsertOrderItemApi } from "@/api/orderItem";
 
 // storage
 const authStore = useAuthStore();
@@ -160,18 +161,35 @@ const buyConfirmModal = () => {
 // 구매하기
 const buyOrder = async () => {
   try {
+    // 랜덤 주문번호
+    let randomNumber = randomString(15);
+
     const value = {
       userId: getUser.value.id,
       orderDate: getToday(),
-      orderNumber: randomString(15),
+      orderNumber: randomNumber,
       totalPrice: totalPrice.value,
       status: "completed",
     };
+
+    // 주문 추가
     const result = await InsertOrderApi(value);
-
     const status = result.data.status;
-
     if (status.status == "success") {
+      // 주문 별 상품 추가
+      cartList.value.map(async (item) => {
+        let orderItem = {
+          orderNumber: randomNumber,
+          title: item.title,
+          thumbnail: item.thumbnail,
+          count: item.count,
+          price: item.price,
+        };
+
+        await InsertOrderItemApi(orderItem);
+
+        deleteCart(item);
+      });
       alert(status.message);
     }
   } catch (e) {

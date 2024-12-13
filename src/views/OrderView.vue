@@ -1,5 +1,6 @@
 <script setup>
 import { CancelOrderApi, DeleteOrderApi, GetOrderListApi } from "@/api/order";
+import { GetOrderItemListApi } from "@/api/orderItem";
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
@@ -80,16 +81,11 @@ const statusClass = (status) => {
 
 // 주문 디테일 모달창
 const orderDetailModal = (orderNumber) => {
-  console.log(orderNumber);
-
   const { open, close } = useModal({
     component: DetailModal,
     attrs: {
       title: "주문한 상품 리스트",
-      content: "",
-      onOk() {
-        close();
-      },
+      id: orderNumber,
       onClose() {
         close();
       },
