@@ -22,9 +22,9 @@ const loginBefore = [
 
 const loginAfter = [
   {
-    title: "프로필",
-    url: "/profile",
-    icon: "profile",
+    title: "추천도서",
+    url: "/recommend",
+    icon: "book",
     role: "user",
   },
   {
@@ -34,8 +34,14 @@ const loginAfter = [
     role: "user",
   },
   {
+    title: "주문리스트",
+    url: `/order`,
+    icon: "order",
+    role: "user",
+  },
+  {
     title: "상품관리",
-    url: "/productManagement",
+    url: "/admin/product",
     icon: "product",
     role: "admin",
   },
@@ -47,7 +53,7 @@ const getUserInfo = async () => {
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
 
-    getUser.value = user;
+    getUser.value = user.userInfo.user;
   }
 };
 

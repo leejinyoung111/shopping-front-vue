@@ -2,13 +2,12 @@
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
-import InputItem from "@/components/form/InputItem.vue";
-import BlueButton from "@/components/button/BlueButton.vue";
-import ErrorMessage from "@/components/text/ErrorMessage.vue";
-import { UpdateUserApi } from "@/api/user";
-import { nameValidate, passwordValidate } from "@/utils/Validation";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
-import LabelItem from "@/components/text/LabelItem.vue";
+import { useModal } from "vue-final-modal";
+import BlueButton from "@/components/button/BlueButton.vue";
+import EditProfileModal from "@/components/modal/edit/EditProfileModal.vue";
+import ProfileThItem from "@/components/table/profile/ProfileThItem.vue";
+import ProfileTdItem from "@/components/table/profile/ProfileTdItem.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -17,13 +16,6 @@ const authStore = useAuthStore();
 const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
 const router = useRouter();
-const changeName = ref("");
-const changePassword = ref("");
-const changePostCode = ref("");
-const changeAddress = ref("");
-const changeDetailAddress = ref("");
-const nameMessage = ref("");
-const passwordMessage = ref("");
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -33,7 +25,7 @@ const getUserInfo = async () => {
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
 
-    getUser.value = user;
+    getUser.value = user.userInfo.user;
 
     // 관리자 여부
     if (getUser.value.role == "admin") {
@@ -45,71 +37,24 @@ const getUserInfo = async () => {
   }
 };
 
-// 주소 검색
-const searchAddress = () => {
-  new daum.Postcode({
-    oncomplete: function (data) {
-      changeAddress.value = data.address;
-      changePostCode.value = data.zonecode;
+// 회원 정보 수정 모달창
+const changeProfileModal = () => {
+  const { open, close } = useModal({
+    component: EditProfileModal,
+    attrs: {
+      title: "회원 정보 수정",
+      item: getUser.value,
+      buttonOk: "수정",
+      async onOk(user) {
+        getUser.value = user.userInfo.user;
+        close();
+      },
+      onClose() {
+        close();
+      },
     },
-  }).open();
-};
-
-// 유효성 체크
-const validateCheck = (check, message) => {
-  if (check != true) {
-    message.value = check;
-  } else {
-    message.value = "";
-    return true;
-  }
-};
-
-// 개인정보 변경
-const submit = async () => {
-  try {
-    // 유효성 체크
-    const nameCheck = validateCheck(
-      nameValidate(changeName.value),
-      nameMessage
-    );
-    const passwordCheck = validateCheck(
-      passwordValidate(changePassword.value),
-      passwordMessage
-    );
-
-    // 모두 일치할 경우
-    if (nameCheck && passwordCheck) {
-      let value = {
-        id: getUser.value.id,
-        email: getUser.value.email,
-        name: changeName.value,
-        password: changePassword.value,
-        postCode: changePostCode.value,
-        address: changeAddress.value,
-        detailAddress: changeDetailAddress.value,
-      };
-
-      const result = await UpdateUserApi(value);
-
-      const getData = result.data.result;
-      const status = result.data.status;
-
-      if (status.status == "success") {
-        // 기존 토큰 삭제
-        localStorage.removeItem("accessToken");
-
-        // 토큰 저장
-        authStore.setToken(getData.accessToken);
-        getUserInfo();
-
-        alert("수정 성공!");
-        window.location.replace("/profile");
-      }
-    }
-  } catch (e) {
-    console.log(e);
-  }
+  });
+  open();
 };
 
 onMounted(() => {
@@ -119,118 +64,78 @@ onMounted(() => {
 
 <template>
   <ContainerLayout v-if="getUser != null">
-    <!-- 유저 정보 -->
-    <div class="pt-5">
+    <div
+      class="mx-auto my-10 rounded-lg p-5 w-full md:w-2/3 lg:w-2/4 max-w-2/4"
+    >
+      <!-- 이미지 -->
       <img
         class="w-32 h-32 rounded-full mx-auto"
         src="https://picsum.photos/200"
-        alt="Profile picture"
+        alt="Profile-picture"
       />
-      <h2 class="text-center text-2xl font-semibold mt-3">
-        {{ getUser.email }}
-      </h2>
-    </div>
 
-    <!-- 정보 변경 폼 -->
-    <div
-      class="border-2 border-gray-500/30 rounded-lg mt-5 p-3 w-full md:w-2/3 lg:w-2/4"
-    >
-      <form class="space-y-6" @submit.prevent="submit()">
-        <!-- 이메일 -->
-        <div>
-          <LabelItem type="email" text="이메일" />
-          <div class="mt-2">
-            <InputItem
-              type="text"
-              placeholder="이메일"
-              v-model="getUser.email"
-              class="py-2 px-3 font-bold border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-              readonly="true"
-            />
-          </div>
+      <div class="w-full">
+        <!-- 회원 정보 -->
+        <div
+          class="relative overflow-x-auto my-5 border border-gray-400 rounded-md"
+        >
+          <table
+            class="w-full text-left rtl:text-right text-gray-700 dark:text-gray-400"
+          >
+            <tbody>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ProfileThItem>이메일</ProfileThItem>
+                <ProfileTdItem>
+                  {{ getUser.email }}
+                </ProfileTdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ProfileThItem>이름</ProfileThItem>
+                <ProfileTdItem>
+                  {{ getUser.name }}
+                </ProfileTdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ProfileThItem>우편번호</ProfileThItem>
+                <ProfileTdItem>
+                  {{ getUser.postCode }}
+                </ProfileTdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ProfileThItem>주소</ProfileThItem>
+                <ProfileTdItem>
+                  {{ getUser.address }}
+                </ProfileTdItem>
+              </tr>
+              <tr
+                class="border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <ProfileThItem>상세주소</ProfileThItem>
+                <ProfileTdItem>
+                  {{ getUser.detailAddress }}
+                </ProfileTdItem>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- 이름 -->
-        <div>
-          <LabelItem type="name" text="이름" />
-          <div class="mt-2">
-            <InputItem
-              type="text"
-              :placeholder="getUser.name"
-              v-model="changeName"
-              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-            />
-          </div>
-          <ErrorMessage :text="nameMessage" />
+        <!-- 회원 정보 수정 -->
+        <div class="flex flex-col gap-5 justify-center items-center">
+          <BlueButton
+            type="button"
+            text="정보 수정"
+            @click="changeProfileModal()"
+          />
         </div>
-
-        <!-- 비밀번호 -->
-        <div>
-          <div class="flex items-center justify-between">
-            <LabelItem type="password" text="비밀번호" />
-          </div>
-          <div class="mt-2">
-            <InputItem
-              type="password"
-              placeholder="비밀번호"
-              v-model="changePassword"
-              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-            />
-          </div>
-          <ErrorMessage :text="passwordMessage" />
-        </div>
-
-        <!-- 우편번호 -->
-        <div>
-          <LabelItem type="postCode" text="우편번호" />
-          <div class="grid grid-cols-2 gap-2 items-center justify-center">
-            <InputItem
-              type="text"
-              :placeholder="getUser.postCode"
-              v-model="changePostCode"
-              readonly="true"
-              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-            />
-            <input
-              type="button"
-              class="cursor-pointer py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-              value="주소 검색"
-              @click="searchAddress"
-            />
-          </div>
-        </div>
-
-        <!-- 주소 -->
-        <div>
-          <LabelItem type="address" text="주소" />
-          <div class="mt-2">
-            <InputItem
-              type="text"
-              :placeholder="getUser.address"
-              v-model="changeAddress"
-              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-            />
-          </div>
-        </div>
-
-        <!-- 상세 주소 -->
-        <div>
-          <LabelItem type="detailAddress" text="상세 주소" />
-          <div class="mt-2">
-            <InputItem
-              type="text"
-              :placeholder="getUser.detailAddress"
-              v-model="changeDetailAddress"
-              class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
-            />
-          </div>
-        </div>
-
-        <!-- 버튼 -->
-        <div class="mt-6">
-          <BlueButton type="submit" text="개인정보 변경" add-class="w-full" />
-        </div>
-      </form>
+      </div>
     </div>
   </ContainerLayout>
 </template>

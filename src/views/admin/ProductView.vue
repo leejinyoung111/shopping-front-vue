@@ -5,10 +5,11 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
-import AddModal from "@/components/modal/AddModal.vue";
+import RedButton from "@/components/button/RedButton.vue";
+import CreateProductModal from "@/components/modal/create/CreateProductModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
-import EditModal from "@/components/modal/EditModal.vue";
+import EditProductModal from "@/components/modal/edit/EditProductModal.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -27,7 +28,7 @@ const getUserInfo = async () => {
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
 
-    getUser.value = user;
+    getUser.value = user.userInfo.user;
 
     // 관리자 여부
     if (getUser.value.role != "admin") {
@@ -41,7 +42,7 @@ const getUserInfo = async () => {
   }
 };
 
-// 장바구니 목록 조회
+// 도서 목록 조회
 const getProductList = async () => {
   try {
     const result = await GetProductListApi();
@@ -60,7 +61,7 @@ const getProductList = async () => {
 // 도서 추가 모달창
 const addProductModal = () => {
   const { open, close } = useModal({
-    component: AddModal,
+    component: CreateProductModal,
     attrs: {
       title: "도서 추가",
       buttonOk: "추가",
@@ -77,9 +78,9 @@ const addProductModal = () => {
 };
 
 // 도서 변경 모달창
-const editProductModal = (item) => {
+const editBookModal = (item) => {
   const { open, close } = useModal({
-    component: EditModal,
+    component: EditProductModal,
     attrs: {
       title: "도서 수정",
       content: item,
@@ -179,9 +180,9 @@ onMounted(() => {
             <BlueButton
               type="button"
               text="수정"
-              @click="editProductModal(item)"
+              @click="editBookModal(item)"
             />
-            <BlueButton
+            <RedButton
               type="button"
               text="삭제"
               @click="deleteConfirmModal(item)"

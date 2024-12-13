@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import BlueButton from "../button/BlueButton.vue";
+import WhiteButton from "../button/WhiteButton.vue";
 import ModalLayout from "../layout/ModalLayout.vue";
-import ModalBody from "./ModalBody.vue";
-import ModalFooter from "./ModalFooter.vue";
-import ModalHeader from "./ModalHeader.vue";
+import ModalBody from "./layout/ModalBody.vue";
+import ModalFooter from "./layout/ModalFooter.vue";
+import ModalHeader from "./layout/ModalHeader.vue";
 
 // props
 const props = defineProps(["title", "content", "buttonOk"]);
@@ -32,7 +33,7 @@ const emit = defineEmits<{
       <!-- footer  -->
       <ModalFooter>
         <BlueButton type="button" :text="props.buttonOk" @click="emit('ok')" />
-        <BlueButton type="button" text="취소" @click="emit('close')" />
+        <WhiteButton type="button" text="취소" @click="emit('close')" />
       </ModalFooter>
     </ModalBody>
   </ModalLayout>

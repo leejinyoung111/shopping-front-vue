@@ -25,19 +25,10 @@ export const useAuthStore = defineStore("auth", {
         const getData = result.data.result;
         const status = result.data.status;
 
+        delete getData.userInfo.user.password;
+
         if (status.status == "success") {
-          const user = {
-            id: getData.userInfo.user.id,
-            email: getData.userInfo.user.email,
-            name: getData.userInfo.user.name,
-            postCode: getData.userInfo.user.postCode,
-            address: getData.userInfo.user.address,
-            detailAddress: getData.userInfo.user.detailAddress,
-            role: getData.userInfo.user.role,
-            exp: getData.userInfo.exp,
-            iat: getData.userInfo.iat,
-          };
-          return user;
+          return getData;
         } else {
           console.log("api 호출 에러" + status.message);
         }

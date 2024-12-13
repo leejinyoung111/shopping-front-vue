@@ -12,6 +12,7 @@ import {
 } from "@/utils/Validation";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LabelItem from "@/components/text/LabelItem.vue";
+import MainTitle from "@/components/text/MainTitle.vue";
 
 // 변수
 const email = ref("");
@@ -95,13 +96,8 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-      >
-        회원가입
-      </h2>
-    </div>
+    <MainTitle>회원가입</MainTitle>
+
     <!-- 회원가입 폼 -->
     <div class="mt-5 w-full md:w-2/3 lg:w-2/4">
       <form class="space-y-6" @submit.prevent="submit()">

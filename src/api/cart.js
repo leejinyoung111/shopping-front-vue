@@ -85,3 +85,26 @@ export const DeleteCartApi = async (id) => {
     return e;
   }
 };
+
+// 구매하기
+export const InsertOrderApi = async (value) => {
+  try {
+    const { userId, orderDate, orderNumber, totalPrice, status } = value;
+    const result = await axios.post(apiUrl + "/insertOrder", {
+      userId,
+      orderDate,
+      orderNumber,
+      totalPrice,
+      status,
+    });
+
+    if (result.status == 200) {
+      return result;
+    } else {
+      console.log("api 호출 에러 : " + result);
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};

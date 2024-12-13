@@ -7,6 +7,8 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
+import RedButton from "@/components/button/RedButton.vue";
+import WhiteButton from "@/components/button/WhiteButton.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -25,7 +27,7 @@ const getUserInfo = async () => {
   if (getToken.value != null) {
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
-    getUser.value = user;
+    getUser.value = user.userInfo.user;
   }
 };
 
@@ -136,6 +138,7 @@ onMounted(() => {
             >
 
             <span
+              v-if="getUser && getUser.role == 'user'"
               class="flex gap-5 py-1 items-center title-font font-medium text-xl text-gray-900"
               >수량 :
               <div class="relative flex items-center max-w-[8rem]">
@@ -198,20 +201,24 @@ onMounted(() => {
             </span>
 
             <!-- 장바구니 -->
-            <div class="flex justify-start items-center gap-5">
-              <button
+            <div
+              v-if="getUser && getUser.role == 'user'"
+              class="flex justify-start items-center gap-5"
+            >
+              <RedButton
                 v-if="bookDetailInfo.status == '정상판매'"
-                class="text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded"
+                type="button"
+                text="장바구니"
+                add-class="w-2/3 md:w-2/4 lg:w-1/3  my-3"
                 @click="addCart(bookDetailInfo)"
-              >
-                장바구니 담기
-              </button>
-              <button
+              />
+
+              <WhiteButton
                 v-else
-                class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:bg-gray-600 rounded cursor-not-allowed"
-              >
-                품절
-              </button>
+                type="button"
+                text="품절"
+                add-class="w-2/3 md:w-2/4 lg:w-1/3 my-3 cursor-not-allowed bg-gray-200 hover:bg-gray-200"
+              />
             </div>
           </div>
         </div>

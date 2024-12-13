@@ -1,14 +1,18 @@
 <script setup>
-import { DeleteCartApi, GetCartListApi } from "@/api/cart";
+import { DeleteCartApi, GetCartListApi, InsertOrderApi } from "@/api/cart";
 import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import BlueButton from "@/components/button/BlueButton.vue";
-import CartCountModal from "@/components/modal/CartCountModal.vue";
 import { useModal } from "vue-final-modal";
-import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
+import MainTitle from "@/components/text/MainTitle.vue";
+import EditCartCountModal from "@/components/modal/edit/EditCartCountModal.vue";
+import EmptyItem from "@/components/ui/EmptyItem.vue";
+import ConfirmModal from "@/components/modal/ConfirmModal.vue";
+import { randomString } from "@/utils/RandomString";
+import { InsertOrderItemApi } from "@/api/orderItem";
 
 // storage
 const authStore = useAuthStore();
@@ -21,6 +25,31 @@ const cartList = ref();
 const priceArr = ref([]);
 const totalPrice = ref(0);
 
+// 현재 날짜, 시간 가져오기
+const getToday = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = (today.getMonth() + 1).toString().padStart(2, "0");
+  const day = today.getDate().toString().padStart(2, "0");
+  const hour = today.getHours();
+  const minute = today.getMinutes();
+
+  let timeFormat = "";
+
+  if (hour < 10) {
+    timeFormat += "0";
+  }
+  timeFormat += hour + ":";
+
+  if (minute < 10) {
+    timeFormat += "0";
+  }
+
+  timeFormat += minute;
+
+  return `${year}-${month}-${day} ${timeFormat}`;
+};
+
 // 유저 정보 가져오기
 const getUserInfo = async () => {
   if (getToken.value != null) {
@@ -28,7 +57,7 @@ const getUserInfo = async () => {
 
     // 토큰으로 유저 정보 가져오기
     const user = await authStore.getUserInfo(getToken.value);
-    getUser.value = user;
+    getUser.value = user.userInfo.user;
 
     // 관리자 여부
     if (getUser.value.role == "admin") {
@@ -92,29 +121,33 @@ const deleteCart = async (item) => {
 // 수량 변경 모달창
 const changeCountModal = (item) => {
   const { open, close } = useModal({
-    component: CartCountModal,
+    component: EditCartCountModal,
     attrs: {
       title: item.title,
       id: item.id,
       count: item.count,
-      onConfirm() {
+      onOk() {
         close();
         getCartList();
+      },
+      onClose() {
+        close();
       },
     },
   });
   open();
 };
 
-// 구매 확인 모달창
+// 구매하기 모달창
 const buyConfirmModal = () => {
   const { open, close } = useModal({
     component: ConfirmModal,
     attrs: {
-      title: "구매하기",
+      title: "구매하기 확인",
       content: "정말로 구매하실건가요?",
-      buttonOk: "구매",
+      buttonOk: "구매하기",
       onOk() {
+        buyOrder();
         close();
       },
       onClose() {
@@ -125,6 +158,45 @@ const buyConfirmModal = () => {
   open();
 };
 
+// 구매하기
+const buyOrder = async () => {
+  try {
+    // 랜덤 주문번호
+    let randomNumber = randomString(15);
+
+    const value = {
+      userId: getUser.value.id,
+      orderDate: getToday(),
+      orderNumber: randomNumber,
+      totalPrice: totalPrice.value,
+      status: "completed",
+    };
+
+    // 주문 추가
+    const result = await InsertOrderApi(value);
+    const status = result.data.status;
+    if (status.status == "success") {
+      // 주문 별 상품 추가
+      cartList.value.map(async (item) => {
+        let orderItem = {
+          orderNumber: randomNumber,
+          title: item.title,
+          thumbnail: item.thumbnail,
+          count: item.count,
+          price: item.price,
+        };
+
+        await InsertOrderItemApi(orderItem);
+
+        deleteCart(item);
+      });
+      alert(status.message);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 onMounted(() => {
   getUserInfo();
 });
@@ -133,23 +205,14 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-      >
-        장바구니 목록
-      </h2>
-    </div>
+    <MainTitle>장바구니 리스트</MainTitle>
 
     <!-- empty -->
-    <div
+    <EmptyItem
       v-if="cartList && cartList.length == 0"
-      class="rounded-lg md:w-2/3 flex justify-center items-center h-52"
-    >
-      <span class="text-gray-500 font-medium text-2xl">
-        장바구니가 비어있습니다...</span
-      >
-    </div>
+      :title="'No List'"
+      :content="'현재 장바구니가 비어있습니다.'"
+    />
 
     <!-- 장바구니 리스트 -->
     <div class="rounded-lg md:w-2/3">
@@ -223,7 +286,7 @@ onMounted(() => {
         type="button"
         text="구매하기"
         add-class="w-full mt-6"
-        @click="buyConfirmModal"
+        @click="buyConfirmModal()"
       />
     </div>
   </ContainerLayout>

@@ -1,28 +1,26 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { GetProductListApi } from "@/api/product";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
-import { GetBookListApi } from "@/api/kakao";
 import MainTitle from "@/components/text/MainTitle.vue";
 import EmptyItem from "@/components/ui/EmptyItem.vue";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 // 변수
 const searchBookName = ref("");
 const bookList = ref([]);
 const router = useRouter();
-const sessionSearch = ref(sessionStorage.getItem("search"));
-const isSearch = ref(false);
 
-// 도서 데이터 가져오기
-const getBookList = async (search) => {
+// 도서 목록 조회
+const getProductList = async (title) => {
   try {
-    const result = await GetBookListApi(search);
+    const result = await GetProductListApi(title);
 
-    if (result.status == 200) {
-      isSearch.value = true;
-      bookList.value = result.data.documents;
-    } else {
-      console.log("api 호출 에러 : " + result);
+    const getData = result.data.result;
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      bookList.value = getData.getProductList;
     }
   } catch (e) {
     console.log(e);
@@ -30,35 +28,23 @@ const getBookList = async (search) => {
 };
 
 // 도서 검색
-const submit = () => {
-  if (searchBookName.value !== "") {
-    const textEncode = encodeURI(searchBookName.value);
-    sessionStorage.setItem("search", decodeURI(textEncode));
-    isSearch.value = false;
-    getBookList(textEncode);
-  } else {
-    alert("도서명을 입력하세요.");
-  }
+const submit = async () => {
+  getProductList(searchBookName.value);
 };
 
 // 디테일 페이지 이동
-const goToDetail = (isbn) => {
-  const paramId = isbn.split(" ");
-  router.push(`/book/detail/${paramId[0]}`);
+const goToDetail = (bookId) => {
+  router.push(`/book/detail/${bookId}`);
 };
 
 onMounted(() => {
-  if (sessionSearch.value != null) {
-    searchBookName.value = sessionSearch.value;
-    getBookList(encodeURI(sessionSearch.value));
-  }
+  getProductList("");
 });
 </script>
-
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <MainTitle>도서 검색</MainTitle>
+    <MainTitle>추천 도서</MainTitle>
 
     <!-- 검색 바 -->
     <form
@@ -88,7 +74,7 @@ onMounted(() => {
 
     <!-- empty -->
     <EmptyItem
-      v-if="isSearch && bookList.length == 0"
+      v-if="bookList && bookList.length == 0"
       :title="'No Books'"
       :content="'검색 결과가 없습니다.'"
     />
@@ -102,7 +88,7 @@ onMounted(() => {
           v-for="(item, key) in bookList"
           :key="key"
           class="shadow-md rounded-xl hover:shadow-lg hover:-translate-y-2 transition-all duration-300 cursor-pointer"
-          @click="goToDetail(item.isbn)"
+          @click="goToDetail(item.bookId)"
         >
           <img
             class="w-full h-64 rounded-t-lg"
@@ -114,7 +100,7 @@ onMounted(() => {
               {{ item.title }}
             </h3>
             <h3 class="text-xs mb-2 font-medium text-center">
-              저자 : {{ item.authors.join(", ") }}
+              저자 : {{ item.authors }}
             </h3>
             <div class="flex justify-center items-center">
               <p class="text-sm text-gray-600">{{ item.price }}원</p>

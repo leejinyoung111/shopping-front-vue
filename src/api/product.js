@@ -2,12 +2,10 @@ import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 
 // 도서 목록 조회
-export const GetProductListApi = async () => {
+export const GetProductListApi = async (title) => {
   try {
-    const result = await axios.get(apiUrl + `/getProductList`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const result = await axios.post(apiUrl + `/getProductList`, {
+      title,
     });
 
     if (result.status == 200) {

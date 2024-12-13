@@ -9,6 +9,7 @@ import { emailValidate, passwordValidate } from "@/utils/Validation";
 import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LabelItem from "@/components/text/LabelItem.vue";
+import MainTitle from "@/components/text/MainTitle.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -77,13 +78,7 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-      >
-        로그인
-      </h2>
-    </div>
+    <MainTitle>로그인</MainTitle>
 
     <!-- 로그인 폼 -->
     <div class="mt-5 w-full md:w-2/3 lg:w-2/4">
