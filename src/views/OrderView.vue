@@ -1,5 +1,5 @@
 <script setup>
-import { GetOrderListApi } from "@/api/order";
+import { CancelOrderApi, DeleteOrderApi, GetOrderListApi } from "@/api/order";
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
@@ -99,9 +99,7 @@ const orderDetailModal = (orderNumber) => {
 };
 
 // 주문 취소 모달창
-const cancelConfirmModal = (id) => {
-  console.log(id);
-
+const cancelConfirmModal = (item) => {
   const { open, close } = useModal({
     component: ConfirmModal,
     attrs: {
@@ -109,6 +107,7 @@ const cancelConfirmModal = (id) => {
       content: "정말로 취소하실건가요?",
       buttonOk: "주문 취소",
       onOk() {
+        cancelOrder(item);
         close();
       },
       onClose() {
@@ -119,10 +118,22 @@ const cancelConfirmModal = (id) => {
   open();
 };
 
+// 주문 취소
+const cancelOrder = async (item) => {
+  try {
+    const result = await CancelOrderApi(item);
+
+    const status = result.data.status;
+    if (status.status == "success") {
+      getOrderList();
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 // 주문 기록 삭제 모달창
 const deleteConfirmModal = (id) => {
-  console.log(id);
-
   const { open, close } = useModal({
     component: ConfirmModal,
     attrs: {
@@ -130,6 +141,7 @@ const deleteConfirmModal = (id) => {
       content: "정말로 삭제하실건가요?",
       buttonOk: "기록 삭제",
       onOk() {
+        deleteOrder(id);
         close();
       },
       onClose() {
@@ -138,6 +150,20 @@ const deleteConfirmModal = (id) => {
     },
   });
   open();
+};
+
+// 주문 기록 삭제
+const deleteOrder = async (id) => {
+  try {
+    const result = await DeleteOrderApi(id);
+
+    const status = result.data.status;
+    if (status.status == "success") {
+      getOrderList();
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 onMounted(() => {
@@ -204,7 +230,7 @@ onMounted(() => {
                   v-if="item.status == 'completed'"
                   type="button"
                   text="취소"
-                  @click="cancelConfirmModal(item.id)"
+                  @click="cancelConfirmModal(item)"
                 />
                 <RedButton
                   v-if="item.status == 'canceled'"
