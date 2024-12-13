@@ -1,5 +1,5 @@
 <script setup>
-import { DeleteCartApi, GetCartListApi } from "@/api/cart";
+import { DeleteCartApi, GetCartListApi, InsertOrderApi } from "@/api/cart";
 import { priceChange } from "@/utils/PriceConversion";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
@@ -10,6 +10,8 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
 import EditCartCountModal from "@/components/modal/edit/EditCartCountModal.vue";
 import EmptyItem from "@/components/ui/EmptyItem.vue";
+import ConfirmModal from "@/components/modal/ConfirmModal.vue";
+import { randomString } from "@/utils/RandomString";
 
 // storage
 const authStore = useAuthStore();
@@ -21,6 +23,31 @@ const getUser = ref();
 const cartList = ref();
 const priceArr = ref([]);
 const totalPrice = ref(0);
+
+// 현재 날짜, 시간 가져오기
+const getToday = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = (today.getMonth() + 1).toString().padStart(2, "0");
+  const day = today.getDate().toString().padStart(2, "0");
+  const hour = today.getHours();
+  const minute = today.getMinutes();
+
+  let timeFormat = "";
+
+  if (hour < 10) {
+    timeFormat += "0";
+  }
+  timeFormat += hour + ":";
+
+  if (minute < 10) {
+    timeFormat += "0";
+  }
+
+  timeFormat += minute;
+
+  return `${year}-${month}-${day} ${timeFormat}`;
+};
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -110,6 +137,48 @@ const changeCountModal = (item) => {
   open();
 };
 
+// 구매하기 모달창
+const buyConfirmModal = () => {
+  const { open, close } = useModal({
+    component: ConfirmModal,
+    attrs: {
+      title: "구매하기 확인",
+      content: "정말로 구매하실건가요?",
+      buttonOk: "구매하기",
+      onOk() {
+        buyOrder();
+        close();
+      },
+      onClose() {
+        close();
+      },
+    },
+  });
+  open();
+};
+
+// 구매하기
+const buyOrder = async () => {
+  try {
+    const value = {
+      userId: getUser.value.id,
+      orderDate: getToday(),
+      orderNumber: randomString(15),
+      totalPrice: totalPrice.value,
+      status: "completed",
+    };
+    const result = await InsertOrderApi(value);
+
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      alert(status.message);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 onMounted(() => {
   getUserInfo();
 });
@@ -195,7 +264,12 @@ onMounted(() => {
           <p class="mb-1 text-lg font-bold">{{ priceChange(totalPrice) }}원</p>
         </div>
       </div>
-      <BlueButton type="button" text="구매하기" add-class="w-full mt-6" />
+      <BlueButton
+        type="button"
+        text="구매하기"
+        add-class="w-full mt-6"
+        @click="buyConfirmModal()"
+      />
     </div>
   </ContainerLayout>
 </template>
