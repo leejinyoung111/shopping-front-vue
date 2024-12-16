@@ -10,6 +10,7 @@ import InputItem from "@/components/form/InputItem.vue";
 import { UpdateProductApi } from "@/api/product";
 import LabelItem from "@/components/text/LabelItem.vue";
 import InputLayout from "@/components/layout/InputLayout.vue";
+import { toastAlert } from "@/utils/ToastAlert";
 
 // props
 const props = defineProps(["title", "content", "buttonOk"]);
@@ -49,6 +50,7 @@ const submit = async () => {
     const status = result.data.status;
 
     if (status.status == "success") {
+      toastAlert({ message: status.message, toastType: status.status });
       emit("ok");
     }
   } catch (e) {

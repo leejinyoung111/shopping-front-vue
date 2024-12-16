@@ -13,6 +13,7 @@ import {
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LabelItem from "@/components/text/LabelItem.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import { toastAlert } from "@/utils/ToastAlert";
 
 // 변수
 const email = ref("");
@@ -76,10 +77,15 @@ const submit = async () => {
       const status = result.data.status;
 
       if (status.status == "success") {
-        alert(getData.data);
-        router.push("/login");
+        toastAlert({ message: getData.data, toastType: "success" });
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
       } else {
-        alert(status.message + " 다시 확인하세요.");
+        toastAlert({
+          message: status.message,
+          toastType: "error",
+        });
       }
     }
   } catch (e) {

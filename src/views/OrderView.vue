@@ -11,6 +11,7 @@ import MainTitle from "@/components/text/MainTitle.vue";
 import EmptyItem from "@/components/ui/EmptyItem.vue";
 import { useAuthStore } from "@/stores/auth";
 import { priceChange } from "@/utils/PriceConversion";
+import { toastAlert } from "@/utils/ToastAlert";
 import { onMounted, ref } from "vue";
 import { useModal } from "vue-final-modal";
 import { useRouter } from "vue-router";
@@ -121,6 +122,7 @@ const cancelOrder = async (item) => {
 
     const status = result.data.status;
     if (status.status == "success") {
+      toastAlert({ message: status.message, toastType: status.status });
       getOrderList();
     }
   } catch (e) {
@@ -155,6 +157,7 @@ const deleteOrder = async (id) => {
 
     const status = result.data.status;
     if (status.status == "success") {
+      toastAlert({ message: status.message, toastType: status.status });
       getOrderList();
     }
   } catch (e) {
@@ -182,7 +185,7 @@ onMounted(() => {
     <div v-else class="rounded-lg w-full lg:w-3/4 max-w-3/4">
       <div class="overflow-auto max-h-[500px] rounded-md">
         <table
-          class="max-h-[500px] text-sm text-left rtl:text-center text-gray-500 dark:text-gray-400 w-[700px] lg:w-full"
+          class="max-h-[500px] text-sm text-left rtl:text-center text-gray-500 dark:text-gray-400 w-[800px] lg:w-full"
         >
           <thead
             class="text-xs uppercase bg-gray-300/70 dark:bg-gray-700 dark:text-gray-400"

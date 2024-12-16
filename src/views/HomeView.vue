@@ -44,7 +44,12 @@ const submit = () => {
 // 디테일 페이지 이동
 const goToDetail = (isbn) => {
   const paramId = isbn.split(" ");
-  router.push(`/book/detail/${paramId[0]}`);
+
+  if (paramId[0] == "") {
+    router.push(`/book/detail/${paramId[1]}`);
+  } else {
+    router.push(`/book/detail/${paramId[0]}`);
+  }
 };
 
 onMounted(() => {

@@ -45,7 +45,6 @@ const updateProductCount = async () => {
     const status = result.data.status;
 
     if (status.status == "success") {
-      alert("수정 성공!");
       emit("ok");
     }
   } catch (e) {

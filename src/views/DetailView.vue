@@ -9,6 +9,7 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import RedButton from "@/components/button/RedButton.vue";
 import WhiteButton from "@/components/button/WhiteButton.vue";
+import { toastAlert } from "@/utils/ToastAlert";
 
 // storage
 const authStore = useAuthStore();
@@ -69,27 +70,22 @@ const changeCount = (status) => {
 // 장바구니 추가
 const addCart = async (bookDetailInfo) => {
   try {
-    if (getToken.value == null) {
-      alert("로그인 후 이용 가능합니다.");
-      router.push("/login");
-    } else {
-      const { title, price, thumbnail, publisher } = bookDetailInfo;
-      const value = {
-        userId: getUser.value.id,
-        bookId: param,
-        title,
-        price,
-        thumbnail,
-        publisher,
-        count: bookCount.value,
-      };
+    const { title, price, thumbnail, publisher } = bookDetailInfo;
+    const value = {
+      userId: getUser.value.id,
+      bookId: param,
+      title,
+      price,
+      thumbnail,
+      publisher,
+      count: bookCount.value,
+    };
 
-      const result = await AddCartApi(value);
+    const result = await AddCartApi(value);
 
-      const status = result.data.status;
+    const status = result.data.status;
 
-      alert(status.message);
-    }
+    toastAlert({ message: status.message, toastType: status.status });
   } catch (e) {
     console.log(e);
   }

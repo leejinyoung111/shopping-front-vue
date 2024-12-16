@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { useModal } from "vue-final-modal";
 import BlueButton from "@/components/button/BlueButton.vue";
-import EditProfileModal from "@/components/modal/edit/EditProfileModal.vue";
+import EditProfileModal from "@/components/modal/edit/editProfileModal.vue";
 import ProfileThItem from "@/components/table/profile/ProfileThItem.vue";
 import ProfileTdItem from "@/components/table/profile/ProfileTdItem.vue";
 

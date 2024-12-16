@@ -6,10 +6,11 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
-import CreateProductModal from "@/components/modal/create/CreateProductModal.vue";
+import CreateProductModal from "@/components/modal/create/createProductModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
-import EditProductModal from "@/components/modal/edit/EditProductModal.vue";
+import EditProductModal from "@/components/modal/edit/editProductModal.vue";
+import { toastAlert } from "@/utils/ToastAlert";
 
 // storage
 const authStore = useAuthStore();
@@ -125,6 +126,7 @@ const deleteProduct = async (item) => {
     const status = result.data.status;
 
     if (status.status == "success") {
+      toastAlert({ message: status.message, toastType: status.status });
       getProductList("");
     }
   } catch (e) {
