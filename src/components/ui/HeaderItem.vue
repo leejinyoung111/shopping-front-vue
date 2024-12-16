@@ -25,6 +25,7 @@ const getUserInfo = async () => {
 // 세션 스토리지 리셋
 const sessionReset = () => {
   sessionStorage.clear();
+  router.replace("/");
 };
 
 // 프로필페이지 이동
