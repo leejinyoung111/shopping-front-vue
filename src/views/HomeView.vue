@@ -6,42 +6,38 @@ import { GetBookListApi } from "@/api/kakao";
 import MainTitle from "@/components/text/MainTitle.vue";
 import EmptyItem from "@/components/ui/EmptyItem.vue";
 import IconBase from "@/components/icon/IconBase.vue";
+import {
+  DeleteRecentSearchApi,
+  GetRecentSearchListApi,
+  InsertRecentSearchApi,
+} from "@/api/recentSearch";
+import { useAuthStore } from "@/stores/auth";
+import { getToday } from "@/utils/DateUtil";
+
+// storage
+const authStore = useAuthStore();
 
 // 변수
+const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
+const getUser = ref();
 const searchBookName = ref("");
 const bookList = ref([]);
+const recentSearchList = ref([]);
 const router = useRouter();
 const sessionSearch = ref(sessionStorage.getItem("search"));
 const isSearch = ref(false);
 const isFocused = ref(false);
 
-const searchedList = [
-  {
-    id: 1,
-    title: "서울",
-    date: "2024-12-10",
-  },
-  {
-    id: 2,
-    title: "인터넷",
-    date: "2024-12-15",
-  },
-  {
-    id: 3,
-    title: "정보",
-    date: "2024-12-13",
-  },
-  {
-    id: 4,
-    title: "서울",
-    date: "2024-12-10",
-  },
-  {
-    id: 5,
-    title: "인터넷",
-    date: "2024-12-15",
-  },
-];
+// 유저 정보 가져오기
+const getUserInfo = async () => {
+  if (getToken.value != null) {
+    // 토큰으로 유저 정보 가져오기
+    const user = await authStore.getUserInfo(getToken.value);
+    getUser.value = user.userInfo.user;
+
+    getRecentSearchList(getUser.value.id);
+  }
+};
 
 // 도서 데이터 가져오기
 const getBookList = async (search) => {
@@ -59,23 +55,58 @@ const getBookList = async (search) => {
   }
 };
 
+// 최근 검색 목록 가져오기
+const getRecentSearchList = async (id) => {
+  try {
+    const result = await GetRecentSearchListApi(id);
+
+    const getData = result.data.result;
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      recentSearchList.value = getData.getRecentSearchList;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 // 검색창 포커스
 const onFocus = () => {
   isFocused.value = true;
 };
 
 // 도서 검색 공통 기능
-const searchCommon = (title) => {
-  const textEncode = encodeURI(title);
-  sessionStorage.setItem("search", decodeURI(textEncode));
-  isSearch.value = false;
-  getBookList(textEncode);
+const searchCommon = async (title) => {
+  try {
+    // 검색 기능
+    const textEncode = encodeURI(title);
+    sessionStorage.setItem("search", decodeURI(textEncode));
+    isSearch.value = false;
+    getBookList(textEncode);
 
-  // 쿼리스트링 설정
-  router.replace({
-    path: "/",
-    query: { search: textEncode },
-  });
+    // 쿼리스트링 설정
+    router.replace({
+      path: "/",
+      query: { search: textEncode },
+    });
+
+    // 최근검색 추가 기능
+    const value = {
+      userId: getUser.value.id,
+      search: title,
+      date: getToday(),
+    };
+
+    const result = await InsertRecentSearchApi(value);
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      getRecentSearchList(getUser.value.id);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 // input으로 도서 검색
@@ -91,7 +122,18 @@ const recentSearchClick = (title) => {
 };
 
 // 최근 검색 삭제
-const deleteRecentSearch = (id) => {
+const deleteRecentSearch = async (id) => {
+  try {
+    const result = await DeleteRecentSearchApi(id);
+
+    const status = result.data.status;
+
+    if (status.status == "success") {
+      getRecentSearchList(getUser.value.id);
+    }
+  } catch (e) {
+    console.log(e);
+  }
   console.log(id);
 };
 
@@ -107,6 +149,7 @@ const goToDetail = (isbn) => {
 };
 
 onMounted(() => {
+  getUserInfo();
   if (sessionSearch.value != null) {
     searchBookName.value = sessionSearch.value;
     getBookList(encodeURI(sessionSearch.value));
@@ -152,16 +195,16 @@ onMounted(() => {
         class="border border-gray-200 bg-white absolute left-0 top-10 w-full max-h-56 overflow-y-auto"
       >
         <div
-          v-for="(item, key) in searchedList"
+          v-for="(item, key) in recentSearchList"
           :key="key"
           class="border border-gray-300 rounded-md flex justify-between items-center gap-5 text-sm p-2 m-2 z-50 hover:bg-gray-200"
         >
           <button
             type="button"
             class="hover:text-red-500 flex justify-start items-center"
-            @click="recentSearchClick(item.title)"
+            @click="recentSearchClick(item.search)"
           >
-            {{ item.title }}
+            {{ item.search }}
           </button>
           <button type="button" @click="deleteRecentSearch(item.id)">
             <IconBase title="close" :class-change="'w-7 h-7'" />
@@ -177,7 +220,7 @@ onMounted(() => {
       :content="'검색 결과가 없습니다.'"
     />
 
-    <!-- 리스트 -->
+    <!-- 도서 리스트 -->
     <div class="py-2 w-full h-full">
       <div
         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
