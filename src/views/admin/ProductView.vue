@@ -11,6 +11,7 @@ import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import EditProductModal from "@/components/modal/edit/editProductModal.vue";
 import { toastAlert } from "@/utils/ToastAlert";
+import MainTitle from "@/components/text/MainTitle.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -141,13 +142,7 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-      >
-        도서 리스트
-      </h2>
-    </div>
+    <MainTitle>도서 리스트</MainTitle>
 
     <!-- 도서 추가 -->
     <BlueButton type="button" text="도서 추가" @click="addProductModal" />

@@ -27,6 +27,7 @@ const sessionReset = () => {
   sessionStorage.clear();
 };
 
+// 프로필페이지 이동
 const goToProfile = () => {
   const userId = getUser.value.id;
   router.push(`/profile/${userId}`);
@@ -40,6 +41,7 @@ onMounted(() => {
   <div
     class="fixed w-full flex items-center justify-between h-14 text-white z-10"
   >
+    <!-- 로고 -->
     <router-link
       to="/"
       class="border border-red-500 flex items-center justify-start gap-2 md:justify-center pl-3 w-14 md:w-64 h-14 bg-gray-500 dark:bg-gray-800 border-none"
@@ -48,6 +50,8 @@ onMounted(() => {
       <IconBase title="logo" :class-change="'w-[30px] h-[30px]'" />
       <span class="hidden md:block font-semibold">북 스토어</span>
     </router-link>
+
+    <!-- 이미지, 유저이름 -->
     <div
       class="flex justify-end items-center pr-10 h-14 bg-gray-500 dark:bg-gray-800 header-right"
     >

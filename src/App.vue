@@ -9,13 +9,13 @@ import { ModalsContainer } from "vue-final-modal";
   <div
     class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white"
   >
-    <!-- 헤더 -->
+    <!-- header -->
     <HeaderItem />
 
-    <!-- 사이드바 -->
+    <!-- sidebar -->
     <SidebarItem />
 
-    <!-- 메인 -->
+    <!-- main -->
     <MainLayout>
       <router-view />
       <ModalsContainer />

@@ -1,6 +1,5 @@
 <script setup>
 import { CancelOrderApi, DeleteOrderApi, GetOrderListApi } from "@/api/order";
-import { GetOrderItemListApi } from "@/api/orderItem";
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";

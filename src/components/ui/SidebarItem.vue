@@ -19,7 +19,6 @@ const loginBefore = [
     icon: "login",
   },
 ];
-
 const loginAfter = [
   {
     title: "추천도서",

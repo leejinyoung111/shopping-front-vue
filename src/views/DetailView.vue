@@ -20,7 +20,6 @@ const param = url.slice(13, url.length);
 const bookDetailInfo = ref();
 const getToken = ref(JSON.parse(localStorage.getItem("accessToken")));
 const getUser = ref();
-const router = useRouter();
 const bookCount = ref(1);
 
 // 유저 정보 가져오기
