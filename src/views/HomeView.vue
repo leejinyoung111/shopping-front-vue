@@ -36,6 +36,12 @@ const submit = () => {
     sessionStorage.setItem("search", decodeURI(textEncode));
     isSearch.value = false;
     getBookList(textEncode);
+
+    // 쿼리스트링 설정
+    router.replace({
+      path: "/",
+      query: { search: textEncode },
+    });
   } else {
     alert("도서명을 입력하세요.");
   }

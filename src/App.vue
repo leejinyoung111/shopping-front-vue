@@ -3,6 +3,10 @@ import SidebarItem from "@/components/ui/SidebarItem.vue";
 import MainLayout from "./components/layout/MainLayout.vue";
 import HeaderItem from "./components/ui/HeaderItem.vue";
 import { ModalsContainer } from "vue-final-modal";
+import { useRoute } from "vue-router";
+
+// 라우트 설정
+const route = useRoute();
 </script>
 
 <template>
@@ -17,7 +21,8 @@ import { ModalsContainer } from "vue-final-modal";
 
     <!-- main -->
     <MainLayout>
-      <router-view />
+      <!-- 같은 페이지 replace -->
+      <router-view :key="route.fullPath" />
       <ModalsContainer />
     </MainLayout>
   </div>
