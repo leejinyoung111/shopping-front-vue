@@ -35,7 +35,7 @@ const getUserInfo = async () => {
       router.replace("/");
     }
 
-    getProductList();
+    getProductList("");
   } else {
     // 로그인 하지 않은 경우
     router.replace("/");
@@ -43,9 +43,9 @@ const getUserInfo = async () => {
 };
 
 // 도서 목록 조회
-const getProductList = async () => {
+const getProductList = async (title) => {
   try {
-    const result = await GetProductListApi();
+    const result = await GetProductListApi(title);
 
     const getData = result.data.result;
     const status = result.data.status;
@@ -67,7 +67,7 @@ const addProductModal = () => {
       buttonOk: "추가",
       onOk() {
         close();
-        getProductList();
+        getProductList("");
       },
       onClose() {
         close();
@@ -87,7 +87,7 @@ const editBookModal = (item) => {
       buttonOk: "수정",
       onOk() {
         close();
-        getProductList();
+        getProductList("");
       },
       onClose() {
         close();
@@ -125,7 +125,7 @@ const deleteProduct = async (item) => {
     const status = result.data.status;
 
     if (status.status == "success") {
-      getProductList();
+      getProductList("");
     }
   } catch (e) {
     console.log(e);
