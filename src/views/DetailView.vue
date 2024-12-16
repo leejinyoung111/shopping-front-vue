@@ -5,7 +5,6 @@ import { priceChange } from "@/utils/PriceConversion";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import RedButton from "@/components/button/RedButton.vue";
 import WhiteButton from "@/components/button/WhiteButton.vue";

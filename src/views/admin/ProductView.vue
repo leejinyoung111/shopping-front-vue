@@ -6,10 +6,10 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import { DeleteProductApi, GetProductListApi } from "@/api/product";
 import BlueButton from "@/components/button/BlueButton.vue";
 import RedButton from "@/components/button/RedButton.vue";
-import CreateProductModal from "@/components/modal/create/createProductModal.vue";
+import CreateProductModal from "@/components/modal/create/CreateProductModal.vue";
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
-import EditProductModal from "@/components/modal/edit/editProductModal.vue";
+import EditProductModal from "@/components/modal/edit/EditProductModal.vue";
 import { toastAlert } from "@/utils/ToastAlert";
 import MainTitle from "@/components/text/MainTitle.vue";
 

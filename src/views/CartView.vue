@@ -8,7 +8,7 @@ import BlueButton from "@/components/button/BlueButton.vue";
 import { useModal } from "vue-final-modal";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
-import EditCartCountModal from "@/components/modal/edit/editCartCountModal.vue";
+import EditCartCountModal from "@/components/modal/edit/EditCartCountModal.vue";
 import EmptyItem from "@/components/ui/EmptyItem.vue";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import { randomString } from "@/utils/RandomString";

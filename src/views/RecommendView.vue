@@ -87,7 +87,7 @@ onMounted(() => {
         <div
           v-for="(item, key) in bookList"
           :key="key"
-          class="shadow-md rounded-xl hover:shadow-lg hover:-translate-y-2 transition-all duration-300 cursor-pointer"
+          class="shadow-md rounded-xl hover:shadow-lg cursor-pointer"
           @click="goToDetail(item.bookId)"
         >
           <img
