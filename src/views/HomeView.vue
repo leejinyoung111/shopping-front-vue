@@ -31,20 +31,27 @@ const getBookList = async (search) => {
 
 // 도서 검색
 const submit = () => {
-  if (searchBookName.value !== "") {
-    const textEncode = encodeURI(searchBookName.value);
-    sessionStorage.setItem("search", decodeURI(textEncode));
-    isSearch.value = false;
-    getBookList(textEncode);
-  } else {
-    alert("도서명을 입력하세요.");
-  }
+  const textEncode = encodeURI(searchBookName.value);
+  sessionStorage.setItem("search", decodeURI(textEncode));
+  isSearch.value = false;
+  getBookList(textEncode);
+
+  // 쿼리스트링 설정
+  router.replace({
+    path: "/",
+    query: { search: textEncode },
+  });
 };
 
 // 디테일 페이지 이동
 const goToDetail = (isbn) => {
   const paramId = isbn.split(" ");
-  router.push(`/book/detail/${paramId[0]}`);
+
+  if (paramId[0] == "") {
+    router.push(`/book/detail/${paramId[1]}`);
+  } else {
+    router.push(`/book/detail/${paramId[0]}`);
+  }
 };
 
 onMounted(() => {
@@ -62,7 +69,7 @@ onMounted(() => {
 
     <!-- 검색 바 -->
     <form
-      class="bg-white rounded flex items-center w-full max-w-xl mr-4 p-2 shadow-sm border border-gray-200"
+      class="relative bg-white rounded flex items-center w-full max-w-xl mr-4 p-2 shadow-sm border border-gray-200"
       @submit.prevent="submit()"
     >
       <button class="outline-none focus:outline-none">
@@ -82,6 +89,7 @@ onMounted(() => {
         type="text"
         placeholder="도서명"
         v-model="searchBookName"
+        required
         class="w-full pl-3 text-sm text-black outline-none focus:outline-none bg-transparent"
       />
     </form>

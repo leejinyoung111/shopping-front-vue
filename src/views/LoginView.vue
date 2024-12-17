@@ -10,6 +10,7 @@ import { useRouter } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LabelItem from "@/components/text/LabelItem.vue";
 import MainTitle from "@/components/text/MainTitle.vue";
+import { toastAlert } from "@/utils/ToastAlert";
 
 // storage
 const authStore = useAuthStore();
@@ -58,10 +59,18 @@ const submit = async () => {
         // 토큰 저장
         authStore.setToken(getData.accessToken);
 
-        alert("로그인 성공!");
-        window.location.replace("/");
+        toastAlert({
+          message: "로그인 성공",
+          toastType: "success",
+        });
+        setTimeout(() => {
+          window.location.replace("/");
+        }, 1500);
       } else {
-        alert(status.message + " 다시 확인하세요.");
+        toastAlert({
+          message: status.message,
+          toastType: "error",
+        });
       }
     }
   } catch (e) {

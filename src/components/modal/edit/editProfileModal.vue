@@ -13,6 +13,7 @@ import { nameValidate, passwordValidate } from "@/utils/Validation";
 import { UpdateUserApi } from "@/api/user";
 import { useAuthStore } from "@/stores/auth";
 import InputLayout from "@/components/layout/InputLayout.vue";
+import { toastAlert } from "@/utils/ToastAlert";
 
 // 글로벌 타입 설정
 declare global {
@@ -37,9 +38,9 @@ const authStore = useAuthStore();
 const email = ref(props.item.email);
 const name = ref(props.item.name);
 const password = ref(props.item.password);
-const postCode = ref(props.item.postCode);
-const address = ref(props.item.address);
-const detailAddress = ref(props.item.detailAddress);
+const postCode = ref(props.item.address.postCode);
+const address = ref(props.item.address.address);
+const detailAddress = ref(props.item.address.detailAddress);
 const nameMessage = ref("");
 const passwordMessage = ref("");
 
@@ -101,8 +102,7 @@ const submit = async () => {
         const user = await authStore.getUserInfo(
           JSON.parse(localStorage.getItem("accessToken"))
         );
-
-        alert("수정 성공!");
+        toastAlert({ message: "프로필 수정 성공", toastType: status.status });
         emit("ok", user);
       }
     }

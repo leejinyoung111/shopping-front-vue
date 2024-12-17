@@ -13,6 +13,8 @@ import EmptyItem from "@/components/ui/EmptyItem.vue";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import { randomString } from "@/utils/RandomString";
 import { InsertOrderItemApi } from "@/api/orderItem";
+import { toastAlert } from "@/utils/ToastAlert";
+import { getToday } from "@/utils/DateUtil";
 
 // storage
 const authStore = useAuthStore();
@@ -24,31 +26,6 @@ const getUser = ref();
 const cartList = ref();
 const priceArr = ref([]);
 const totalPrice = ref(0);
-
-// 현재 날짜, 시간 가져오기
-const getToday = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = (today.getMonth() + 1).toString().padStart(2, "0");
-  const day = today.getDate().toString().padStart(2, "0");
-  const hour = today.getHours();
-  const minute = today.getMinutes();
-
-  let timeFormat = "";
-
-  if (hour < 10) {
-    timeFormat += "0";
-  }
-  timeFormat += hour + ":";
-
-  if (minute < 10) {
-    timeFormat += "0";
-  }
-
-  timeFormat += minute;
-
-  return `${year}-${month}-${day} ${timeFormat}`;
-};
 
 // 유저 정보 가져오기
 const getUserInfo = async () => {
@@ -190,7 +167,7 @@ const buyOrder = async () => {
 
         deleteCart(item);
       });
-      alert(status.message);
+      toastAlert({ message: status.message, toastType: status.status });
     }
   } catch (e) {
     console.log(e);

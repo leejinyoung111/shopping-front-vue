@@ -10,6 +10,8 @@ import CreateProductModal from "@/components/modal/create/CreateProductModal.vue
 import { useModal } from "vue-final-modal";
 import ConfirmModal from "@/components/modal/ConfirmModal.vue";
 import EditProductModal from "@/components/modal/edit/EditProductModal.vue";
+import { toastAlert } from "@/utils/ToastAlert";
+import MainTitle from "@/components/text/MainTitle.vue";
 
 // storage
 const authStore = useAuthStore();
@@ -35,7 +37,7 @@ const getUserInfo = async () => {
       router.replace("/");
     }
 
-    getProductList();
+    getProductList("");
   } else {
     // 로그인 하지 않은 경우
     router.replace("/");
@@ -43,9 +45,9 @@ const getUserInfo = async () => {
 };
 
 // 도서 목록 조회
-const getProductList = async () => {
+const getProductList = async (title) => {
   try {
-    const result = await GetProductListApi();
+    const result = await GetProductListApi(title);
 
     const getData = result.data.result;
     const status = result.data.status;
@@ -67,7 +69,7 @@ const addProductModal = () => {
       buttonOk: "추가",
       onOk() {
         close();
-        getProductList();
+        getProductList("");
       },
       onClose() {
         close();
@@ -87,7 +89,7 @@ const editBookModal = (item) => {
       buttonOk: "수정",
       onOk() {
         close();
-        getProductList();
+        getProductList("");
       },
       onClose() {
         close();
@@ -125,7 +127,8 @@ const deleteProduct = async (item) => {
     const status = result.data.status;
 
     if (status.status == "success") {
-      getProductList();
+      toastAlert({ message: status.message, toastType: status.status });
+      getProductList("");
     }
   } catch (e) {
     console.log(e);
@@ -139,13 +142,7 @@ onMounted(() => {
 <template>
   <ContainerLayout>
     <!-- 타이틀 -->
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
-      >
-        도서 리스트
-      </h2>
-    </div>
+    <MainTitle>도서 리스트</MainTitle>
 
     <!-- 도서 추가 -->
     <BlueButton type="button" text="도서 추가" @click="addProductModal" />
