@@ -11,11 +11,14 @@ export const RegisterApi = async (value) => {
       email,
       name,
       password,
-      postCode,
-      address,
-      detailAddress,
       role,
+      address: {
+        postCode,
+        address,
+        detailAddress,
+      },
     });
+
     if (result.status == 200) {
       return result;
     } else {
@@ -58,9 +61,12 @@ export const UpdateUserApi = async (value) => {
       email,
       name,
       password,
-      postCode,
-      address,
-      detailAddress,
+      role: "user",
+      address: {
+        postCode,
+        address,
+        detailAddress,
+      },
     });
 
     if (result.status == 200) {

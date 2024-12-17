@@ -38,9 +38,9 @@ const authStore = useAuthStore();
 const email = ref(props.item.email);
 const name = ref(props.item.name);
 const password = ref(props.item.password);
-const postCode = ref(props.item.postCode);
-const address = ref(props.item.address);
-const detailAddress = ref(props.item.detailAddress);
+const postCode = ref(props.item.address.postCode);
+const address = ref(props.item.address.address);
+const detailAddress = ref(props.item.address.detailAddress);
 const nameMessage = ref("");
 const passwordMessage = ref("");
 

@@ -25,7 +25,10 @@ export const useAuthStore = defineStore("auth", {
         const getData = result.data.result;
         const status = result.data.status;
 
+        // 필요없는 정보 삭제
         delete getData.userInfo.user.password;
+        delete getData.userInfo.user.address.id;
+        delete getData.userInfo.user.address.userId;
 
         if (status.status == "success") {
           return getData;

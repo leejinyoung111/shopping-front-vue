@@ -104,7 +104,7 @@ onMounted(() => {
               >
                 <ProfileThItem>우편번호</ProfileThItem>
                 <ProfileTdItem>
-                  {{ getUser.postCode }}
+                  {{ getUser.address.postCode }}
                 </ProfileTdItem>
               </tr>
               <tr
@@ -112,7 +112,7 @@ onMounted(() => {
               >
                 <ProfileThItem>주소</ProfileThItem>
                 <ProfileTdItem>
-                  {{ getUser.address }}
+                  {{ getUser.address.address }}
                 </ProfileTdItem>
               </tr>
               <tr
@@ -120,7 +120,7 @@ onMounted(() => {
               >
                 <ProfileThItem>상세주소</ProfileThItem>
                 <ProfileTdItem>
-                  {{ getUser.detailAddress }}
+                  {{ getUser.address.detailAddress }}
                 </ProfileTdItem>
               </tr>
             </tbody>
