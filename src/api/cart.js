@@ -1,10 +1,12 @@
 import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 
+const middleUrl = "/cart";
+
 // 장바구니 목록 조회
 export const GetCartListApi = async (id) => {
   try {
-    const result = await axios.get(apiUrl + `/cart/${id}`, {
+    const result = await axios.get(apiUrl + middleUrl + `/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -25,7 +27,7 @@ export const GetCartListApi = async (id) => {
 export const AddCartApi = async (value) => {
   try {
     const { userId, bookId, title, price, thumbnail, publisher, count } = value;
-    const result = await axios.post(apiUrl + "/addCart", {
+    const result = await axios.post(apiUrl + middleUrl + "/insert", {
       userId,
       bookId,
       title,
@@ -50,7 +52,7 @@ export const AddCartApi = async (value) => {
 export const UpdateProductCountApi = async (value) => {
   try {
     const { id, count } = value;
-    const result = await axios.patch(apiUrl + `/updateProductCount`, {
+    const result = await axios.patch(apiUrl + middleUrl + `/updateCount`, {
       id,
       count,
     });
@@ -69,7 +71,7 @@ export const UpdateProductCountApi = async (value) => {
 // 장바구니 삭제
 export const DeleteCartApi = async (id) => {
   try {
-    const result = await axios.delete(apiUrl + `/cart/${id}`, {
+    const result = await axios.delete(apiUrl + middleUrl + `/delete/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -90,7 +92,7 @@ export const DeleteCartApi = async (id) => {
 export const InsertOrderApi = async (value) => {
   try {
     const { userId, orderDate, orderNumber, totalPrice, status } = value;
-    const result = await axios.post(apiUrl + "/insertOrder", {
+    const result = await axios.post(apiUrl + middleUrl + "/insertOrder", {
       userId,
       orderDate,
       orderNumber,

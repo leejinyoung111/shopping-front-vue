@@ -2,6 +2,8 @@ import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 import { defineStore } from "pinia";
 
+const middleUrl = "/auth";
+
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     accessToken: {},
@@ -18,7 +20,7 @@ export const useAuthStore = defineStore("auth", {
     async getUserInfo(token) {
       try {
         this.token = token;
-        const result = await axios.post(apiUrl + "/getUser", {
+        const result = await axios.post(apiUrl + middleUrl + "/getUser", {
           token,
         });
 

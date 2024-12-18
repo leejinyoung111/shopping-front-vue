@@ -1,13 +1,15 @@
 import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 
+const middleUrl = "/auth";
+
 // 회원가입
 export const RegisterApi = async (value) => {
   try {
     const { email, name, password, postCode, address, detailAddress, role } =
       value;
 
-    const result = await axios.post(apiUrl + "/register", {
+    const result = await axios.post(apiUrl + middleUrl + "/register", {
       email,
       name,
       password,
@@ -35,7 +37,7 @@ export const LoginApi = async (value) => {
   try {
     const { email, password } = value;
 
-    const result = await axios.post(apiUrl + "/login", {
+    const result = await axios.post(apiUrl + middleUrl + "/login", {
       email,
       password,
     });
@@ -56,7 +58,7 @@ export const UpdateUserApi = async (value) => {
     const { id, email, name, password, postCode, address, detailAddress } =
       value;
 
-    const result = await axios.patch(apiUrl + "/updateUser", {
+    const result = await axios.patch(apiUrl + middleUrl + "/updateUser", {
       id,
       email,
       name,
