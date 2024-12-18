@@ -6,6 +6,9 @@ import vueDevTools from "vite-plugin-vue-devtools";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "build", // 빌드된 파일이 저장될 디렉토리 이름
+  },
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
