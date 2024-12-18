@@ -1,10 +1,12 @@
 import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 
+const middleUrl = "/admin";
+
 // 도서 목록 조회
 export const GetProductListApi = async (title) => {
   try {
-    const result = await axios.post(apiUrl + `/getProductList`, {
+    const result = await axios.post(apiUrl + middleUrl + `/product`, {
       title,
     });
 
@@ -32,7 +34,7 @@ export const AddProductApi = async (value) => {
       authors,
       status,
     } = value;
-    const result = await axios.post(apiUrl + "/addProduct", {
+    const result = await axios.post(apiUrl + middleUrl + "/insert", {
       bookId,
       title,
       content,
@@ -57,7 +59,7 @@ export const AddProductApi = async (value) => {
 // 도서 삭제
 export const DeleteProductApi = async (id) => {
   try {
-    const result = await axios.delete(apiUrl + `/product/${id}`, {
+    const result = await axios.delete(apiUrl + middleUrl + `/delete/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -89,7 +91,7 @@ export const UpdateProductApi = async (value) => {
       status,
     } = value;
 
-    const result = await axios.patch(apiUrl + "/updateProduct", {
+    const result = await axios.patch(apiUrl + middleUrl + "/update", {
       id,
       bookId,
       title,

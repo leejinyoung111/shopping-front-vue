@@ -1,10 +1,12 @@
 import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 
+const middleUrl = "/order";
+
 // 주문서 목록 조회
 export const GetOrderListApi = async (id) => {
   try {
-    const result = await axios.get(apiUrl + `/order/${id}`, {
+    const result = await axios.get(apiUrl + middleUrl + `/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -26,7 +28,7 @@ export const CancelOrderApi = async (value) => {
   try {
     const { id, userId, orderNumber, orderDate, totalPrice } = value;
 
-    const result = await axios.patch(apiUrl + "/cancelOrder", {
+    const result = await axios.patch(apiUrl + middleUrl + "/cancel", {
       id,
       userId,
       orderNumber,
@@ -49,7 +51,7 @@ export const CancelOrderApi = async (value) => {
 // 주문 기록 삭제
 export const DeleteOrderApi = async (id) => {
   try {
-    const result = await axios.delete(apiUrl + `/order/${id}`, {
+    const result = await axios.delete(apiUrl + middleUrl + `/delete/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },

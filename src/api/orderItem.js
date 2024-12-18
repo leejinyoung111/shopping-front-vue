@@ -1,11 +1,13 @@
 import { apiUrl } from "@/constants/envName";
 import axios from "axios";
 
+const middleUrl = "/orderItem";
+
 // 주문 별 상품 추가
 export const InsertOrderItemApi = async (value) => {
   try {
     const { orderNumber, title, thumbnail, count, price } = value;
-    const result = await axios.post(apiUrl + "/insertOrderItem", {
+    const result = await axios.post(apiUrl + middleUrl + "/insert", {
       orderNumber,
       title,
       thumbnail,
@@ -27,7 +29,7 @@ export const InsertOrderItemApi = async (value) => {
 // 주문 별 상품 리스트 조회
 export const GetOrderItemListApi = async (orderNumber) => {
   try {
-    const result = await axios.get(apiUrl + `/orderItem/${orderNumber}`, {
+    const result = await axios.get(apiUrl + middleUrl + `/${orderNumber}`, {
       headers: {
         "Content-Type": "application/json",
       },
