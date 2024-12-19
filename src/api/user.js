@@ -6,20 +6,7 @@ const middleUrl = "/auth";
 // 회원가입
 export const RegisterApi = async (value) => {
   try {
-    const { email, name, password, postCode, address, detailAddress, role } =
-      value;
-
-    const result = await axios.post(apiUrl + middleUrl + "/register", {
-      email,
-      name,
-      password,
-      role,
-      address: {
-        postCode,
-        address,
-        detailAddress,
-      },
-    });
+    const result = await axios.post(apiUrl + middleUrl + "/register", value);
 
     if (result.status == 200) {
       return result;
@@ -35,12 +22,7 @@ export const RegisterApi = async (value) => {
 // 로그인
 export const LoginApi = async (value) => {
   try {
-    const { email, password } = value;
-
-    const result = await axios.post(apiUrl + middleUrl + "/login", {
-      email,
-      password,
-    });
+    const result = await axios.post(apiUrl + middleUrl + "/login", value);
     if (result.status == 200) {
       return result;
     } else {
@@ -55,21 +37,7 @@ export const LoginApi = async (value) => {
 // 유저정보 수정
 export const UpdateUserApi = async (value) => {
   try {
-    const { id, email, name, password, postCode, address, detailAddress } =
-      value;
-
-    const result = await axios.patch(apiUrl + middleUrl + "/updateUser", {
-      id,
-      email,
-      name,
-      password,
-      role: "user",
-      address: {
-        postCode,
-        address,
-        detailAddress,
-      },
-    });
+    const result = await axios.patch(apiUrl + middleUrl + "/updateUser", value);
 
     if (result.status == 200) {
       return result;

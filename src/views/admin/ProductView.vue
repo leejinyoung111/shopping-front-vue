@@ -159,7 +159,7 @@ onMounted(() => {
         >
           <img
             class="w-full h-64 rounded-t-lg"
-            :src="`${item.thumbnail}`"
+            :src="`${item.thumb_nail}`"
             :alt="item.title"
           />
           <div>

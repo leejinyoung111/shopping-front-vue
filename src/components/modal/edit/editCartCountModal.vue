@@ -36,7 +36,7 @@ const changeCount = (status) => {
 // 상품 수량 변경
 const updateProductCount = async () => {
   try {
-    let value = {
+    const value = {
       id: props.id,
       count: bookCount.value,
     };

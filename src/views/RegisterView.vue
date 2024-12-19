@@ -61,14 +61,16 @@ const submit = async () => {
 
     // 모두 일치할 경우
     if (emailCheck && nameCheck && passwordCheck) {
-      let value = {
+      const value = {
         email: email.value,
         name: name.value,
         password: password.value,
-        postCode: postCode.value,
-        address: address.value,
-        detailAddress: detailAddress.value,
         role: "user",
+        address: {
+          address: address.value,
+          post_code: postCode.value,
+          detail_address: detailAddress.value,
+        },
       };
 
       const result = await RegisterApi(value);

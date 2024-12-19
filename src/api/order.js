@@ -26,16 +26,7 @@ export const GetOrderListApi = async (id) => {
 // 도서 정보 수정
 export const CancelOrderApi = async (value) => {
   try {
-    const { id, userId, orderNumber, orderDate, totalPrice } = value;
-
-    const result = await axios.patch(apiUrl + middleUrl + "/cancel", {
-      id,
-      userId,
-      orderNumber,
-      orderDate,
-      totalPrice,
-      status: "canceled",
-    });
+    const result = await axios.patch(apiUrl + middleUrl + "/cancel", value);
 
     if (result.status == 200) {
       return result;

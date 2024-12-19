@@ -70,11 +70,11 @@ const addCart = async (bookDetailInfo) => {
   try {
     const { title, price, thumbnail, publisher } = bookDetailInfo;
     const value = {
-      userId: getUser.value.id,
-      bookId: param,
+      user_id: getUser.value.id,
+      book_id: param,
       title,
       price,
-      thumbnail,
+      thumb_nail: thumbnail,
       publisher,
       count: bookCount.value,
     };

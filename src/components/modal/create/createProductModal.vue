@@ -34,11 +34,11 @@ const currentStatus = ref("");
 // 도서 추가하기
 const submit = async () => {
   try {
-    let value = {
-      bookId: bookId.value,
+    const value = {
+      book_id: bookId.value,
       title: bookTitle.value,
       content: content.value,
-      thumbnail: thumbnail.value,
+      thumb_nail: thumbnail.value,
       price: price.value,
       publisher: publisher.value,
       authors: authors.value,

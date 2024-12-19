@@ -117,7 +117,11 @@ const cancelConfirmModal = (item) => {
 // 주문 취소
 const cancelOrder = async (item) => {
   try {
-    const result = await CancelOrderApi(item);
+    const value = {
+      ...item,
+      status: "canceled",
+    };
+    const result = await CancelOrderApi(value);
 
     const status = result.data.status;
     if (status.status == "success") {
@@ -207,13 +211,13 @@ onMounted(() => {
               "
             >
               <OrderThItem :class="statusClass(item.status)">{{
-                item.orderNumber
+                item.order_number
               }}</OrderThItem>
               <OrderThItem :class="statusClass(item.status)">{{
-                item.orderDate
+                item.order_date
               }}</OrderThItem>
               <OrderThItem :class="statusClass(item.status)"
-                >{{ priceChange(item.totalPrice) }}원</OrderThItem
+                >{{ priceChange(item.total_price) }}원</OrderThItem
               >
               <OrderThItem :class="statusClass(item.status)">{{
                 statusName(item.status)
@@ -222,7 +226,7 @@ onMounted(() => {
                 <BlueButton
                   type="button"
                   text="자세히"
-                  @click="orderDetailModal(item.orderNumber)"
+                  @click="orderDetailModal(item.order_number)"
                 />
                 <RedButton
                   v-if="item.status == 'completed'"

@@ -22,10 +22,10 @@ const emit = defineEmits<{
 }>();
 
 // 변수
-const bookId = ref(props.content.bookId);
+const bookId = ref(props.content.book_id);
 const changeBookTitle = ref(props.content.title);
 const changeContent = ref(props.content.content);
-const changeThumbnail = ref(props.content.thumbnail);
+const changeThumbnail = ref(props.content.thumb_nail);
 const changePrice = ref(props.content.price);
 const changePublisher = ref(props.content.publisher);
 const changeAuthors = ref(props.content.authors);
@@ -34,12 +34,12 @@ const changeCurrentStatus = ref(props.content.status);
 // 도서 추가하기
 const submit = async () => {
   try {
-    let value = {
+    const value = {
       id: props.content.id,
-      bookId: bookId.value,
+      book_id: bookId.value,
       title: changeBookTitle.value,
       content: changeContent.value,
-      thumbnail: changeThumbnail.value,
+      thumb_nail: changeThumbnail.value,
       price: changePrice.value,
       publisher: changePublisher.value,
       authors: changeAuthors.value,
