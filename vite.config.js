@@ -15,9 +15,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8085/shopApi/", // 프록시 요청을 보낼 대상 URL
-        rewrite: (path) => path.replace(/^\/api/, ""), // 경로 재작성(Ex. '/api/test' => 'https://서버.com/test')
-        changeOrigin: true, // 원본 서버에 요청 시 호스트 헤더 변경
+        target: "http://192.168.1.72:8085/shopApi", // 백엔드 서버 주소
+        changeOrigin: true, // CORS 문제 해결
+        rewrite: (path) => path.replace(/^\/api/, "/api"), // '/api' 경로 유지
       },
     },
   },

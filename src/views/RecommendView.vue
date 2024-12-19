@@ -88,11 +88,11 @@ onMounted(() => {
           v-for="(item, key) in bookList"
           :key="key"
           class="shadow-md rounded-xl hover:shadow-lg cursor-pointer"
-          @click="goToDetail(item.bookId)"
+          @click="goToDetail(item.book_id)"
         >
           <img
             class="w-full h-64 rounded-t-lg"
-            :src="`${item.thumbnail}`"
+            :src="`${item.thumb_nail}`"
             :alt="item.title"
           />
           <div>

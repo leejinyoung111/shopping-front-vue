@@ -6,14 +6,7 @@ const middleUrl = "/orderItem";
 // 주문 별 상품 추가
 export const InsertOrderItemApi = async (value) => {
   try {
-    const { orderNumber, title, thumbnail, count, price } = value;
-    const result = await axios.post(apiUrl + middleUrl + "/insert", {
-      orderNumber,
-      title,
-      thumbnail,
-      count,
-      price,
-    });
+    const result = await axios.post(apiUrl + middleUrl + "/insert", value);
 
     if (result.status == 200) {
       return result;

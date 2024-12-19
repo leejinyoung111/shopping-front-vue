@@ -57,7 +57,7 @@ onMounted(() => {
           class="flex flex-col justify-between mb-6 rounded-lg bg-white p-3 shadow-md sm:flex-col md:flex-row"
         >
           <img
-            :src="`${item.thumbnail}`"
+            :src="`${item.thumb_nail}`"
             alt="product-image"
             class="w-full rounded-lg md:w-40"
           />

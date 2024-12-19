@@ -26,16 +26,7 @@ export const GetCartListApi = async (id) => {
 // 장바구니 추가
 export const AddCartApi = async (value) => {
   try {
-    const { userId, bookId, title, price, thumbnail, publisher, count } = value;
-    const result = await axios.post(apiUrl + middleUrl + "/insert", {
-      userId,
-      bookId,
-      title,
-      price,
-      thumbnail,
-      publisher,
-      count,
-    });
+    const result = await axios.post(apiUrl + middleUrl + "/insert", value);
 
     if (result.status == 200) {
       return result;
@@ -51,11 +42,10 @@ export const AddCartApi = async (value) => {
 // 특정 상품 수량 변경
 export const UpdateProductCountApi = async (value) => {
   try {
-    const { id, count } = value;
-    const result = await axios.patch(apiUrl + middleUrl + `/updateCount`, {
-      id,
-      count,
-    });
+    const result = await axios.patch(
+      apiUrl + middleUrl + `/updateCount`,
+      value
+    );
 
     if (result.status == 200) {
       return result;
@@ -91,14 +81,7 @@ export const DeleteCartApi = async (id) => {
 // 구매하기
 export const InsertOrderApi = async (value) => {
   try {
-    const { userId, orderDate, orderNumber, totalPrice, status } = value;
-    const result = await axios.post(apiUrl + middleUrl + "/insertOrder", {
-      userId,
-      orderDate,
-      orderNumber,
-      totalPrice,
-      status,
-    });
+    const result = await axios.post(apiUrl + middleUrl + "/insertOrder", value);
 
     if (result.status == 200) {
       return result;

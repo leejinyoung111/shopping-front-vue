@@ -38,9 +38,9 @@ const authStore = useAuthStore();
 const email = ref(props.item.email);
 const name = ref(props.item.name);
 const password = ref(props.item.password);
-const postCode = ref(props.item.address.postCode);
+const postCode = ref(props.item.address.post_code);
 const address = ref(props.item.address.address);
-const detailAddress = ref(props.item.address.detailAddress);
+const detailAddress = ref(props.item.address.detail_address);
 const nameMessage = ref("");
 const passwordMessage = ref("");
 
@@ -76,14 +76,17 @@ const submit = async () => {
 
     // 모두 일치할 경
     if (nameCheck && passwordCheck) {
-      let value = {
+      const value = {
         id: props.item.id,
         email: props.item.email,
         name: name.value,
         password: password.value,
-        postCode: postCode.value,
-        address: address.value,
-        detailAddress: detailAddress.value,
+        role: "user",
+        address: {
+          post_code: postCode.value,
+          address: address.value,
+          detail_address: detailAddress.value,
+        },
       };
 
       const result = await UpdateUserApi(value);

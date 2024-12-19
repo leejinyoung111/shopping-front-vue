@@ -44,7 +44,7 @@ const submit = async () => {
     );
 
     if (emailCheck && passwordCheck) {
-      let value = {
+      const value = {
         email: email.value,
         password: password.value,
       };

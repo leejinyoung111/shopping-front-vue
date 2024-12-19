@@ -139,13 +139,13 @@ const buyConfirmModal = () => {
 const buyOrder = async () => {
   try {
     // 랜덤 주문번호
-    let randomNumber = randomString(15);
+    const randomNumber = randomString(15);
 
     const value = {
-      userId: getUser.value.id,
-      orderDate: getToday(),
-      orderNumber: randomNumber,
-      totalPrice: totalPrice.value,
+      user_id: getUser.value.id,
+      order_date: getToday(),
+      order_number: randomNumber,
+      total_price: totalPrice.value,
       status: "completed",
     };
 
@@ -156,9 +156,9 @@ const buyOrder = async () => {
       // 주문 별 상품 추가
       cartList.value.map(async (item) => {
         let orderItem = {
-          orderNumber: randomNumber,
+          order_number: randomNumber,
           title: item.title,
-          thumbnail: item.thumbnail,
+          thumb_nail: item.thumb_nail,
           count: item.count,
           price: item.price,
         };
@@ -199,7 +199,7 @@ onMounted(() => {
         class="flex flex-col justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex-col sm:justify-start md:flex-row"
       >
         <img
-          :src="item.thumbnail"
+          :src="item.thumb_nail"
           alt="product-image"
           class="w-full rounded-lg md:w-40"
         />

@@ -24,26 +24,7 @@ export const GetProductListApi = async (title) => {
 // 도서 추가
 export const AddProductApi = async (value) => {
   try {
-    const {
-      bookId,
-      title,
-      content,
-      thumbnail,
-      price,
-      publisher,
-      authors,
-      status,
-    } = value;
-    const result = await axios.post(apiUrl + middleUrl + "/insert", {
-      bookId,
-      title,
-      content,
-      thumbnail,
-      price,
-      publisher,
-      authors,
-      status,
-    });
+    const result = await axios.post(apiUrl + middleUrl + "/insert", value);
 
     if (result.status == 200) {
       return result;
@@ -79,29 +60,7 @@ export const DeleteProductApi = async (id) => {
 // 도서 정보 수정
 export const UpdateProductApi = async (value) => {
   try {
-    const {
-      id,
-      bookId,
-      title,
-      content,
-      thumbnail,
-      price,
-      publisher,
-      authors,
-      status,
-    } = value;
-
-    const result = await axios.patch(apiUrl + middleUrl + "/update", {
-      id,
-      bookId,
-      title,
-      content,
-      thumbnail,
-      price,
-      publisher,
-      authors,
-      status,
-    });
+    const result = await axios.patch(apiUrl + middleUrl + "/update", value);
 
     if (result.status == 200) {
       return result;
