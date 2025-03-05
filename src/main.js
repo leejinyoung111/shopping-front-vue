@@ -6,10 +6,9 @@ import { createPinia } from "pinia";
 import { createVfm } from "vue-final-modal";
 import "vue-final-modal/style.css";
 import { createHead } from "@vueuse/head";
-const head = createHead();
 
 createApp(App)
-  .use(head)
+  .use(createHead())
   .use(router)
   .use(createPinia())
   .use(createVfm())

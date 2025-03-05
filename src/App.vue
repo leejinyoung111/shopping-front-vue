@@ -5,7 +5,7 @@ import HeaderItem from "./components/ui/HeaderItem.vue";
 import { ModalsContainer } from "vue-final-modal";
 import { useRoute } from "vue-router";
 import { useHead } from "@vueuse/head";
-import { nextTick, onMounted } from "vue";
+import { onMounted } from "vue";
 
 useHead({
   title: "북스토어",
